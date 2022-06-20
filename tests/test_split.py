@@ -33,7 +33,7 @@ if __name__ == "__main__":
 	sTexture1 = prog1.getUniformLocation("sTexture1")
 	sTexture2 = prog1.getUniformLocation("sTexture2")
 
-	texture1 = Texture("res/Galaxy.jpg")
+	texture1 = Texture("res/grid.png")
 	texture2 = Texture("res/tennis.png")
 
 
