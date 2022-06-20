@@ -9,35 +9,11 @@ import pygame
 #local imports
 from geometry import *
 
-vs_dual_tx = textwrap.dedent("""\
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-       
-    attribute vec3 aVertex;
-    attribute vec2 aTexCoord;
-    
-    varying vec2 vTexCoord;
-    
-    void main(){
-       vTexCoord = aTexCoord;
-       gl_Position = (uPMatrix * uMVMatrix)  * vec4(aVertex, 1.0);
-    }
-    """)
+with open('./shaders/interlaceVertex.glsl', 'r') as file:
+    vs_dual_tx = file.read()
 
-fs_dual_tx = textwrap.dedent("""\
-    uniform sampler2D sTexture1;
-    uniform sampler2D sTexture2;
-
-    varying vec2 vTexCoord;
-
-    void main() {
-       	if (int( mod(gl_FragCoord.x, 2.0) ) == 1) {
-           gl_FragColor = texture2D(sTexture1, vec2(vTexCoord.x, vTexCoord.y) );
-		} else {
-           gl_FragColor = texture2D(sTexture2, vec2(vTexCoord.x, vTexCoord.y) );
-		}
-    }
-    """)
+with open('./shaders/interlaceFragment.glsl', 'r') as file:
+    fs_dual_tx = file.read()
 
 
 if __name__ == "__main__":
