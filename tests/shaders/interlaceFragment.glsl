@@ -3,13 +3,29 @@ uniform sampler2D sTexture2;
 
 varying vec2 vTexCoord;
 
+// always positive modulus
+float cmod(float a, float b) {
+    return mod(mod(a, b) + b, b);
+}
+
 void main() {
     float x = gl_FragCoord.x;
-    float y = 1080.0 - (gl_FragCoord.y);
+    float y = (1080.0 - (gl_FragCoord.y));
 
-    int Ri = int(mod(mod(3.0 * (x + y), 8.0) - mod(y, 3.0), 8.0));
-    int Gi = int(mod(mod(3.0 * (x + y) + 1.0, 8.0) - mod(y, 3.0), 8.0));
-    int Bi = int(mod(mod(3.0 * (x + y) + 2.0, 8.0) - mod(y, 3.0), 8.0));
+    int Ri = 0;
+    int Gi = 0;
+    int Bi = 0;
+
+    if(x-y > 0.0) {
+        Ri = int(cmod(3.0 * abs(x - y), 8.0));
+        Gi = int(cmod(3.0 * abs(x - y) + 1.0, 8.0));
+        Bi = int(cmod(3.0 * abs(x - y) + 2.0, 8.0));
+    } else {
+        Ri = 8 - int(cmod(3.0 * abs(x - y), 8.0));
+        Gi = 8 - int(cmod(3.0 * abs(x - y) + 1.0, 8.0));
+        Bi = 8 - int(cmod(3.0 * abs(x - y) + 2.0, 8.0));
+    }
+
 
     float r = 0.0;
     float g = 0.0;
