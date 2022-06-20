@@ -1,7 +1,7 @@
 *.o
 *.DS_Store
 .DS_Store .AppleDouble .LSOverride
-
+.dependencies
 *.class
 
 *.so
