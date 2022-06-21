@@ -1,5 +1,3 @@
-precision mediump float;
-
 uniform mat4 uMVMatrix;
 uniform mat4 uPMatrix;
     
