@@ -4,6 +4,7 @@ from OpenGL.GL import *
 import numpy as np
 import math
 import pygame
+from pygame.math import Vector3
 
 
 #local imports
@@ -23,6 +24,7 @@ if __name__ == "__main__":
 	pygame.init()
 	pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
 	rect = Rectangle('rect')
+	rect2 = Rectangle('rect2')
 	rect_flip = Rectangle('rect_flip', True)
 
 	#create matrices
@@ -31,18 +33,17 @@ if __name__ == "__main__":
 	ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
 	ident_matrix = np.identity(4, dtype=np.float32)
 
-	eye = pygame.math.Vector3(0, 0, 10)
-	center = pygame.math.Vector3(0, 0, 0)
-	view_matrix = lookat(eye, center)
-
+	eye = Vector3(0, 0, 10)
+	eyeTarget = Vector3(0, 0, 0)
+	view_matrix = lookat(eye, eyeTarget)
 
 	prog1 = Program(vs_tx, fs_tx)
 	sTexture = prog1.getUniformLocation("sTexture")
 	texture = Texture("res/Galaxy.jpg")
 
 	prog2 = Program(vs_tx, fs_flat)
-	uCol = prog2.getUniformLocation("col")
 
+	prog3 = Program(vs_tx, fs_flat)
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
@@ -61,15 +62,26 @@ if __name__ == "__main__":
 		glEnable(GL_DEPTH_TEST)
 		glEnable(GL_BLEND)
 
+		### Position des plans dans l'espace ###
+
 		mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(eyemx)
 		prog1.use(perspective_mx, mv_matrix)
-		texture.activate(sTexture)
+		prog1.setTexture("sTexture", texture)
+		#texture.activate(sTexture)
 		rect_flip.draw(prog1.program)
 
 		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(eyemx)
 		prog2.use(perspective_mx, mv_matrix)
-		glUniform4f(uCol, 1.0, 0.0, 0.0, 1.0);
+		prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
 		rect.draw(prog2.program)
+
+		mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(eyemx)
+		prog3.use(perspective_mx, mv_matrix)
+		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
+		rect2.draw(prog3.program)
+
+		mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(eyemx)
+
 
 
 		glUseProgram(0)
@@ -78,11 +90,11 @@ if __name__ == "__main__":
 		glDisable(GL_DEPTH_TEST)
 		glDisable(GL_BLEND)
 
-		glClearColor(0.0, 0.0, 0.0, 1.0);
+		glClearColor(0.0, 0.0, 0.0, 1.0)
 		glViewport(0, 0, width, height)
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		prog1.use(ortho_mx, ident_matrix)
-		fbo.bind_texture(sTexture, 0);
+		fbo.bind_texture(sTexture, 0)
 		rect_flip.draw(prog1.program)
 
 
