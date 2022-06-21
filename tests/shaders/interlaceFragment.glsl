@@ -4,26 +4,28 @@ uniform sampler2D sTexture2;
 varying vec2 vTexCoord;
 
 // always positive modulus
+// @see https://stackoverflow.com/a/4467559
 float cmod(float a, float b) {
     return mod(mod(a, b) + b, b);
 }
 
 void main() {
+    // getting the screen coordinates (0,0) is the top left corner
     float x = (gl_FragCoord.x - 0.5);
     float y = 1080.0 - (gl_FragCoord.y - 0.5);
 
-    //x = vTexCoord.x * 1920.0;
-    //y = vTexCoord.y * 1080.0;
-
+    // The view indices for the current pixel
     int Ri = 0;
     int Gi = 0;
     int Bi = 0;
 
-    float offset = 7.0;
-    Ri = int(cmod(3.0 * (x - y) + offset, 8.0));
-    Gi = int(cmod(3.0 * (x - y) + 1.0 + offset, 8.0));
-    Bi = int(cmod(3.0 * (x - y) + 2.0 + offset, 8.0));
+    float offset = 0.0;
+    float slope = 1.0;
+    Ri = int(cmod(3.0 * (x - y * slope) + offset, 8.0));
+    Gi = int(cmod(3.0 * (x - y * slope) + 1.0 + offset, 8.0));
+    Bi = int(cmod(3.0 * (x - y * slope) + 2.0 + offset, 8.0));
 
+    // init pixel colors to black
     float r = 0.0;
     float g = 0.0;
     float b = 0.0;
@@ -119,5 +121,5 @@ void main() {
         b = 0.0;
     }
 
-    gl_FragColor = vec4(r, 0.0, 0.0, 1.0);
+    gl_FragColor = vec4(r, g, 0.0, 1.0);
 }
