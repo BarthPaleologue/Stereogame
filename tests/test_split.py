@@ -31,10 +31,6 @@ if __name__ == "__main__":
 
 	prog1 = Program(vs_dual_tx, fs_dual_tx)
 
-	#texture0 = Texture("res/planet/planet_droite.png")
-	#texture1 = Texture("res/planet/planet_gauche.png")
-	#texture2 = Texture("res/black.jpg")
-
 	textures = [
 		Texture("res/planet/planet_droite.png"),
 		Texture("res/planet/planet_gauche.png"),
@@ -47,10 +43,6 @@ if __name__ == "__main__":
 	]
 
 	sTextures = [prog1.getUniformLocation(f"sTextures[{i}]") for i in range(8)]
-
-	#sTextures0 = prog1.getUniformLocation("textures[0]")
-	#sTextures1 = prog1.getUniformLocation("textures[1]")
-
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

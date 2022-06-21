@@ -66,6 +66,15 @@ class Program:
     def getUniformLocation(self, name):
         return glGetUniformLocation(self.program, name)
 
+    def setVector3(self, uniformName: str, x: float, y: float, z: float):
+        glUniform3f(self.getUniformLocation(uniformName), x, y, z)
+
+    def setVector4(self, uniformName: str, x: float, y: float, z: float, w: float):
+        glUniform4f(self.getUniformLocation(uniformName), x, y, z, w)
+
+    def setTexture(self, uniformName: str, texture):
+        texture.activate(self.getUniformLocation(uniformName), 0)
+
 
 # Objct wrapping texture loader from file to GPU
 # to build texture:
