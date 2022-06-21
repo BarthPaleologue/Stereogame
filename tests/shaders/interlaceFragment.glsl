@@ -1,4 +1,5 @@
-uniform sampler2D sTextures[8];
+uniform sampler2D sTexture1;
+uniform sampler2D sTexture2;
 
 varying vec2 vTexCoord;
 
@@ -19,24 +20,24 @@ void main() {
 
     // VIEW 0
     if(Ri == 0) {
-        r = texture2D(sTextures[0], vTexCoord).r;
+        r = texture2D(sTexture1, vTexCoord).r;
     }
     if(Gi == 0) {
-        g = texture2D(sTextures[0], vTexCoord).g;
+        g = texture2D(sTexture1, vTexCoord).g;
     }
     if(Bi == 0) {
-        b = texture2D(sTextures[0], vTexCoord).b;
+        b = texture2D(sTexture1, vTexCoord).b;
     }
 
     // VIEW 1
     if(Ri == 1) {
-        r = texture2D(sTextures[1], vTexCoord).r;
+        r = texture2D(sTexture2, vTexCoord).r;
     }
     if(Gi == 1) {
-        g = texture2D(sTextures[1], vTexCoord).g;
+        g = texture2D(sTexture2, vTexCoord).g;
     }
     if(Bi == 1) {
-        b = texture2D(sTextures[1], vTexCoord).b;
+        b = texture2D(sTexture2, vTexCoord).b;
     }
 
     // VIEW 2
@@ -63,24 +64,24 @@ void main() {
 
     // VIEW 4
     if(Ri == 4) {
-        r = 0.0;
+        r = 0.0;//texture2D(sTexture2, vTexCoord).r;
     }
     if(Gi == 4) {
-        g = 0.0;
+        g = 0.0;//texture2D(sTexture2, vTexCoord).g;
     }
     if(Bi == 4) {
-        b = 0.0;
+        b = 0.0;//texture2D(sTexture2, vTexCoord).b;
     }
 
     // VIEW 5
     if(Ri == 5) {
-        r = 0.0;
+        r = 0.0;//texture2D(sTexture2, vTexCoord).r;
     }
     if(Gi == 5) {
-        g = 0.0;
+        g = 0.0;//texture2D(sTexture2, vTexCoord).g;
     }
     if(Bi == 5) {
-        b = 0.0;
+        b = 0.0;//texture2D(sTexture2, vTexCoord).b;
     }
 
     // VIEW 6
