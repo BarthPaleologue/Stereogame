@@ -10,49 +10,40 @@ float cmod(float a, float b) {
 }
 
 void main() {
-    // getting the screen coordinates (0,0) is the top left corner
-    float x = (gl_FragCoord.x - 0.5);
-    float y = 1080.0 - (gl_FragCoord.y - 0.5);
+    // getting the screen coordinates (0,0) is the bottom left corner
+    int x = int(gl_FragCoord.x - 0.5);
+    int y = int(gl_FragCoord.y - 0.5);
 
     // The view indices for the current pixel
-    int Ri = 0;
-    int Gi = 0;
-    int Bi = 0;
-
-    float offset = 0.0;
-    float slope = 1.0;
-    Ri = int(cmod(3.0 * (x - y * slope) + offset, 8.0));
-    Gi = int(cmod(3.0 * (x - y * slope) + 1.0 + offset, 8.0));
-    Bi = int(cmod(3.0 * (x - y * slope) + 2.0 + offset, 8.0));
+    int Ri = mod(3 * x + y + 7, 8.0);
+    int Gi = mod(3 * x + y + 8, 8.0);
+    int Bi = mod(3 * x + y + 9, 8.0);
 
     // init pixel colors to black
     float r = 0.0;
     float g = 0.0;
     float b = 0.0;
 
-    r = texture2D(sTexture1, vTexCoord).r;
-
     // VIEW 0
     if(Ri == 0) {
-        //r = texture2D(sTexture1, vTexCoord).r;
-        r = 1.0;
+        r = texture2D(sTexture1, vTexCoord).r;
     }
     if(Gi == 0) {
-        g = 0.0;//texture2D(sTexture1, vTexCoord).g;
+        g = texture2D(sTexture1, vTexCoord).g;
     }
     if(Bi == 0) {
-        b = 0.0;//texture2D(sTexture1, vTexCoord).b;
+        b = texture2D(sTexture1, vTexCoord).b;
     }
 
     // VIEW 1
     if(Ri == 1) {
-        r = 0.0;//texture2D(sTexture1, vTexCoord).r;
+        r = texture2D(sTexture1, vTexCoord).r;
     }
     if(Gi == 1) {
-        g = 0.0;//texture2D(sTexture1, vTexCoord).g;
+        g = texture2D(sTexture1, vTexCoord).g;
     }
     if(Bi == 1) {
-        b = 0.0;//texture2D(sTexture1, vTexCoord).b;
+        b = texture2D(sTexture1, vTexCoord).b;
     }
 
     // VIEW 2
@@ -79,24 +70,24 @@ void main() {
 
     // VIEW 4
     if(Ri == 4) {
-        r = 0.0;
+        r = texture2D(sTexture2, vTexCoord).r;
     }
     if(Gi == 4) {
-        g = 0.0;
+        g = texture2D(sTexture2, vTexCoord).g;
     }
     if(Bi == 4) {
-        b = 0.0;
+        b = texture2D(sTexture2, vTexCoord).b;
     }
 
     // VIEW 5
     if(Ri == 5) {
-        r = 0.0;
+        r = texture2D(sTexture2, vTexCoord).r;
     }
     if(Gi == 5) {
-        g = 0.0;
+        g = texture2D(sTexture2, vTexCoord).g;
     }
     if(Bi == 5) {
-        b = 0.0;
+        b = texture2D(sTexture2, vTexCoord).b;
     }
 
     // VIEW 6
