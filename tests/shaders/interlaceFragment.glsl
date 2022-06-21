@@ -3,12 +3,6 @@ uniform sampler2D sTexture2;
 
 varying vec2 vTexCoord;
 
-// always positive modulus
-// @see https://stackoverflow.com/a/4467559
-float cmod(float a, float b) {
-    return mod(mod(a, b) + b, b);
-}
-
 void main() {
     // getting the screen coordinates (0,0) is the bottom left corner
     int x = int(gl_FragCoord.x - 0.5);
