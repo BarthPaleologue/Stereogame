@@ -9,74 +9,115 @@ float cmod(float a, float b) {
 }
 
 void main() {
-    float x = gl_FragCoord.x;
-    float y = (1080.0 - (gl_FragCoord.y));
+    float x = (gl_FragCoord.x - 0.5);
+    float y = 1080.0 - (gl_FragCoord.y - 0.5);
+
+    //x = vTexCoord.x * 1920.0;
+    //y = vTexCoord.y * 1080.0;
 
     int Ri = 0;
     int Gi = 0;
     int Bi = 0;
 
-    if(x-y > 0.0) {
-        Ri = int(cmod(3.0 * abs(x - y), 8.0));
-        Gi = int(cmod(3.0 * abs(x - y) + 1.0, 8.0));
-        Bi = int(cmod(3.0 * abs(x - y) + 2.0, 8.0));
-    } else {
-        Ri = 8 - int(cmod(3.0 * abs(x - y), 8.0));
-        Gi = 8 - int(cmod(3.0 * abs(x - y) + 1.0, 8.0));
-        Bi = 8 - int(cmod(3.0 * abs(x - y) + 2.0, 8.0));
-    }
-
+    float offset = 7.0;
+    Ri = int(cmod(3.0 * (x - y) + offset, 8.0));
+    Gi = int(cmod(3.0 * (x - y) + 1.0 + offset, 8.0));
+    Bi = int(cmod(3.0 * (x - y) + 2.0 + offset, 8.0));
 
     float r = 0.0;
     float g = 0.0;
     float b = 0.0;
 
+    r = texture2D(sTexture1, vTexCoord).r;
+
+    // VIEW 0
+    if(Ri == 0) {
+        //r = texture2D(sTexture1, vTexCoord).r;
+        r = 1.0;
+    }
+    if(Gi == 0) {
+        g = 0.0;//texture2D(sTexture1, vTexCoord).g;
+    }
+    if(Bi == 0) {
+        b = 0.0;//texture2D(sTexture1, vTexCoord).b;
+    }
+
     // VIEW 1
-    if(Ri == 0 || Ri == 1) {
-        r = texture2D(sTexture1, vTexCoord).r;
+    if(Ri == 1) {
+        r = 0.0;//texture2D(sTexture1, vTexCoord).r;
     }
-    if(Gi == 0 || Gi == 1) {
-        g = texture2D(sTexture1, vTexCoord).g;
+    if(Gi == 1) {
+        g = 0.0;//texture2D(sTexture1, vTexCoord).g;
     }
-    if(Bi == 0 || Bi == 1) {
-        b = texture2D(sTexture1, vTexCoord).b;
+    if(Bi == 1) {
+        b = 0.0;//texture2D(sTexture1, vTexCoord).b;
     }
 
     // VIEW 2
-    if(Ri == 2 || Ri == 3) {
+    if(Ri == 2) {
         r = 0.0;
     }
-    if(Gi == 2 || Gi == 3) {
+    if(Gi == 2) {
         g = 0.0;
     }
-    if(Bi == 2 || Bi == 3) {
+    if(Bi == 2) {
         b = 0.0;
     }
 
     // VIEW 3
-    if(Ri == 4 || Ri == 5) {
-        //r = texture2D(sTexture2, vTexCoord).r;
+    if(Ri == 3) {
         r = 0.0;
     }
-    if(Gi == 4 || Gi == 5) {
-        //g = texture2D(sTexture2, vTexCoord).g;
+    if(Gi == 3) {
         g = 0.0;
     }
-    if(Bi == 4 || Bi == 5) {
-        //b = texture2D(sTexture2, vTexCoord).b;
+    if(Bi == 3) {
         b = 0.0;
     }
 
     // VIEW 4
-    if(Ri == 6 || Ri == 7) {
+    if(Ri == 4) {
         r = 0.0;
     }
-    if(Gi == 6 || Gi == 7) {
+    if(Gi == 4) {
         g = 0.0;
     }
-    if(Bi == 6 || Bi == 7) {
+    if(Bi == 4) {
         b = 0.0;
     }
 
-    gl_FragColor = vec4(r, g, b, 1.0);
+    // VIEW 5
+    if(Ri == 5) {
+        r = 0.0;
+    }
+    if(Gi == 5) {
+        g = 0.0;
+    }
+    if(Bi == 5) {
+        b = 0.0;
+    }
+
+    // VIEW 6
+    if(Ri == 6) {
+        r = 0.0;
+    }
+    if(Gi == 6) {
+        g = 0.0;
+    }
+    if(Bi == 6) {
+        b = 0.0;
+    }
+
+    // VIEW 7
+    if(Ri == 7) {
+        r = 0.0;
+    }
+    if(Gi == 7) {
+        g = 0.0;
+    }
+    if(Bi == 7) {
+        b = 0.0;
+    }
+
+    gl_FragColor = vec4(r, 0.0, 0.0, 1.0);
 }
