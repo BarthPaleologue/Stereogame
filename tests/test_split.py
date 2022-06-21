@@ -30,11 +30,12 @@ if __name__ == "__main__":
 	ident_matrix = np.identity(4, dtype=np.float32)
 
 	prog1 = Program(vs_dual_tx, fs_dual_tx)
-	sTexture1 = prog1.getUniformLocation("sTexture1")
-	sTexture2 = prog1.getUniformLocation("sTexture2")
 
 	texture1 = Texture("res/planet/planet_droite.png")
 	texture2 = Texture("res/planet/planet_gauche.png")
+
+	sTextures0 = prog1.getUniformLocation("textures[0]")
+	sTextures1 = prog1.getUniformLocation("textures[1]")
 
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -48,8 +49,8 @@ if __name__ == "__main__":
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		prog1.use(ortho_mx, ident_matrix)
 
-		texture2.activate(sTexture2, 1);
-		texture1.activate(sTexture1, 0);
+		texture2.activate(sTextures1, 1);
+		texture1.activate(sTextures0, 0);
 
 		rect_flip.draw(prog1.program)
 
