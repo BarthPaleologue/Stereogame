@@ -79,6 +79,7 @@ if __name__ == "__main__":
 		glViewport(0, 0, fbo_width, fbo_height)
 
 
+		glClearColor(0.0, 0.0, 1.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		glEnable(GL_DEPTH_TEST)
 		glEnable(GL_BLEND)
@@ -86,11 +87,11 @@ if __name__ == "__main__":
 		mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(eyemx)
 		prog1.use(perspective_mx, mv_matrix)
 		texture.activate(sTexture)
-		rect_flip.draw(prog2.program)
+		rect_flip.draw(prog1.program)
 
 		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(eyemx)
 		prog2.use(perspective_mx, mv_matrix)
-		glUniform4f(uCol, 1, 0, 0, 1);
+		glUniform4f(uCol, 1.0, 0.0, 0.0, 1.0);
 		rect.draw(prog2.program)
 
 
@@ -100,6 +101,7 @@ if __name__ == "__main__":
 		glDisable(GL_DEPTH_TEST)
 		glDisable(GL_BLEND)
 
+		glClearColor(0.0, 0.0, 0.0, 1.0);
 		glViewport(0, 0, width, height)
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		prog1.use(ortho_mx, ident_matrix)
