@@ -12,7 +12,7 @@ void main() {
     int Gi = mod(3 * x + y + 8, 8.0);
     int Bi = mod(3 * x + y + 9, 8.0);
 
-    // init pixel colors to black
+    // setting colors according to the view indices
     float r = texture2D(sTextures[Ri], vTexCoord).r;
     float g = texture2D(sTextures[Gi], vTexCoord).g;
     float b = texture2D(sTextures[Bi], vTexCoord).b;
