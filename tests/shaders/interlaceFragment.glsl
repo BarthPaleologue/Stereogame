@@ -1,11 +1,17 @@
+#version 330
+precision highp float;
+precision highp int ;
+
 uniform sampler2D sTextures[8];
 
 varying vec2 vTexCoord;
 
 void main() {
+    float xf = gl_FragCoord.x - 0.5 ;
+    float yf = gl_FragCoord.y - 0.5 ;
     // getting the screen coordinates (0,0) is the bottom left corner
-    int x = int(gl_FragCoord.x - 0.5);
-    int y = int(gl_FragCoord.y - 0.5);
+    int x = int(xf);
+    int y = int(yf);
 
     // The view indices for the current pixel
     int Ri = mod(3 * x + y + 7, 8.0);
