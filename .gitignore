@@ -22,3 +22,5 @@
 .depend
 .deps/
 .dep
+
+__pycache__
