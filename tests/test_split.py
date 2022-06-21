@@ -46,7 +46,7 @@ if __name__ == "__main__":
 		Texture("res/black.jpg"),
 	]
 
-	sTextures = [prog1.getUniformLocation(f"sTexture[{i}]") for i in range(8)]
+	sTextures = [prog1.getUniformLocation(f"sTextures[{i}]") for i in range(8)]
 
 	#sTextures0 = prog1.getUniformLocation("textures[0]")
 	#sTextures1 = prog1.getUniformLocation("textures[1]")
