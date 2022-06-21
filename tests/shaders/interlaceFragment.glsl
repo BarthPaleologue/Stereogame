@@ -19,24 +19,24 @@ void main() {
 
     // VIEW 0
     if(Ri == 0) {
-        r = texture2D(sTextures[0], vTexCoord).r;
+        r = texture2D(sTextures[Ri], vTexCoord).r;
     }
     if(Gi == 0) {
-        g = texture2D(sTextures[0], vTexCoord).g;
+        g = texture2D(sTextures[Gi], vTexCoord).g;
     }
     if(Bi == 0) {
-        b = texture2D(sTextures[0], vTexCoord).b;
+        b = texture2D(sTextures[Bi], vTexCoord).b;
     }
 
     // VIEW 1
     if(Ri == 1) {
-        r = texture2D(sTextures[1], vTexCoord).r;
+        r = texture2D(sTextures[Ri], vTexCoord).r;
     }
     if(Gi == 1) {
-        g = texture2D(sTextures[1], vTexCoord).g;
+        g = texture2D(sTextures[Gi], vTexCoord).g;
     }
     if(Bi == 1) {
-        b = texture2D(sTextures[1], vTexCoord).b;
+        b = texture2D(sTextures[Bi], vTexCoord).b;
     }
 
     // VIEW 2

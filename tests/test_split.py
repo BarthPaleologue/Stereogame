@@ -31,11 +31,25 @@ if __name__ == "__main__":
 
 	prog1 = Program(vs_dual_tx, fs_dual_tx)
 
-	texture1 = Texture("res/planet/planet_droite.png")
-	texture2 = Texture("res/planet/planet_gauche.png")
+	#texture0 = Texture("res/planet/planet_droite.png")
+	#texture1 = Texture("res/planet/planet_gauche.png")
+	#texture2 = Texture("res/black.jpg")
 
-	sTextures0 = prog1.getUniformLocation("textures[0]")
-	sTextures1 = prog1.getUniformLocation("textures[1]")
+	textures = [
+		Texture("res/capture_droite.png"),
+		Texture("res/capture_gauche.png"),
+		Texture("res/black.jpg"),
+		Texture("res/black.jpg"),
+		Texture("res/black.jpg"),
+		Texture("res/black.jpg"),
+		Texture("res/black.jpg"),
+		Texture("res/black.jpg"),
+	]
+
+	sTextures = [prog1.getUniformLocation(f"sTexture[{i}]") for i in range(8)]
+
+	#sTextures0 = prog1.getUniformLocation("textures[0]")
+	#sTextures1 = prog1.getUniformLocation("textures[1]")
 
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -49,8 +63,11 @@ if __name__ == "__main__":
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		prog1.use(ortho_mx, ident_matrix)
 
-		texture2.activate(sTextures1, 1);
-		texture1.activate(sTextures0, 0);
+		#texture1.activate(sTextures1, 1)
+		#texture0.activate(sTextures0, 0)
+
+		for i, texture in enumerate(textures):
+			texture.activate(sTextures[i], i)
 
 		rect_flip.draw(prog1.program)
 
