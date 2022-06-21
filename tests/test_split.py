@@ -33,8 +33,8 @@ if __name__ == "__main__":
 	sTexture1 = prog1.getUniformLocation("sTexture1")
 	sTexture2 = prog1.getUniformLocation("sTexture2")
 
-	texture1 = Texture("res/grid.png")
-	texture2 = Texture("res/tennis.png")
+	texture1 = Texture("res/capture_droite.png")
+	texture2 = Texture("res/capture_gauche.png")
 
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

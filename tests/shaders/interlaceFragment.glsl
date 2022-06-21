@@ -37,13 +37,13 @@ void main() {
 
     // VIEW 1
     if(Ri == 1) {
-        r = texture2D(sTexture1, vTexCoord).r;
+        r = texture2D(sTexture2, vTexCoord).r;
     }
     if(Gi == 1) {
-        g = texture2D(sTexture1, vTexCoord).g;
+        g = texture2D(sTexture2, vTexCoord).g;
     }
     if(Bi == 1) {
-        b = texture2D(sTexture1, vTexCoord).b;
+        b = texture2D(sTexture2, vTexCoord).b;
     }
 
     // VIEW 2
@@ -70,24 +70,24 @@ void main() {
 
     // VIEW 4
     if(Ri == 4) {
-        r = texture2D(sTexture2, vTexCoord).r;
+        r = 0.0;//texture2D(sTexture2, vTexCoord).r;
     }
     if(Gi == 4) {
-        g = texture2D(sTexture2, vTexCoord).g;
+        g = 0.0;//texture2D(sTexture2, vTexCoord).g;
     }
     if(Bi == 4) {
-        b = texture2D(sTexture2, vTexCoord).b;
+        b = 0.0;//texture2D(sTexture2, vTexCoord).b;
     }
 
     // VIEW 5
     if(Ri == 5) {
-        r = texture2D(sTexture2, vTexCoord).r;
+        r = 0.0;//texture2D(sTexture2, vTexCoord).r;
     }
     if(Gi == 5) {
-        g = texture2D(sTexture2, vTexCoord).g;
+        g = 0.0;//texture2D(sTexture2, vTexCoord).g;
     }
     if(Bi == 5) {
-        b = texture2D(sTexture2, vTexCoord).b;
+        b = 0.0;//texture2D(sTexture2, vTexCoord).b;
     }
 
     // VIEW 6
