@@ -55,8 +55,8 @@ if __name__ == "__main__":
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		prog1.use(ortho_mx, ident_matrix)
 
-		for i, texture in enumerate(textures):
-			texture.activate(sTextures[i], i)
+		for i in range(len(textures)):
+			textures[i].activate(sTextures[i], i)
 
 		rect_flip.draw(prog1.program)
 
