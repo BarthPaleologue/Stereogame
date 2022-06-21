@@ -1,3 +1,5 @@
+precision highp float;
+
 uniform mat4 uMVMatrix;
 uniform mat4 uPMatrix;
     
@@ -6,7 +8,7 @@ attribute vec2 aTexCoord;
 
 varying vec2 vTexCoord;
 
-void main(){
+void main() {
     vTexCoord = aTexCoord;
     gl_Position = uPMatrix * uMVMatrix * vec4(aVertex, 1.0);
 }

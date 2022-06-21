@@ -1,3 +1,5 @@
+precision highp float;
+
 uniform sampler2D sTextures[8];
 
 varying vec2 vTexCoord;
