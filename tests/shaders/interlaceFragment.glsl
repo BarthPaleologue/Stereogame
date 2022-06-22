@@ -1,14 +1,10 @@
-#version 330
-precision highp float;
-precision highp int ;
-
 uniform sampler2D sTextures[8];
 
 varying vec2 vTexCoord;
 
 void main() {
-    float xf = gl_FragCoord.x - 0.5 ;
-    float yf = gl_FragCoord.y - 0.5 ;
+    float xf = gl_FragCoord.x - 0.5;
+    float yf = gl_FragCoord.y - 0.5;
     // getting the screen coordinates (0,0) is the bottom left corner
     int x = int(xf);
     int y = int(yf);
@@ -19,10 +15,12 @@ void main() {
     int Bi = mod(3 * x + y + 9, 8.0);
 
     // setting colors according to the view indices
-    //float r = texture2D(sTextures[Ri], vTexCoord).r;
-    //float g = texture2D(sTextures[Gi], vTexCoord).g;
-    //float b = texture2D(sTextures[Bi], vTexCoord).b;
+    float r = texture2D(sTextures[Ri], vTexCoord).r;
+    float g = texture2D(sTextures[Gi], vTexCoord).g;
+    float b = texture2D(sTextures[Bi], vTexCoord).b;
     
+    /*
+
     // init pixel colors to black
     float r = 0.0;
     float g = 0.0;
@@ -115,6 +113,8 @@ void main() {
     if(Bi == 7) {
         b = 0.0;
     }
+
+    */
 
     gl_FragColor = vec4(r, g, b, 1.0);
 }
