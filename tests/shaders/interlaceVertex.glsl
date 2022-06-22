@@ -8,5 +8,5 @@ varying vec2 vTexCoord;
 
 void main(){
     vTexCoord = aTexCoord;
-    gl_Position = (uPMatrix * uMVMatrix)  * vec4(aVertex, 1.0);
+    gl_Position = uPMatrix * uMVMatrix * vec4(aVertex, 1.0);
 }
