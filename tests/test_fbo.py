@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
 	eyeTarget = Vector3(0, 0, 0)
 
-	eye_distance = 0.3
+	eye_distance = 0.25
 
 	right_eye = Vector3(-eye_distance / 2, 0, 10)
 	right_view_matrix = lookat(right_eye, eyeTarget)
@@ -108,8 +108,12 @@ if __name__ == "__main__":
 
 		mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(view_matrix)
 
+	rotationSpeed = 0.05
+
 	running = True
 	while running:
+		model_matrix = model_matrix.dot(rotate(rotationSpeed, 0, 1, 0))
+
 		for i in range(2) :
 			if i == 0 :
 				fbo_right.bind()
@@ -137,11 +141,7 @@ if __name__ == "__main__":
 		for i in range(2, len(textures)):
 			textures[i].activate(sTextures[i], i)
 
-
-		#prog1.use(ortho_mx, ident_matrix)
-		#fbo_left.bind_texture(sTexture, 0)
 		screen.draw(interlaceProgram.program)
-
 
 		pygame.display.flip()
 
