@@ -19,6 +19,12 @@ with open('./shaders/fbo/fboFragment.glsl', 'r') as file:
 with open('./shaders/fbo/flatFragment.glsl', 'r') as file:
     fs_flat = file.read()
 
+with open('./shaders/interlaceVertex.glsl', 'r') as file:
+	interlaceVertex = file.read()
+
+with open('./shaders/interlaceFloatFragment.glsl', 'r') as file:
+	interlaceFragment = file.read()
+
 if __name__ == "__main__":
 	width, height = 1920, 1080
 	pygame.init()
@@ -53,6 +59,9 @@ if __name__ == "__main__":
 	prog2 = Program(vs_tx, fs_flat)
 
 	prog3 = Program(vs_tx, fs_flat)
+
+	interlaceProgram = Program(interlaceVertex, interlaceFragment)
+	sTextures = [interlaceProgram.getUniformLocation(f"sTextures[{i}]") for i in range(8)]
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
@@ -98,8 +107,6 @@ if __name__ == "__main__":
 			else :
 				fbo_left.bind()
 				renderView(left_view_matrix)
-
-
 
 		glUseProgram(0)
 		#render to main video output
