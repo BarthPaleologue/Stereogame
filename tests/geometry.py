@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import sys 
 import numpy as np
 from OpenGL.GL import *
 import math
@@ -67,6 +66,15 @@ class Program:
     def getUniformLocation(self, name):
         return glGetUniformLocation(self.program, name)
 
+    def setVector3(self, uniformName: str, x: float, y: float, z: float):
+        glUniform3f(self.getUniformLocation(uniformName), x, y, z)
+
+    def setVector4(self, uniformName: str, x: float, y: float, z: float, w: float):
+        glUniform4f(self.getUniformLocation(uniformName), x, y, z, w)
+
+    def setTexture(self, uniformName: str, texture):
+        texture.activate(self.getUniformLocation(uniformName), 0)
+
 
 # Objct wrapping texture loader from file to GPU
 # to build texture:
@@ -87,8 +95,8 @@ class Texture:
 
         self.texture = glGenTextures(1)
         glBindTexture(GL_TEXTURE_2D, self.texture)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data)
 
     def activate(self, tx_uni_loc, tx_id = 0):
@@ -136,7 +144,7 @@ class FrameBuffer:
         self.height = height
 
     def bind(self):
-        glBindFramebuffer(GL_FRAMEBUFFER, self.fbo )
+        glBindFramebuffer(GL_FRAMEBUFFER, self.fbo)
 
     def texture(self):
         return self.fbo_tx
@@ -155,11 +163,38 @@ class Shape:
         self.vertex_vbo = None
         self.texcoord_vbo = None
         self.normal_vbo = None
-        self.att_vertex = None
-        self.att_normal = None
-        self.att_texcoord = None
+        self.att_vertex = -1
+        self.att_normal = -1
+        self.att_texcoord = -1
         self.nb_points = 0
         self.np_texcoord = None
+        self.position = np.array([0.0, 0.0, 0.0])
+        self.scaling = np.array([1.0, 1.0, 1.0])
+
+    def setPosition(self, x, y, z):
+        self.position[0] = x
+        self.position[1] = y
+        self.position[2] = z
+
+    def getPosition(self):
+        return self.position
+
+    def getPositionMatrix(self):
+        return translate(self.position[0], self.position[1], self.position[2])
+
+    def setScaling(self, x, y, z):
+        self.scaling[0] = x
+        self.scaling[1] = y
+        self.scaling[2] = z
+
+    def getScaling(self):
+        return self.scaling
+
+    def getScalingMatrix(self):
+        return scale(self.scaling[0], self.scaling[1], self.scaling[2])
+
+    def getMatrix(self):
+        return self.getPositionMatrix().dot(self.getScalingMatrix())
 
     def build_buffers(self, vertices, normals, tex_coords, lines=False):
         for val in vertices:
@@ -208,8 +243,9 @@ class Shape:
             glBindBuffer(GL_ARRAY_BUFFER, self.texcoord_vbo)
             glBufferData(GL_ARRAY_BUFFER, self.nb_points*2*4, tex_coords, GL_STATIC_DRAW)
             self.np_texcoord = tex_coords
+            print('Tex coords ' + str(tex_coords))
 
-        #print('Buffers generated - Number of points ' + str(self.nb_points) + ' vertex_vbo ' + str(self.vertex_vbo) + ' normal_vbo ' + str(self.normal_vbo) + ' texcoord_vbo ' + str(self.texcoord_vbo))
+        print('Buffers generated - Number of points ' + str(self.nb_points) + ' vertex_vbo ' + str(self.vertex_vbo) + ' normal_vbo ' + str(self.normal_vbo) + ' texcoord_vbo ' + str(self.texcoord_vbo))
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 
@@ -221,27 +257,28 @@ class Shape:
 
         if self.normal_vbo:
             self.att_normal = glGetAttribLocation(program, "aNormal")
-            if self.att_normal:
+            if self.att_normal>=0:
                 glBindBuffer(GL_ARRAY_BUFFER, self.att_normal)
                 glEnableVertexAttribArray(self.att_normal)
                 glVertexAttribPointer(self.att_normal, 3, GL_FLOAT, False, 0, ctypes.c_void_p(0))
 
         if self.texcoord_vbo:
             self.att_texcoord = glGetAttribLocation(program, "aTexCoord")
-            if self.att_texcoord:
+            print('att location ' + str(self.att_texcoord) )
+            if self.att_texcoord>=0:
                 glBindBuffer(GL_ARRAY_BUFFER, self.texcoord_vbo)
                 glEnableVertexAttribArray(self.att_texcoord)
                 glVertexAttribPointer(self.att_texcoord, 2, GL_FLOAT, False, 0, ctypes.c_void_p(0))
 
-        #print('Buffers ready -  vertex_att ' + str(self.att_vertex) + ' normal_att ' + str(self.att_normal) + ' texcoord_att ' + str(self.att_texcoord))
+        print('Buffers ready -  vertex_att ' + str(self.att_vertex) + ' normal_att ' + str(self.att_normal) + ' texcoord_att ' + str(self.att_texcoord))
 
 
         glDrawArrays(self.type, 0, self.nb_points)
         #disable vertex arrays
         glDisableVertexAttribArray(self.att_vertex)
-        if self.att_normal:
+        if self.att_normal>=0:
             glDisableVertexAttribArray(self.att_normal)
-        if self.att_texcoord:
+        if self.att_texcoord>=0:
             glDisableVertexAttribArray(self.att_texcoord)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 

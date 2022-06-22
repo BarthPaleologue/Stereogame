@@ -22,3 +22,6 @@
 .depend
 .deps/
 .dep
+
+__pycache__
+.idea

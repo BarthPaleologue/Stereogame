@@ -16,6 +16,6 @@ void main() {
     float r = texture2D(sTextures[Ri], vTexCoord).r;
     float g = texture2D(sTextures[Gi], vTexCoord).g;
     float b = texture2D(sTextures[Bi], vTexCoord).b;
-
+    
     gl_FragColor = vec4(r, g, b, 1.0);
 }
