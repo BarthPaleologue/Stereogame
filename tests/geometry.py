@@ -144,7 +144,7 @@ class FrameBuffer:
         self.height = height
 
     def bind(self):
-        glBindFramebuffer(GL_FRAMEBUFFER, self.fbo )
+        glBindFramebuffer(GL_FRAMEBUFFER, self.fbo)
 
     def texture(self):
         return self.fbo_tx

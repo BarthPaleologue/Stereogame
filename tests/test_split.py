@@ -12,7 +12,7 @@ from geometry import *
 with open('./shaders/interlaceVertex.glsl', 'r') as file:
     vs_dual_tx = file.read()
 
-with open('./shaders/interlaceFragment.glsl', 'r') as file:
+with open('./shaders/interlaceFloatFragment.glsl', 'r') as file:
     fs_dual_tx = file.read()
 
 
