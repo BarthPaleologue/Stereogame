@@ -23,6 +23,7 @@ if __name__ == "__main__":
 	width, height = 1920, 1080
 	pygame.init()
 	pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
+	pygame.display.toggle_fullscreen()
 	rect = Rectangle('rect')
 	rect2 = Rectangle('rect2')
 	rect_flip = Rectangle('rect_flip', True)
@@ -35,10 +36,12 @@ if __name__ == "__main__":
 
 	eyeTarget = Vector3(0, 0, 0)
 
-	right_eye = Vector3(-1, 0, 10)
+	eye_distance = 2
+
+	right_eye = Vector3(-eye_distance / 2, 0, 10)
 	right_view_matrix = lookat(right_eye, eyeTarget)
 
-	left_eye = Vector3(1, 0, 10)
+	left_eye = Vector3(eye_distance / 2, 0, 10)
 	left_view_matrix = lookat(left_eye, eyeTarget)
 
 
@@ -55,9 +58,11 @@ if __name__ == "__main__":
 	
 	#create fbo object
 	fbo1 = FrameBuffer(fbo_width, fbo_height)
+	fbo2 = FrameBuffer(fbo_width, fbo_height)
 
 	running = True
 	while running:
+		
 		fbo1.bind()
 		glViewport(0, 0, fbo_width, fbo_height)
 
