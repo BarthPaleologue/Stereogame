@@ -47,8 +47,7 @@ class OBJ:
         self.texcoords = []
         self.faces = []
         self.gl_list = 0
-        dirname = os.path.dirname(filename)
-
+        #self.mtl=dict()
         material = None
         for line in open(filename, "r"):
             if line.startswith('#'): continue
@@ -69,7 +68,7 @@ class OBJ:
             elif values[0] in ('usemtl', 'usemat'):
                 material = values[1]
             #elif values[0] == 'mtllib':
-                #self.mtl = self.loadMaterial(os.path.join(dirname, values[1]))
+                #self.mtl = self.loadMaterial(os.path.join(filename, values[1]))
             elif values[0] == 'f':
                 face = []
                 texcoords = []
@@ -98,12 +97,12 @@ class OBJ:
             vertices, normals, texture_coords, material = face
 
             #mtl = self.mtl[material]
-           # if 'texture_Kd' in mtl:
+            #if 'texture_Kd' in mtl:
                 # use diffuse texmap
                # glBindTexture(GL_TEXTURE_2D, mtl['texture_Kd'])
-           # else:
+            #else:
                 # just use diffuse colour
-               # glColor(*mtl['Kd'])
+                #glColor(*mtl['Kd'])
 
             glBegin(GL_POLYGON)
             for i in range(len(vertices)):

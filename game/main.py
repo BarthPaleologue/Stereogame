@@ -46,9 +46,6 @@ if __name__ == "__main__":
                 elif event.key == K_RIGHT:
                     angle -= 1
                 glRotatef(angle, 3, 1, 1)
-
-           
-         #(1, 3, 1, 1)
         
         
         
