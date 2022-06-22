@@ -26,8 +26,13 @@ if __name__ == "__main__":
 	
 	# shapes
 	rect = Rectangle('rect')
+	rect.setPosition(Vector3(-6, -3, 0))
+
 	yellow_rect = Rectangle('yellow_rect')
+	yellow_rect.setPosition(Vector3(1, 1, -3))
+
 	galaxy_rect = Rectangle('galaxy_rect', True)
+	galaxy_rect.setPosition(Vector3(0, 0, -4))
 	
 	# screen
 	screen = Rectangle('screen', True)
@@ -91,22 +96,24 @@ if __name__ == "__main__":
 
 		### Position des plans dans l'espace ###
 
-		mv_matrix = translate(0, 0, -4).dot(scale(8*width/height, 8, 1)).dot(model_matrix).dot(view_matrix)
+		general_mv_matrix = model_matrix.dot(view_matrix)
+
+		mv_matrix = galaxy_rect.getPositionMatrix().dot(scale(8*width/height, 8, 1)).dot(general_mv_matrix)
 		prog1.use(perspective_mx, mv_matrix)
 		prog1.setTexture("sTexture", texture)
 		galaxy_rect.draw(prog1.program)
 
-		mv_matrix = translate(-6, -3, 0).dot(scale(0.5, 0.5, 1)).dot(model_matrix).dot(view_matrix)
+		mv_matrix = rect.getPositionMatrix().dot(scale(0.5, 0.5, 1)).dot(general_mv_matrix)
 		prog2.use(perspective_mx, mv_matrix)
 		prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
 		rect.draw(prog2.program)
 
-		mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(view_matrix)
+		mv_matrix = yellow_rect.getPositionMatrix().dot(general_mv_matrix)
 		prog3.use(perspective_mx, mv_matrix)
 		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
 		yellow_rect.draw(prog3.program)
 
-		mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(view_matrix)
+		mv_matrix = translate(0, 0, -6).dot(general_mv_matrix)
 
 	rotationSpeed = 0.0
 

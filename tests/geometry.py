@@ -6,6 +6,7 @@ import math
 import pygame
 from PIL import Image
 import textwrap
+from pygame.math import Vector3
 
 # object wrapping GLSL program and shader setup
 #
@@ -168,6 +169,16 @@ class Shape:
         self.att_texcoord = -1
         self.nb_points = 0
         self.np_texcoord = None
+        self.position = Vector3(0, 0, 0)
+
+    def setPosition(self, position):
+        self.position = position
+
+    def getPosition(self):
+        return self.position
+
+    def getPositionMatrix(self):
+        return translate(self.position.x, self.position.y, self.position.z)
 
     def build_buffers(self, vertices, normals, tex_coords, lines=False):
         for val in vertices:
