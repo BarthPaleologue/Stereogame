@@ -31,15 +31,17 @@ if __name__ == "__main__":
 
 	prog1 = Program(vs_dual_tx, fs_dual_tx)
 
+	blackTex = Texture("res/black.jpg")
+
 	textures = [
 		Texture("res/planet/planet_droite.png"),
 		Texture("res/planet/planet_gauche.png"),
-		Texture("res/black.jpg"),
-		Texture("res/black.jpg"),
-		Texture("res/black.jpg"),
-		Texture("res/black.jpg"),
-		Texture("res/black.jpg"),
-		Texture("res/black.jpg"),
+		blackTex,
+		blackTex,
+		blackTex,
+		blackTex,
+		blackTex,
+		blackTex,
 	]
 
 	sTextures = [prog1.getUniformLocation(f"sTextures[{i}]") for i in range(8)]
