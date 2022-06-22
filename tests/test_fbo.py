@@ -27,6 +27,7 @@ if __name__ == "__main__":
 	rect = Rectangle('rect')
 	rect2 = Rectangle('rect2')
 	rect_flip = Rectangle('rect_flip', True)
+	screen = Rectangle('screen', True)
 
 	#create matrices
 	perspective_mx = perspective(45, width/height, 0.1, 100)
@@ -60,68 +61,43 @@ if __name__ == "__main__":
 	fbo_right = FrameBuffer(fbo_width, fbo_height)
 	fbo_left = FrameBuffer(fbo_width, fbo_height)
 
+	def renderView(view_matrix):
+		glViewport(0, 0, fbo_width, fbo_height)
+
+		glClearColor(0.0, 0.0, 1.0, 1.0)
+		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+		glEnable(GL_DEPTH_TEST)
+		glEnable(GL_BLEND)
+
+		### Position des plans dans l'espace ###
+
+		mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(view_matrix)
+		prog1.use(perspective_mx, mv_matrix)
+		prog1.setTexture("sTexture", texture)
+		rect_flip.draw(prog1.program)
+
+		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(view_matrix)
+		prog2.use(perspective_mx, mv_matrix)
+		prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
+		rect.draw(prog2.program)
+
+		mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(view_matrix)
+		prog3.use(perspective_mx, mv_matrix)
+		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
+		rect2.draw(prog3.program)
+
+		mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(view_matrix)
+
 	running = True
 	while running:
 		for i in range(2) :
 			if i == 0 :
 				fbo_right.bind()
-
-				glViewport(0, 0, fbo_width, fbo_height)
-
-
-				glClearColor(0.0, 0.0, 1.0, 1.0);
-				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-				glEnable(GL_DEPTH_TEST)
-				glEnable(GL_BLEND)
-
-				### Position des plans dans l'espace ###
-
-				mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(right_view_matrix)
-				prog1.use(perspective_mx, mv_matrix)
-				prog1.setTexture("sTexture", texture)
-				rect_flip.draw(prog1.program)
-
-				mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(right_view_matrix)
-				prog2.use(perspective_mx, mv_matrix)
-				prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
-				rect.draw(prog2.program)
-
-				mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(right_view_matrix)
-				prog3.use(perspective_mx, mv_matrix)
-				prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
-				rect2.draw(prog3.program)
-
-				mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(right_view_matrix)
+				renderView(right_view_matrix)
 
 			else :
 				fbo_left.bind()
-
-				glViewport(0, 0, fbo_width, fbo_height)
-
-
-				glClearColor(0.0, 0.0, 1.0, 1.0);
-				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-				glEnable(GL_DEPTH_TEST)
-				glEnable(GL_BLEND)
-
-				### Position des plans dans l'espace ###
-
-				mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(left_view_matrix)
-				prog1.use(perspective_mx, mv_matrix)
-				prog1.setTexture("sTexture", texture)
-				rect_flip.draw(prog1.program)
-
-				mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(left_view_matrix)
-				prog2.use(perspective_mx, mv_matrix)
-				prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
-				rect.draw(prog2.program)
-
-				mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(left_view_matrix)
-				prog3.use(perspective_mx, mv_matrix)
-				prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
-				rect2.draw(prog3.program)
-
-				mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(left_view_matrix)
+				renderView(left_view_matrix)
 
 
 
@@ -140,7 +116,7 @@ if __name__ == "__main__":
 
 		prog1.use(ortho_mx, ident_matrix)
 		fbo_left.bind_texture(sTexture, 0)
-		rect_flip.draw(prog1.program)
+		screen.draw(prog1.program)
 
 
 		pygame.display.flip()
