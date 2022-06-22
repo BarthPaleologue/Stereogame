@@ -111,8 +111,6 @@ if __name__ == "__main__":
 		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
 		yellow_rect.draw(prog3.program)
 
-		mv_matrix = translate(0, 0, -6).dot(general_mv_matrix)
-
 	time = 0.0
 	x,z = 0.0, 0.0
 	circleRadius = 2
