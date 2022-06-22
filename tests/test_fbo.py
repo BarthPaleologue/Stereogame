@@ -57,13 +57,14 @@ if __name__ == "__main__":
 	fbo_height = int(height/2)
 	
 	#create fbo object
-	fbo1 = FrameBuffer(fbo_width, fbo_height)
-	fbo2 = FrameBuffer(fbo_width, fbo_height)
+	fbo_right = FrameBuffer(fbo_width, fbo_height)
+	fbo_left = FrameBuffer(fbo_width, fbo_height)
 
 	running = True
 	while running:
 		
-		fbo1.bind()
+		fbo_right.bind()
+
 		glViewport(0, 0, fbo_width, fbo_height)
 
 
@@ -104,7 +105,7 @@ if __name__ == "__main__":
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
 		prog1.use(ortho_mx, ident_matrix)
-		fbo1.bind_texture(sTexture, 0)
+		fbo_right.bind_texture(sTexture, 0)
 		rect_flip.draw(prog1.program)
 
 
