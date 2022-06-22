@@ -71,17 +71,17 @@ if __name__ == "__main__":
 
 		### Position des plans dans l'espace ###
 
-		mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(view_matrix)
+		mv_matrix = translate(0, 0, -8).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(view_matrix)
 		prog1.use(perspective_mx, mv_matrix)
 		prog1.setTexture("sTexture", texture)
 		rect_flip.draw(prog1.program)
 
-		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(view_matrix)
+		mv_matrix = translate(0, 0, -4).dot(model_matrix).dot(view_matrix)
 		prog2.use(perspective_mx, mv_matrix)
 		prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
 		rect.draw(prog2.program)
 
-		mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(view_matrix)
+		mv_matrix = translate(1, 1, -6).dot(model_matrix).dot(view_matrix)
 		prog3.use(perspective_mx, mv_matrix)
 		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
 		rect2.draw(prog3.program)

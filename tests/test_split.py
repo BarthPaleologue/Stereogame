@@ -71,4 +71,3 @@ if __name__ == "__main__":
 					x, y = event.rel
 					if any(event.buttons):
 						model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
-
