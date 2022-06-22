@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
 	eyeTarget = Vector3(0, 0, 0)
 
-	eye_distance = 2
+	eye_distance = 0.3
 
 	right_eye = Vector3(-eye_distance / 2, 0, 10)
 	right_view_matrix = lookat(right_eye, eyeTarget)
@@ -62,6 +62,17 @@ if __name__ == "__main__":
 
 	interlaceProgram = Program(interlaceVertex, interlaceFragment)
 	sTextures = [interlaceProgram.getUniformLocation(f"sTextures[{i}]") for i in range(8)]
+	blackTex = Texture("res/black.jpg")
+	textures = [
+		blackTex,
+		blackTex,
+		blackTex,
+		blackTex,
+		blackTex,
+		blackTex,
+		blackTex,
+		blackTex,
+	]
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
@@ -118,12 +129,18 @@ if __name__ == "__main__":
 		glViewport(0, 0, width, height)
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
-		prog1.use(ortho_mx, ident_matrix)
-		fbo_right.bind_texture(sTexture, 0)
+		### drawing on screen
 
-		prog1.use(ortho_mx, ident_matrix)
-		fbo_left.bind_texture(sTexture, 0)
-		screen.draw(prog1.program)
+		interlaceProgram.use(ortho_mx, ident_matrix)
+		fbo_left.bind_texture(sTextures[0], 0)
+		fbo_right.bind_texture(sTextures[1], 1)
+		for i in range(2, len(textures)):
+			textures[i].activate(sTextures[i], i)
+
+
+		#prog1.use(ortho_mx, ident_matrix)
+		#fbo_left.bind_texture(sTexture, 0)
+		screen.draw(interlaceProgram.program)
 
 
 		pygame.display.flip()
