@@ -2,13 +2,12 @@
 from __future__ import division
 from OpenGL.GL import *
 import numpy as np
-import math
 import pygame
 from pygame.math import Vector3
 
-
 #local imports
 from geometry import *
+from interlacer import Interlacer
 
 with open('./shaders/fbo/fboVertex.glsl', 'r') as file:
     vs_tx = file.read()
@@ -19,49 +18,47 @@ with open('./shaders/fbo/fboFragment.glsl', 'r') as file:
 with open('./shaders/fbo/flatFragment.glsl', 'r') as file:
     fs_flat = file.read()
 
-with open('./shaders/interlaceVertex.glsl', 'r') as file:
-	interlaceVertex = file.read()
-
-with open('./shaders/interlaceFloatFragment.glsl', 'r') as file:
-	interlaceFragment = file.read()
-
 if __name__ == "__main__":
 	width, height = 1920, 1080
 	pygame.init()
 	pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
 	pygame.display.toggle_fullscreen()
+	
+	# shapes
 	rect = Rectangle('rect')
-	rect2 = Rectangle('rect2')
-	rect_flip = Rectangle('rect_flip', True)
+	yellow_rect = Rectangle('yellow_rect')
+	galaxy_rect = Rectangle('galaxy_rect', True)
+	
+	# screen
 	screen = Rectangle('screen', True)
 
 	#create matrices
-	perspective_mx = perspective(45, width/height, 0.1, 100)
+	perspective_mx = perspective(45, width / height, 0.1, 100)
 	model_matrix = np.identity(4, dtype=np.float32)
 	ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
 	ident_matrix = np.identity(4, dtype=np.float32)
 
 	eyeTarget = Vector3(0, 0, 0)
 
-	eye_distance = 0.25
+	eye_distance = 0.15
 
-	right_eye = Vector3(-eye_distance / 2, 0, 15)
+	right_eye = Vector3(-eye_distance / 2, 0, 5)
 	right_view_matrix = lookat(right_eye, eyeTarget)
 
-	left_eye = Vector3(eye_distance / 2, 0, 15)
+	left_eye = Vector3(eye_distance / 2, 0, 5)
 	left_view_matrix = lookat(left_eye, eyeTarget)
 
 
 	prog1 = Program(vs_tx, fs_tx)
-	sTexture = prog1.getUniformLocation("sTexture")
 	texture = Texture("res/Galaxy.jpg")
 
 	prog2 = Program(vs_tx, fs_flat)
 
 	prog3 = Program(vs_tx, fs_flat)
 
-	interlaceProgram = Program(interlaceVertex, interlaceFragment)
-	sTextures = [interlaceProgram.getUniformLocation(f"sTextures[{i}]") for i in range(8)]
+	interlacer = Interlacer()
+
+	#by default we send black textures to the interlacer
 	blackTex = Texture("res/black.jpg")
 	textures = [
 		blackTex,
@@ -81,22 +78,25 @@ if __name__ == "__main__":
 	fbo_right = FrameBuffer(fbo_width, fbo_height)
 	fbo_left = FrameBuffer(fbo_width, fbo_height)
 
+	fbos = [fbo_right, fbo_left]
+	view_matrices = [right_view_matrix, left_view_matrix]
+
 	def renderView(view_matrix):
 		glViewport(0, 0, fbo_width, fbo_height)
 
-		glClearColor(0.0, 0.0, 1.0, 1.0)
+		glClearColor(0.0, 0.0, 0.2, 1.0)
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		glEnable(GL_DEPTH_TEST)
 		glEnable(GL_BLEND)
 
 		### Position des plans dans l'espace ###
 
-		mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(view_matrix)
+		mv_matrix = translate(0, 0, -4).dot(scale(8*width/height, 8, 1)).dot(model_matrix).dot(view_matrix)
 		prog1.use(perspective_mx, mv_matrix)
 		prog1.setTexture("sTexture", texture)
-		rect_flip.draw(prog1.program)
+		galaxy_rect.draw(prog1.program)
 
-		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(view_matrix)
+		mv_matrix = translate(-6, -3, 0).dot(scale(0.5, 0.5, 1)).dot(model_matrix).dot(view_matrix)
 		prog2.use(perspective_mx, mv_matrix)
 		prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
 		rect.draw(prog2.program)
@@ -104,24 +104,19 @@ if __name__ == "__main__":
 		mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(view_matrix)
 		prog3.use(perspective_mx, mv_matrix)
 		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
-		rect2.draw(prog3.program)
+		yellow_rect.draw(prog3.program)
 
 		mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(view_matrix)
 
-	rotationSpeed = 0.05
+	rotationSpeed = 0.0
 
 	running = True
 	while running:
 		model_matrix = model_matrix.dot(rotate(rotationSpeed, 0, 1, 0))
 
-		for i in range(2) :
-			if i == 0 :
-				fbo_right.bind()
-				renderView(right_view_matrix)
-
-			else :
-				fbo_left.bind()
-				renderView(left_view_matrix)
+		for i in range(2):
+			fbos[i].bind()
+			renderView(view_matrices[i])
 
 		glUseProgram(0)
 		#render to main video output
@@ -134,23 +129,21 @@ if __name__ == "__main__":
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
 		### drawing on screen
-
-		interlaceProgram.use(ortho_mx, ident_matrix)
-		fbo_left.bind_texture(sTextures[0], 0)
-		fbo_right.bind_texture(sTextures[1], 1)
+		interlacer.use(ortho_mx, ident_matrix)
+		interlacer.setTextureFromFBO(fbo_left, 0)
+		interlacer.setTextureFromFBO(fbo_right, 1)
 		for i in range(2, len(textures)):
-			textures[i].activate(sTextures[i], i)
+			textures[i].activate(interlacer.sTextures[i], i)
 
-		screen.draw(interlaceProgram.program)
+		screen.draw(interlacer.program)
 
 		pygame.display.flip()
 
 		events = pygame.event.get()
-		if len(events):
-			for event in events:
-				if event.type == pygame.QUIT:
-					running = False
-				if event.type == pygame.MOUSEMOTION:
-					x, y = event.rel
-					if any(event.buttons):
-						model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
+		for event in events:
+			if event.type == pygame.QUIT:
+				running = False
+			if event.type == pygame.MOUSEMOTION:
+				x, y = event.rel
+				if any(event.buttons):
+					model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
