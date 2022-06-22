@@ -33,9 +33,14 @@ if __name__ == "__main__":
 	ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
 	ident_matrix = np.identity(4, dtype=np.float32)
 
-	eye = Vector3(0, 0, 10)
 	eyeTarget = Vector3(0, 0, 0)
-	view_matrix = lookat(eye, eyeTarget)
+
+	right_eye = Vector3(-1, 0, 10)
+	right_view_matrix = lookat(right_eye, eyeTarget)
+
+	left_eye = Vector3(1, 0, 10)
+	left_view_matrix = lookat(left_eye, eyeTarget)
+
 
 	prog1 = Program(vs_tx, fs_tx)
 	sTexture = prog1.getUniformLocation("sTexture")
@@ -47,13 +52,13 @@ if __name__ == "__main__":
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
+	
 	#create fbo object
-	fbo = FrameBuffer(fbo_width, fbo_height)
+	fbo1 = FrameBuffer(fbo_width, fbo_height)
 
 	running = True
 	while running:
-		eyemx = view_matrix
-		fbo.bind()
+		fbo1.bind()
 		glViewport(0, 0, fbo_width, fbo_height)
 
 
@@ -64,23 +69,22 @@ if __name__ == "__main__":
 
 		### Position des plans dans l'espace ###
 
-		mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(eyemx)
+		mv_matrix = translate(0, 0, -4).dot(scale(2*width/height, 2, 1)).dot(model_matrix).dot(right_view_matrix)
 		prog1.use(perspective_mx, mv_matrix)
 		prog1.setTexture("sTexture", texture)
-		#texture.activate(sTexture)
 		rect_flip.draw(prog1.program)
 
-		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(eyemx)
+		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(right_view_matrix)
 		prog2.use(perspective_mx, mv_matrix)
 		prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
 		rect.draw(prog2.program)
 
-		mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(eyemx)
+		mv_matrix = translate(1, 1, -3).dot(model_matrix).dot(right_view_matrix)
 		prog3.use(perspective_mx, mv_matrix)
 		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
 		rect2.draw(prog3.program)
 
-		mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(eyemx)
+		mv_matrix = translate(0, 0, -6).dot(model_matrix).dot(right_view_matrix)
 
 
 
@@ -93,8 +97,9 @@ if __name__ == "__main__":
 		glClearColor(0.0, 0.0, 0.0, 1.0)
 		glViewport(0, 0, width, height)
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
 		prog1.use(ortho_mx, ident_matrix)
-		fbo.bind_texture(sTexture, 0)
+		fbo1.bind_texture(sTexture, 0)
 		rect_flip.draw(prog1.program)
 
 
