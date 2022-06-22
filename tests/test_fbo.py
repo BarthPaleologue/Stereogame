@@ -26,13 +26,15 @@ if __name__ == "__main__":
 	
 	# shapes
 	rect = Rectangle('rect')
-	rect.setPosition(Vector3(-6, -3, 0))
+	rect.setPosition(-6, -3, 0)
+	rect.setScaling(0.5, 0.5, 1)
 
 	yellow_rect = Rectangle('yellow_rect')
-	yellow_rect.setPosition(Vector3(1, 1, -3))
+	yellow_rect.setPosition(1, 1, -3)
 
 	galaxy_rect = Rectangle('galaxy_rect', True)
-	galaxy_rect.setPosition(Vector3(0, 0, -4))
+	galaxy_rect.setPosition(0, 0, -6)
+	galaxy_rect.setScaling(8 * width / height, 8, 1)
 	
 	# screen
 	screen = Rectangle('screen', True)
@@ -98,17 +100,17 @@ if __name__ == "__main__":
 
 		general_mv_matrix = model_matrix.dot(view_matrix)
 
-		mv_matrix = galaxy_rect.getPositionMatrix().dot(scale(8*width/height, 8, 1)).dot(general_mv_matrix)
+		mv_matrix = galaxy_rect.getMatrix().dot(general_mv_matrix)
 		prog1.use(perspective_mx, mv_matrix)
 		prog1.setTexture("sTexture", texture)
 		galaxy_rect.draw(prog1.program)
 
-		mv_matrix = rect.getPositionMatrix().dot(scale(0.5, 0.5, 1)).dot(general_mv_matrix)
+		mv_matrix = rect.getMatrix().dot(general_mv_matrix)
 		prog2.use(perspective_mx, mv_matrix)
 		prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
 		rect.draw(prog2.program)
 
-		mv_matrix = yellow_rect.getPositionMatrix().dot(general_mv_matrix)
+		mv_matrix = yellow_rect.getMatrix().dot(general_mv_matrix)
 		prog3.use(perspective_mx, mv_matrix)
 		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
 		yellow_rect.draw(prog3.program)
@@ -117,9 +119,20 @@ if __name__ == "__main__":
 
 	rotationSpeed = 0.0
 
+	time = 0.0
+	x,z = 0.0, 0.0
+	circleRadius = 2
+
 	running = True
 	while running:
+		time += 0.01
+
 		model_matrix = model_matrix.dot(rotate(rotationSpeed, 0, 1, 0))
+
+		x = math.cos(time) * circleRadius
+		z = math.sin(time) * circleRadius
+
+		yellow_rect.setPosition(x, 0, z)
 
 		for i in range(2):
 			fbos[i].bind()

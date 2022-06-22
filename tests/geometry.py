@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
+from matplotlib.pyplot import sca
 import numpy as np
 from OpenGL.GL import *
 import math
 import pygame
 from PIL import Image
 import textwrap
-from pygame.math import Vector3
 
 # object wrapping GLSL program and shader setup
 #
@@ -169,16 +169,33 @@ class Shape:
         self.att_texcoord = -1
         self.nb_points = 0
         self.np_texcoord = None
-        self.position = Vector3(0, 0, 0)
+        self.position = np.array([0.0, 0.0, 0.0])
+        self.scaling = np.array([1.0, 1.0, 1.0])
 
-    def setPosition(self, position):
-        self.position = position
+    def setPosition(self, x, y, z):
+        self.position[0] = x
+        self.position[1] = y
+        self.position[2] = z
 
     def getPosition(self):
         return self.position
 
     def getPositionMatrix(self):
-        return translate(self.position.x, self.position.y, self.position.z)
+        return translate(self.position[0], self.position[1], self.position[2])
+
+    def setScaling(self, x, y, z):
+        self.scaling[0] = x
+        self.scaling[1] = y
+        self.scaling[2] = z
+
+    def getScaling(self):
+        return self.scaling
+
+    def getScalingMatrix(self):
+        return scale(self.scaling[0], self.scaling[1], self.scaling[2])
+
+    def getMatrix(self):
+        return self.getPositionMatrix().dot(self.getScalingMatrix())
 
     def build_buffers(self, vertices, normals, tex_coords, lines=False):
         for val in vertices:
