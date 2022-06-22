@@ -261,13 +261,13 @@ class Shape:
 
         if self.texcoord_vbo:
             self.att_texcoord = glGetAttribLocation(program, "aTexCoord")
-            print('att location ' + str(self.att_texcoord) )
+            #print('att location ' + str(self.att_texcoord) )
             if self.att_texcoord>=0:
                 glBindBuffer(GL_ARRAY_BUFFER, self.texcoord_vbo)
                 glEnableVertexAttribArray(self.att_texcoord)
                 glVertexAttribPointer(self.att_texcoord, 2, GL_FLOAT, False, 0, ctypes.c_void_p(0))
 
-        print('Buffers ready -  vertex_att ' + str(self.att_vertex) + ' normal_att ' + str(self.att_normal) + ' texcoord_att ' + str(self.att_texcoord))
+        #print('Buffers ready -  vertex_att ' + str(self.att_vertex) + ' normal_att ' + str(self.att_normal) + ' texcoord_att ' + str(self.att_texcoord))
 
 
         glDrawArrays(self.type, 0, self.nb_points)
