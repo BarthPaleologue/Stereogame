@@ -65,18 +65,7 @@ if __name__ == "__main__":
 
 	interlacer = Interlacer()
 
-	#by default we send black textures to the interlacer
 	blackTex = Texture("res/black.jpg")
-	textures = [
-		blackTex,
-		blackTex,
-		blackTex,
-		blackTex,
-		blackTex,
-		blackTex,
-		blackTex,
-		blackTex,
-	]
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
@@ -88,7 +77,7 @@ if __name__ == "__main__":
 	fbos = [fbo_right, fbo_left]
 	view_matrices = [right_view_matrix, left_view_matrix]
 
-	def renderView(view_matrix):
+	def renderView(view_matrix, index):
 		glViewport(0, 0, fbo_width, fbo_height)
 
 		glClearColor(0.0, 0.0, 0.2, 1.0)
@@ -107,7 +96,14 @@ if __name__ == "__main__":
 
 		mv_matrix = rect.getMatrix().dot(general_mv_matrix)
 		prog2.use(perspective_mx, mv_matrix)
-		prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
+		
+		if index == 0 or index == 1:
+			prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
+		elif index == 4 or index == 5:
+			prog2.setVector4("color", 0.0, 1.0, 0.0, 1.0)
+		else:
+			prog2.setVector4("color", 0.0, 0.0, 1.0, 1.0)
+		
 		rect.draw(prog2.program)
 
 		mv_matrix = yellow_rect.getMatrix().dot(general_mv_matrix)
@@ -117,8 +113,6 @@ if __name__ == "__main__":
 
 		mv_matrix = translate(0, 0, -6).dot(general_mv_matrix)
 
-	rotationSpeed = 0.0
-
 	time = 0.0
 	x,z = 0.0, 0.0
 	circleRadius = 2
@@ -127,16 +121,15 @@ if __name__ == "__main__":
 	while running:
 		time += 0.01
 
-		model_matrix = model_matrix.dot(rotate(rotationSpeed, 0, 1, 0))
-
-		x = math.cos(time) * circleRadius
-		z = math.sin(time) * circleRadius
+		rotationSpeed = 1
+		x = math.cos(time * rotationSpeed) * circleRadius
+		z = math.sin(time * rotationSpeed) * circleRadius
 
 		yellow_rect.setPosition(x, 0, z)
 
 		for i in range(2):
 			fbos[i].bind()
-			renderView(view_matrices[i])
+			renderView(view_matrices[i], i)
 
 		glUseProgram(0)
 		#render to main video output
@@ -150,14 +143,25 @@ if __name__ == "__main__":
 
 		### drawing on screen
 		interlacer.use(ortho_mx, ident_matrix)
-		interlacer.setTextureFromFBO(fbo_left, 0)
-		interlacer.setTextureFromFBO(fbo_right, 1)
-		for i in range(2, len(textures)):
-			textures[i].activate(interlacer.sTextures[i], i)
+
+		interlacer.setTextureFromFBO(fbo_right, 0)
+		interlacer.setTextureFromFBO(fbo_left, 1)
+		interlacer.setTextureFromImage(blackTex, 2)
+		interlacer.setTextureFromImage(blackTex, 3)
+		interlacer.setTextureFromImage(blackTex, 4)
+		interlacer.setTextureFromImage(blackTex, 5)
+		interlacer.setTextureFromImage(blackTex, 6)
+		interlacer.setTextureFromImage(blackTex, 7)
 
 		screen.draw(interlacer.program)
 
 		pygame.display.flip()
+
+		keys = pygame.key.get_pressed()
+		if keys[pygame.K_z]:
+			circleRadius += 0.05
+		if keys[pygame.K_s]:
+			circleRadius -= 0.05
 
 		events = pygame.event.get()
 		for event in events:
