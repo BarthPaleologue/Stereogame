@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
 		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(eyemx)
 		prog2.use(perspective_mx, mv_matrix)
-		glUniform4f(uCol, 1, 0, 0, 1);
+		glUniform4f(uCol, 1, 0, 0, 1)
 		rect.draw(prog2.program)
 
 		pygame.display.flip()

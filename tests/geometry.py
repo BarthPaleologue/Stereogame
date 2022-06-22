@@ -69,7 +69,7 @@ class Program:
 
 # Objct wrapping texture loader from file to GPU
 # to build texture:
-# tx = Tecture(image_file)
+# tx = Texture(image_file)
 #
 # to bind texture to uniform
 # tx.activate(uniform_tx)
@@ -91,7 +91,7 @@ class Texture:
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data)
 
     def activate(self, tx_uni_loc, tx_id = 0):
-        glActiveTexture(GL_TEXTURE0 + tx_id);
+        glActiveTexture(GL_TEXTURE0 + tx_id)
         glBindTexture(GL_TEXTURE_2D, self.texture)
         glUniform1i(tx_uni_loc, tx_id)
 
@@ -141,7 +141,7 @@ class FrameBuffer:
         return self.fbo_tx
 
     def bind_texture(self, tx_uni_loc, tx_id = 0):
-        glActiveTexture(GL_TEXTURE0 + tx_id);
+        glActiveTexture(GL_TEXTURE0 + tx_id)
         glBindTexture(GL_TEXTURE_2D, self.fbo_tx)
         glUniform1i(tx_uni_loc, tx_id)
 
@@ -165,7 +165,7 @@ class Shape:
             if len(val) != 3:
                 print('Invalid number of points in vertice ' + str(val))
                 exit()
-        self.nb_points = int(len(vertices));
+        self.nb_points = int(len(vertices))
         vertices = np.array(vertices, dtype=np.float32)
         if lines:
             self.type = GL_LINE_STRIP

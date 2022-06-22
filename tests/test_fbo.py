@@ -90,7 +90,7 @@ if __name__ == "__main__":
 
 		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(eyemx)
 		prog2.use(perspective_mx, mv_matrix)
-		glUniform4f(uCol, 1, 0, 0, 1);
+		glUniform4f(uCol, 1, 0, 0, 1)
 		rect.draw(prog2.program)
 
 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
 		glViewport(0, 0, width, height)
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		prog1.use(ortho_mx, ident_matrix)
-		fbo.bind_texture(sTexture, 0);
+		fbo.bind_texture(sTexture, 0)
 		rect_flip.draw(prog1.program)
 
 

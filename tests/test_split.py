@@ -9,10 +9,10 @@ import pygame
 #local imports
 from geometry import *
 
-with open('./shaders/interlaceVertex.glsl', 'r') as file:
+with open('shaders/interlaceVertex.glsl', 'r') as file:
     vs_dual_tx = file.read()
 
-with open('./shaders/interlaceFragment.glsl', 'r') as file:
+with open('shaders/interlaceFragment.glsl', 'r') as file:
     fs_dual_tx = file.read()
 
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 	texture2 = Texture("res/tennis.png")
 
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 	glViewport(0, 0, width, height)
 
@@ -48,8 +48,8 @@ if __name__ == "__main__":
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 		prog1.use(ortho_mx, ident_matrix)
 
-		texture2.activate(sTexture2, 1);
-		texture1.activate(sTexture1, 0);
+		texture2.activate(sTexture2, 1)
+		texture1.activate(sTexture1, 0)
 
 		rect_flip.draw(prog1.program)
 
