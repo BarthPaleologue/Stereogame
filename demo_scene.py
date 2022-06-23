@@ -70,17 +70,6 @@ if __name__ == "__main__":
 
 	fbos = [fbo_right, fbo_left]
 	view_matrices = [right_view_matrix, left_view_matrix]
-	
-	def up_eye_distance(eye_distance) :
-		eye_distance += 0.001
-		print('UP')
-		print(eye_distance)
-		return eye_distance
-	def down_eye_distance(eye_distance) :
-		eye_distance -= 0.001
-		print('DOWN')
-		print(eye_distance)
-		return eye_distance
 
 	def renderView(view_matrix, index):
 		glViewport(0, 0, fbo_width, fbo_height)
@@ -90,30 +79,19 @@ if __name__ == "__main__":
 		glEnable(GL_DEPTH_TEST)
 		glEnable(GL_BLEND)
 
-		### Position des plans dans l'espace ###
+		### Rendu des objets de la scène ###
 
-		general_mv_matrix = model_matrix.dot(view_matrix)
+		galaxy_rect.render(perspective_mx, model_matrix, view_matrix)
 
-		mv_matrix = galaxy_rect.getMatrix().dot(general_mv_matrix)
-		galaxy_rect.material.use(perspective_mx, mv_matrix)
-		galaxy_rect.material.update()
-		galaxy_rect.draw(galaxy_rect.material.program)
-
-		mv_matrix = rect.getMatrix().dot(general_mv_matrix)
-		rect.material.use(perspective_mx, mv_matrix)
 		if index == 0 or index == 1:
 			rect.material.color = (1.0, 0.0, 0.0)
 		elif index == 4 or index == 5:
 			rect.material.color = (0.0, 1.0, 0.0)
 		else:
 			rect.material.color = (0.0, 0.0, 1.0)
-		rect.material.update()
-		rect.draw(rect.material.program)
+		rect.render(perspective_mx, model_matrix, view_matrix)
 
-		mv_matrix = yellow_cube.getMatrix().dot(general_mv_matrix)
-		yellow_cube.material.use(perspective_mx, mv_matrix)
-		yellow_cube.material.update()
-		yellow_cube.draw(yellow_cube.material.program)
+		yellow_cube.render(perspective_mx, model_matrix, view_matrix)
 
 	time = 0.0
 	x,z = 0.0, 0.0
@@ -168,13 +146,15 @@ if __name__ == "__main__":
 			circleRadius += 0.05
 		if keys[pygame.K_s]:
 			circleRadius -= 0.05
+			print("Eye distance : ", eye_distance)
 		if keys[pygame.K_UP]:
-			eye_distance = up_eye_distance(eye_distance)
+			eye_distance += 0.001
+			print("Eye distance : ", eye_distance)
 		if keys[pygame.K_DOWN] :
-			eye_distance = down_eye_distance(eye_distance)
+			eye_distance -= 0.001
+
 		view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
 		
-
 		events = pygame.event.get()
 		for event in events:
 			if event.type == pygame.QUIT:

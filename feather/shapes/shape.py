@@ -68,6 +68,14 @@ class Shape:
     def setMaterial(self, material):
         self.material = material
 
+    def render(self, perspective_mx, model_matrix, view_matrix):
+        mv_matrix = self.getMatrix().dot(model_matrix).dot(view_matrix)
+        if(self.material is None):
+            print(f"ERROR : {name} shape has no material (consider using setMaterial)")
+        self.material.use(perspective_mx, mv_matrix)
+        self.material.update()
+        self.draw(self.material.program)
+
     def build_buffers(self, vertices, normals, tex_coords, lines=False):
         for val in vertices:
             if len(val) != 3:
