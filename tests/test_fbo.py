@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
 	eyeTarget = Vector3(0, 0, 0)
 
-	eye_distance = 0.15
+	eye_distance = 0.008
 
 	right_eye = Vector3(-eye_distance / 2, 0, 5)
 	right_view_matrix = lookat(right_eye, eyeTarget)
@@ -76,6 +76,17 @@ if __name__ == "__main__":
 
 	fbos = [fbo_right, fbo_left]
 	view_matrices = [right_view_matrix, left_view_matrix]
+	
+	def up_eye_distance(eye_distance) :
+		eye_distance += 0.001
+		print('UP')
+		print(eye_distance)
+		return eye_distance
+	def down_eye_distance(eye_distance) :
+		eye_distance -= 0.001
+		print('DOWN')
+		print(eye_distance)
+		return eye_distance
 
 	def renderView(view_matrix, index):
 		glViewport(0, 0, fbo_width, fbo_height)
@@ -119,6 +130,14 @@ if __name__ == "__main__":
 	while running:
 		time += 0.01
 
+		change_eye_distance = pygame.key.get_pressed()
+		if change_eye_distance[pygame.K_UP]:
+			eye_distance = up_eye_distance(eye_distance)
+		elif change_eye_distance[pygame.K_DOWN] :
+			eye_distance = down_eye_distance(eye_distance)
+		view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
+		
+		
 		rotationSpeed = 1
 		x = math.cos(time * rotationSpeed) * circleRadius
 		z = math.sin(time * rotationSpeed) * circleRadius
@@ -142,8 +161,8 @@ if __name__ == "__main__":
 		### drawing on screen
 		interlacer.use(ortho_mx, ident_matrix)
 
-		interlacer.setTextureFromFBO(fbo_right, 0)
-		interlacer.setTextureFromFBO(fbo_left, 1)
+		interlacer.setTextureFromFBO(fbo_right, 1)
+		interlacer.setTextureFromFBO(fbo_left, 0)
 		interlacer.setTextureFromImage(blackTex, 2)
 		interlacer.setTextureFromImage(blackTex, 3)
 		interlacer.setTextureFromImage(blackTex, 4)
@@ -160,6 +179,7 @@ if __name__ == "__main__":
 			circleRadius += 0.05
 		if keys[pygame.K_s]:
 			circleRadius -= 0.05
+		
 
 		events = pygame.event.get()
 		for event in events:
