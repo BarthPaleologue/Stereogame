@@ -170,6 +170,7 @@ class Shape:
         self.np_texcoord = None
         self.position = np.array([0.0, 0.0, 0.0])
         self.scaling = np.array([1.0, 1.0, 1.0])
+        self.rotation = np.array([0.0, 0.0, 0.0])
 
     def setPosition(self, x, y, z):
         self.position[0] = x
@@ -193,8 +194,23 @@ class Shape:
     def getScalingMatrix(self):
         return scale(self.scaling[0], self.scaling[1], self.scaling[2])
 
+    def setRotationX(self, angle):
+        self.rotation[0] = angle
+    
+    def setRotationY(self, angle):
+        self.rotation[1] = angle
+
+    def setRotationZ(self, angle):
+        self.rotation[2] = angle
+
+    def getRotationMatrix(self):
+        #TODO: use a cache system to reduce computations
+        return rotate(self.rotation[0], 1.0, 0.0, 0.0).dot(
+                rotate(self.rotation[1], 0.0, 1.0, 0.0)).dot(
+                rotate(self.rotation[2], 0.0, 0.0, 1.0))
+
     def getMatrix(self):
-        return self.getPositionMatrix().dot(self.getScalingMatrix())
+        return self.getRotationMatrix().dot(self.getPositionMatrix()).dot(self.getScalingMatrix())
 
     def build_buffers(self, vertices, normals, tex_coords, lines=False):
         for val in vertices:
@@ -421,6 +437,85 @@ class Rectangle(Shape):
             (0.0, ty_min),
             (1.0, ty_max),
             (0.0, ty_max)]
+        )
+
+class Cube(Shape):
+    def __init__(self, name, flip = False):
+        Shape.__init__(self, name)
+        ty_min = 0.0
+        ty_max = 1.0
+        if flip == True:
+            ty_min = 1.0
+            ty_max = 0.0
+
+        self.build_buffers(
+            [
+            ### back face
+            ( -1.000000, -1.000000, -1.000000),
+            ( 1.000000, -1.000000, -1.000000),
+            ( 1.000000, 1.000000, -1.000000),
+            ( -1.000000, -1.000000, -1.000000),
+            ( 1.000000, 1.000000, -1.000000),
+            ( -1.000000, 1.000000, -1.000000),
+
+            ### front face
+            ( -1.000000, -1.000000, 1.000000),
+            ( 1.000000, -1.000000, 1.000000),
+            ( 1.000000, 1.000000, 1.000000),
+            ( -1.000000, -1.000000, 1.000000),
+            ( 1.000000, 1.000000, 1.000000),
+            ( -1.000000, 1.000000, 1.000000),
+
+            ### top face
+            (-1.0, 1.0, -1.0),
+            (1.0, 1.0, -1.0),
+            (-1.0, 1.0, 1.0),
+            (1.0, 1.0, 1.0),
+            (1.0, 1.0, -1.0),
+            (-1.0, 1.0, -1.0),
+
+            ### bottom face
+            (-1.0, -1.0, -1.0),
+            (1.0, -1.0, -1.0),
+            (-1.0, -1.0, 1.0),
+            (1.0, -1.0, 1.0),
+            (1.0, -1.0, -1.0),
+            (-1.0, -1.0, -1.0),
+            ],
+            None,
+            [
+            ### back face
+            (0.0, ty_min),
+            (1.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_max),
+            
+            ### front face
+            (0.0, ty_min),
+            (1.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_max),
+
+            ### top face
+            (0.0, ty_min),
+            (1.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_max),
+
+            ### bottom face
+            (0.0, ty_min),
+            (1.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_max),
+            ]
         )
 
 

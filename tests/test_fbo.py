@@ -29,8 +29,9 @@ if __name__ == "__main__":
 	rect.setPosition(-6, -3, 0)
 	rect.setScaling(0.5, 0.5, 1)
 
-	yellow_rect = Rectangle('yellow_rect')
+	yellow_rect = Cube('yellow_rect')
 	yellow_rect.setPosition(1, 1, -3)
+	yellow_rect.setRotationY(45)
 
 	galaxy_rect = Rectangle('galaxy_rect', True)
 	galaxy_rect.setPosition(0, 0, -6)
@@ -118,6 +119,8 @@ if __name__ == "__main__":
 	running = True
 	while running:
 		time += 0.01
+
+		yellow_rect.setRotationY(45.0 + time * 50.0)
 
 		rotationSpeed = 1
 		x = math.cos(time * rotationSpeed) * circleRadius
