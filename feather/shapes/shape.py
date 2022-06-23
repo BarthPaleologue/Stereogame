@@ -18,6 +18,9 @@ class Shape:
         self.att_texcoord = -1
         self.nb_points = 0
         self.np_texcoord = None
+
+        self.material = None
+
         self.position = np.array([0.0, 0.0, 0.0])
         self.scaling = np.array([1.0, 1.0, 1.0])
         self.rotation = np.array([0.0, 0.0, 0.0])
@@ -61,6 +64,9 @@ class Shape:
 
     def getMatrix(self):
         return self.getRotationMatrix().dot(self.getPositionMatrix()).dot(self.getScalingMatrix())
+
+    def setMaterial(self, material):
+        self.material = material
 
     def build_buffers(self, vertices, normals, tex_coords, lines=False):
         for val in vertices:

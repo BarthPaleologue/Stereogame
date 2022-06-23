@@ -6,6 +6,7 @@ from pygame.math import Vector3
 #local imports
 from feather.shapes import Rectangle, Cube
 from feather import Program, Texture, FrameBuffer
+from feather.material import ColorMaterial
 from feather.camera import *
 from interlacer import Interlacer
 
@@ -29,9 +30,15 @@ if __name__ == "__main__":
 	rect.setPosition(-6, -3, 0)
 	rect.setScaling(0.5, 0.5, 1)
 
+	rectMat = ColorMaterial(1.0, 0.0, 0.0)
+	rect.setMaterial(rectMat)
+
 	yellow_cube = Cube('yellow_cube')
 	yellow_cube.setScaling(0.5, 0.5, 0.5)
 	yellow_cube.setRotationY(45)
+	
+	cubeMat = ColorMaterial(1.0, 1.0, 0.0)
+	yellow_cube.setMaterial(cubeMat)
 
 	galaxy_rect = Rectangle('galaxy_rect', True)
 	galaxy_rect.setPosition(0, 0, -6)
@@ -107,21 +114,20 @@ if __name__ == "__main__":
 		galaxy_rect.draw(prog1.program)
 
 		mv_matrix = rect.getMatrix().dot(general_mv_matrix)
-		prog2.use(perspective_mx, mv_matrix)
-		
+		rect.material.use(perspective_mx, mv_matrix)
 		if index == 0 or index == 1:
-			prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
+			rect.material.color = (1.0, 0.0, 0.0)
 		elif index == 4 or index == 5:
-			prog2.setVector4("color", 0.0, 1.0, 0.0, 1.0)
+			rect.material.color = (0.0, 1.0, 0.0)
 		else:
-			prog2.setVector4("color", 0.0, 0.0, 1.0, 1.0)
-		
-		rect.draw(prog2.program)
+			rect.material.color = (0.0, 0.0, 1.0)
+		rect.material.update()
+		rect.draw(rect.material.program)
 
 		mv_matrix = yellow_cube.getMatrix().dot(general_mv_matrix)
-		prog3.use(perspective_mx, mv_matrix)
-		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
-		yellow_cube.draw(prog3.program)
+		yellow_cube.material.use(perspective_mx, mv_matrix)
+		yellow_cube.material.update()
+		yellow_cube.draw(yellow_cube.material.program)
 
 	time = 0.0
 	x,z = 0.0, 0.0
