@@ -31,8 +31,12 @@ if __name__ == "__main__":
 	
 	# shapes
 	rect = Rectangle('rect')
+	rect2 = Rectangle('rect2')
+	z_position_rect = 0
 	rect.setPosition(-6, -3, 0)
+	rect2.setPosition(6, 3, z_position_rect)
 	rect.setScaling(0.5, 0.5, 1)
+	rect2.setScaling(0.5, 0.5, 1)
 
 	yellow_cube = Cube('yellow_cube')
 	yellow_cube.setScaling(0.5, 0.5, 0.5)
@@ -113,6 +117,9 @@ if __name__ == "__main__":
 
 		mv_matrix = rect.getMatrix().dot(general_mv_matrix)
 		prog2.use(perspective_mx, mv_matrix)
+
+		mv_matrix2 = rect2.getMatrix().dot(general_mv_matrix)
+		prog2.use(perspective_mx, mv_matrix)
 		
 		if index == 0 or index == 1:
 			prog2.setVector4("color", 1.0, 0.0, 0.0, 1.0)
@@ -122,6 +129,7 @@ if __name__ == "__main__":
 			prog2.setVector4("color", 0.0, 0.0, 1.0, 1.0)
 		
 		rect.draw(prog2.program)
+		rect2.draw(prog2.program)
 
 		mv_matrix = yellow_cube.getMatrix().dot(general_mv_matrix)
 		prog3.use(perspective_mx, mv_matrix)
@@ -186,7 +194,12 @@ if __name__ == "__main__":
 		if keys[pygame.K_DOWN] :
 			eye_distance = down_eye_distance(eye_distance)
 		view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
-		
+		if keys[pygame.K_RIGHT] :
+			z_position_rect += 0.01
+			rect2.setPosition(6, 3, z_position_rect)
+		if keys[pygame.K_LEFT] :
+			z_position_rect -= 0.01
+			rect2.setPosition(6, 3, z_position_rect)
 
 		events = pygame.event.get()
 		for event in events:
