@@ -29,9 +29,9 @@ if __name__ == "__main__":
 	rect.setPosition(-6, -3, 0)
 	rect.setScaling(0.5, 0.5, 1)
 
-	yellow_rect = Cube('yellow_rect')
-	yellow_rect.setPosition(1, 1, -3)
-	yellow_rect.setRotationY(45)
+	yellow_cube = Cube('yellow_cube')
+	yellow_cube.setScaling(0.5, 0.5, 0.5)
+	yellow_cube.setRotationY(45)
 
 	galaxy_rect = Rectangle('galaxy_rect', True)
 	galaxy_rect.setPosition(0, 0, -6)
@@ -118,27 +118,28 @@ if __name__ == "__main__":
 		
 		rect.draw(prog2.program)
 
-		mv_matrix = yellow_rect.getMatrix().dot(general_mv_matrix)
+		mv_matrix = yellow_cube.getMatrix().dot(general_mv_matrix)
 		prog3.use(perspective_mx, mv_matrix)
 		prog3.setVector4("color", 1.0, 1.0, 0.0, 1.0)
-		yellow_rect.draw(prog3.program)
+		yellow_cube.draw(prog3.program)
 
 	time = 0.0
 	x,z = 0.0, 0.0
-	circleRadius = 2
+	circleRadius = 1.7
 
 	running = True
 	while running:
 		time += 0.01
 		
 		
-		yellow_rect.setRotationY(45.0 + time * 50.0)
+		yellow_cube.setRotationY(45.0 + time * 50.0)
+		yellow_cube.setRotationX(60.0 * time)
 
 		rotationSpeed = 1
 		x = math.cos(time * rotationSpeed) * circleRadius
 		z = math.sin(time * rotationSpeed) * circleRadius
 
-		yellow_rect.setPosition(x, 0, z)
+		yellow_cube.setPosition(x, 0, z)
 
 		for i in range(2):
 			fbos[i].bind()
