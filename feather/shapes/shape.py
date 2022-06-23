@@ -1,8 +1,5 @@
-import os
 import numpy as np
 from OpenGL.GL import *
-import math
-import pygame
 from feather.algebra import *
 
 # Object wrapper for shapes in GLSL, builds GPU buffers holding vertex info`
