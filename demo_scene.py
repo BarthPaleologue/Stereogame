@@ -10,15 +10,6 @@ from feather.material import ColorMaterial, TextureMaterial
 from feather.camera import *
 from interlacer import Interlacer
 
-with open('./shaders/fbo/fboVertex.glsl', 'r') as file:
-    vs_tx = file.read()
-
-with open('./shaders/fbo/fboFragment.glsl', 'r') as file:
-    fs_tx = file.read()
-
-with open('./shaders/fbo/flatFragment.glsl', 'r') as file:
-    fs_flat = file.read()
-
 if __name__ == "__main__":
 	width, height = 1920, 1080
 	pygame.init()
