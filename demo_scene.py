@@ -26,6 +26,14 @@ if __name__ == "__main__":
 	rectMat = ColorMaterial(1.0, 0.0, 0.0)
 	rect.setMaterial(rectMat)
 
+	rect2 = Rectangle('rect2', False, scene)
+	z_position_rect = 0
+	rect2.setPosition(6, 3, z_position_rect)
+	rect2.setScaling(0.5, 0.5, 1)
+
+	rect2Mat = ColorMaterial(0.0, 1.0, 0.0)
+	rect2.setMaterial(rect2Mat)
+
 	yellow_cube = Cube('yellow_cube', True, scene)
 	yellow_cube.setScaling(0.5, 0.5, 0.5)
 	yellow_cube.setRotationY(45)
@@ -80,7 +88,6 @@ if __name__ == "__main__":
 	running = True
 	while running:
 		time += 0.01
-		
 		
 		yellow_cube.setRotationY(45.0 + time * 50.0)
 		yellow_cube.setRotationX(60.0 * time)
@@ -139,6 +146,12 @@ if __name__ == "__main__":
 			print("Eye distance : ", eye_distance)
 		if keys[pygame.K_DOWN] :
 			eye_distance -= 0.001
+		if keys[pygame.K_RIGHT] :
+			z_position_rect += 0.01
+			rect2.setPosition(6, 3, z_position_rect)
+		if keys[pygame.K_LEFT] :
+			z_position_rect -= 0.01
+			rect2.setPosition(6, 3, z_position_rect)
 
 		view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
 		
