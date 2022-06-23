@@ -10,6 +10,23 @@ from feather.material import ColorMaterial, TextureMaterial
 from feather.camera import *
 from interlacer import Interlacer
 
+
+def renderView(perspective_mx, model_matrix, view_matrix, index):
+	glViewport(0, 0, fbo_width, fbo_height)
+
+	glClearColor(0.0, 0.0, 0.2, 1.0)
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+	glEnable(GL_DEPTH_TEST)
+	glEnable(GL_BLEND)
+
+	### Rendu des objets de la scène ###
+
+	galaxy_rect.render(perspective_mx, model_matrix, view_matrix)
+	rect.render(perspective_mx, model_matrix, view_matrix)
+	yellow_cube.render(perspective_mx, model_matrix, view_matrix)
+
+
+
 if __name__ == "__main__":
 	width, height = 1920, 1080
 	pygame.init()
@@ -71,28 +88,6 @@ if __name__ == "__main__":
 	fbos = [fbo_right, fbo_left]
 	view_matrices = [right_view_matrix, left_view_matrix]
 
-	def renderView(view_matrix, index):
-		glViewport(0, 0, fbo_width, fbo_height)
-
-		glClearColor(0.0, 0.0, 0.2, 1.0)
-		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-		glEnable(GL_DEPTH_TEST)
-		glEnable(GL_BLEND)
-
-		### Rendu des objets de la scène ###
-
-		galaxy_rect.render(perspective_mx, model_matrix, view_matrix)
-
-		if index == 0 or index == 1:
-			rect.material.color = (1.0, 0.0, 0.0)
-		elif index == 4 or index == 5:
-			rect.material.color = (0.0, 1.0, 0.0)
-		else:
-			rect.material.color = (0.0, 0.0, 1.0)
-		rect.render(perspective_mx, model_matrix, view_matrix)
-
-		yellow_cube.render(perspective_mx, model_matrix, view_matrix)
-
 	time = 0.0
 	x,z = 0.0, 0.0
 	circleRadius = 1.7
@@ -113,7 +108,13 @@ if __name__ == "__main__":
 
 		for i in range(2):
 			fbos[i].bind()
-			renderView(view_matrices[i], i)
+			if i == 0 or i == 1:
+				rect.material.color = (1.0, 0.0, 0.0)
+			elif i == 4 or i == 5:
+				rect.material.color = (0.0, 1.0, 0.0)
+			else:
+				rect.material.color = (0.0, 0.0, 1.0)
+			renderView(perspective_mx, model_matrix, view_matrices[i], i)
 
 		glUseProgram(0)
 		#render to main video output
