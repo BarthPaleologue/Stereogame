@@ -9,6 +9,8 @@ import pygame
 from geometry import *
 from interlacer import Interlacer
 
+filePath = os.path.dirname(os.path.abspath(__file__))
+
 if __name__ == "__main__":
 	width, height = 1920, 1080
 	pygame.init()
@@ -24,11 +26,11 @@ if __name__ == "__main__":
 
 	interlaceProgram = Interlacer()
 
-	blackTex = Texture("res/black.jpg")
+	blackTex = Texture(os.path.join(filePath, "../assets/black.jpg"))
 
 	textures = [
-		Texture("res/planet/planet_droite.png"),
-		Texture("res/planet/planet_gauche.png"),
+		Texture(os.path.join(filePath, "../assets/planet/planet_droite.png")),
+		Texture(os.path.join(filePath, "../assets/planet/planet_gauche.png")),
 		blackTex,
 		blackTex,
 		blackTex,
