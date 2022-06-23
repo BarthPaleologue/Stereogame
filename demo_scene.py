@@ -5,8 +5,8 @@ from pygame.math import Vector3
 
 #local imports
 from feather.shapes import Rectangle, Cube
-from feather import Program, Texture, FrameBuffer
-from feather.material import ColorMaterial
+from feather import Texture, FrameBuffer
+from feather.material import ColorMaterial, TextureMaterial
 from feather.camera import *
 from interlacer import Interlacer
 
@@ -43,6 +43,9 @@ if __name__ == "__main__":
 	galaxy_rect = Rectangle('galaxy_rect', True)
 	galaxy_rect.setPosition(0, 0, -6)
 	galaxy_rect.setScaling(8 * width / height, 8, 1)
+
+	galaxyMat = TextureMaterial(Texture("./assets/Galaxy.jpg"))
+	galaxy_rect.setMaterial(galaxyMat)
 	
 	# screen
 	screen = Rectangle('screen', True)
@@ -62,14 +65,6 @@ if __name__ == "__main__":
 
 	left_eye = Vector3(eye_distance / 2, 0, 5)
 	left_view_matrix = lookat(left_eye, eyeTarget)
-
-
-	prog1 = Program(vs_tx, fs_tx)
-	texture = Texture("./assets/Galaxy.jpg")
-
-	prog2 = Program(vs_tx, fs_flat)
-
-	prog3 = Program(vs_tx, fs_flat)
 
 	interlacer = Interlacer()
 
@@ -109,9 +104,9 @@ if __name__ == "__main__":
 		general_mv_matrix = model_matrix.dot(view_matrix)
 
 		mv_matrix = galaxy_rect.getMatrix().dot(general_mv_matrix)
-		prog1.use(perspective_mx, mv_matrix)
-		prog1.setTexture("sTexture", texture)
-		galaxy_rect.draw(prog1.program)
+		galaxy_rect.material.use(perspective_mx, mv_matrix)
+		galaxy_rect.material.update()
+		galaxy_rect.draw(galaxy_rect.material.program)
 
 		mv_matrix = rect.getMatrix().dot(general_mv_matrix)
 		rect.material.use(perspective_mx, mv_matrix)
