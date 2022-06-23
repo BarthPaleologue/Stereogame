@@ -6,10 +6,10 @@ import pygame
 
 
 #local imports
-from geometry import *
+from feather import Texture
+from feather.shapes import Rectangle
+from feather.camera import *
 from interlacer import Interlacer
-
-filePath = os.path.dirname(os.path.abspath(__file__))
 
 if __name__ == "__main__":
 	width, height = 1920, 1080
@@ -26,11 +26,11 @@ if __name__ == "__main__":
 
 	interlaceProgram = Interlacer()
 
-	blackTex = Texture(os.path.join(filePath, "../assets/black.jpg"))
+	blackTex = Texture("./assets/black.jpg")
 
 	textures = [
-		Texture(os.path.join(filePath, "../assets/planet/planet_droite.png")),
-		Texture(os.path.join(filePath, "../assets/planet/planet_gauche.png")),
+		Texture("./assets/planet/planet_droite.png"),
+		Texture("./assets/planet/planet_gauche.png"),
 		blackTex,
 		blackTex,
 		blackTex,
@@ -38,9 +38,6 @@ if __name__ == "__main__":
 		blackTex,
 		blackTex,
 	]
-
-	sTextures = [interlaceProgram.getUniformLocation(f"sTextures[{i}]") for i in range(8)]
-
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 	glViewport(0, 0, width, height)

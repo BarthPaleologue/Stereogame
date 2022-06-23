@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-import os
 from OpenGL.GL import *
 import numpy as np
 import pygame
@@ -11,15 +9,13 @@ from feather import Program, Texture, FrameBuffer
 from feather.camera import *
 from interlacer import Interlacer
 
-filePath = os.path.dirname(os.path.abspath(__file__))
-
-with open(os.path.join(filePath, 'shaders/fbo/fboVertex.glsl'), 'r') as file:
+with open('./shaders/fbo/fboVertex.glsl', 'r') as file:
     vs_tx = file.read()
 
-with open(os.path.join(filePath, 'shaders/fbo/fboFragment.glsl'), 'r') as file:
+with open('./shaders/fbo/fboFragment.glsl', 'r') as file:
     fs_tx = file.read()
 
-with open(os.path.join(filePath, 'shaders/fbo/flatFragment.glsl'), 'r') as file:
+with open('./shaders/fbo/flatFragment.glsl', 'r') as file:
     fs_flat = file.read()
 
 if __name__ == "__main__":
@@ -62,7 +58,7 @@ if __name__ == "__main__":
 
 
 	prog1 = Program(vs_tx, fs_tx)
-	texture = Texture(os.path.join(filePath, "../assets/Galaxy.jpg"))
+	texture = Texture("./assets/Galaxy.jpg")
 
 	prog2 = Program(vs_tx, fs_flat)
 
@@ -70,7 +66,7 @@ if __name__ == "__main__":
 
 	interlacer = Interlacer()
 
-	blackTex = Texture(os.path.join(filePath, "../assets/black.jpg"))
+	blackTex = Texture("./assets/black.jpg")
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)

@@ -1,5 +1,5 @@
 import os
-from geometry import Program
+from feather import Program
 
 filePath = os.path.dirname(os.path.abspath(__file__))
 class Interlacer(Program):
