@@ -47,7 +47,7 @@ if __name__ == "__main__":
 	pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
 	rect = Rectangle('rect')
 	rect_flip = Rectangle('rect_flip', True)
-	obj = OBJ('../game/Assets/hammer.obj')
+	obj = OBJ('./skull.obj')
 	#create matrices
 	perspective_mx = perspective(45, width/height, 0.1, 100)
 	model_matrix = np.identity(4, dtype=np.float32)
@@ -81,8 +81,8 @@ if __name__ == "__main__":
 		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(eyemx)
 		prog1.use(perspective_mx, mv_matrix)
 		#glUniform4f(uCol, 1, 0, 0, 1)
-		texture.activate(sTexture)
-		obj.draw(prog1.program)
+		#texture.activate(sTexture)
+		obj.draw(prog1.program, sTexture)
 
 		pygame.display.flip()
 
