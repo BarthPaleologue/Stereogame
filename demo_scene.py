@@ -4,51 +4,36 @@ import pygame
 from pygame.math import Vector3
 
 #local imports
+from feather import Texture, FrameBuffer, Scene
 from feather.shapes import Rectangle, Cube
-from feather import Texture, FrameBuffer
 from feather.material import ColorMaterial, TextureMaterial
 from feather.camera import *
 from interlacer import Interlacer
-
-
-def renderView(perspective_mx, model_matrix, view_matrix, index):
-	glViewport(0, 0, fbo_width, fbo_height)
-
-	glClearColor(0.0, 0.0, 0.2, 1.0)
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-	glEnable(GL_DEPTH_TEST)
-	glEnable(GL_BLEND)
-
-	### Rendu des objets de la scène ###
-
-	galaxy_rect.render(perspective_mx, model_matrix, view_matrix)
-	rect.render(perspective_mx, model_matrix, view_matrix)
-	yellow_cube.render(perspective_mx, model_matrix, view_matrix)
-
-
 
 if __name__ == "__main__":
 	width, height = 1920, 1080
 	pygame.init()
 	pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
 	pygame.display.toggle_fullscreen()
+
+	scene = Scene()
 	
 	# shapes
-	rect = Rectangle('rect')
+	rect = Rectangle('rect', False, scene)
 	rect.setPosition(-6, -3, 0)
 	rect.setScaling(0.5, 0.5, 1)
 
 	rectMat = ColorMaterial(1.0, 0.0, 0.0)
 	rect.setMaterial(rectMat)
 
-	yellow_cube = Cube('yellow_cube')
+	yellow_cube = Cube('yellow_cube', True, scene)
 	yellow_cube.setScaling(0.5, 0.5, 0.5)
 	yellow_cube.setRotationY(45)
 	
 	cubeMat = ColorMaterial(1.0, 1.0, 0.0)
 	yellow_cube.setMaterial(cubeMat)
 
-	galaxy_rect = Rectangle('galaxy_rect', True)
+	galaxy_rect = Rectangle('galaxy_rect', True, scene)
 	galaxy_rect.setPosition(0, 0, -6)
 	galaxy_rect.setScaling(8 * width / height, 8, 1)
 
@@ -108,13 +93,14 @@ if __name__ == "__main__":
 
 		for i in range(2):
 			fbos[i].bind()
+			glViewport(0, 0, fbo_width, fbo_height)
 			if i == 0 or i == 1:
 				rect.material.color = (1.0, 0.0, 0.0)
 			elif i == 4 or i == 5:
 				rect.material.color = (0.0, 1.0, 0.0)
 			else:
 				rect.material.color = (0.0, 0.0, 1.0)
-			renderView(perspective_mx, model_matrix, view_matrices[i], i)
+			scene.render(perspective_mx, model_matrix, view_matrices[i])
 
 		glUseProgram(0)
 		#render to main video output
@@ -129,8 +115,8 @@ if __name__ == "__main__":
 		### drawing on screen
 		interlacer.use(ortho_mx, ident_matrix)
 
-		interlacer.setTextureFromFBO(fbo_right, 1)
 		interlacer.setTextureFromFBO(fbo_left, 0)
+		interlacer.setTextureFromFBO(fbo_right, 1)
 		interlacer.setTextureFromImage(blackTex, 2)
 		interlacer.setTextureFromImage(blackTex, 3)
 		interlacer.setTextureFromImage(blackTex, 4)

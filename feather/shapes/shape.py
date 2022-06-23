@@ -5,7 +5,7 @@ from feather.algebra import *
 # Object wrapper for shapes in GLSL, builds GPU buffers holding vertex info`
 # typically used by derived shapes (rectangle etc.)
 class Shape:
-    def __init__(self, name):
+    def __init__(self, name, scene = None):
         self.name = name
         self.vertex_vbo = None
         self.texcoord_vbo = None
@@ -21,6 +21,9 @@ class Shape:
         self.position = np.array([0.0, 0.0, 0.0])
         self.scaling = np.array([1.0, 1.0, 1.0])
         self.rotation = np.array([0.0, 0.0, 0.0])
+
+        if scene is not None:
+            scene.addShape(self)
 
     def setPosition(self, x, y, z):
         self.position[0] = x
