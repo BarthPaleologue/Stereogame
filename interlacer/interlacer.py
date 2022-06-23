@@ -1,11 +1,13 @@
-from geometry import Program
+import os
+from feather import Program
 
+filePath = os.path.dirname(os.path.abspath(__file__))
 class Interlacer(Program):
     def __init__(self):
         ### load shader code
-        with open('./shaders/interlaceVertex.glsl', 'r') as file:
+        with open(os.path.join(filePath, 'shaders/interlaceVertex.glsl'), 'r') as file:
             interlacerVertex = file.read()
-        with open('./shaders/interlaceFloatFragment.glsl', 'r') as file:
+        with open(os.path.join(filePath, 'shaders/interlaceFloatFragment.glsl'), 'r') as file:
             interlacerFragment = file.read()
 
         ### init program
