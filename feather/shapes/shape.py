@@ -1,14 +1,11 @@
-import os
 import numpy as np
 from OpenGL.GL import *
-import math
-import pygame
 from feather.algebra import *
 
 # Object wrapper for shapes in GLSL, builds GPU buffers holding vertex info`
 # typically used by derived shapes (rectangle etc.)
 class Shape:
-    def __init__(self, name):
+    def __init__(self, name, scene = None):
         self.name = name
         self.vertex_vbo = None
         self.texcoord_vbo = None
@@ -18,9 +15,15 @@ class Shape:
         self.att_texcoord = -1
         self.nb_points = 0
         self.np_texcoord = None
+
+        self.material = None
+
         self.position = np.array([0.0, 0.0, 0.0])
         self.scaling = np.array([1.0, 1.0, 1.0])
         self.rotation = np.array([0.0, 0.0, 0.0])
+
+        if scene is not None:
+            scene.addShape(self)
 
     def setPosition(self, x, y, z):
         self.position[0] = x
@@ -61,6 +64,17 @@ class Shape:
 
     def getMatrix(self):
         return self.getRotationMatrix().dot(self.getPositionMatrix()).dot(self.getScalingMatrix())
+
+    def setMaterial(self, material):
+        self.material = material
+
+    def render(self, perspective_mx, model_matrix, view_matrix):
+        mv_matrix = self.getMatrix().dot(model_matrix).dot(view_matrix)
+        if(self.material is None):
+            print(f"ERROR : {name} shape has no material (consider using setMaterial)")
+        self.material.use(perspective_mx, mv_matrix)
+        self.material.update()
+        self.draw(self.material.program)
 
     def build_buffers(self, vertices, normals, tex_coords, lines=False):
         for val in vertices:

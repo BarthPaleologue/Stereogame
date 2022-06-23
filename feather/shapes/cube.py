@@ -1,8 +1,8 @@
 from feather.shapes.shape import Shape
 
 class Cube(Shape):
-    def __init__(self, name, flip = False):
-        Shape.__init__(self, name)
+    def __init__(self, name, flip, scene = None):
+        Shape.__init__(self, name, scene)
         ty_min = 0.0
         ty_max = 1.0
         if flip == True:
