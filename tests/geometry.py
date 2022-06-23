@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+from matplotlib.pyplot import draw 
 import numpy as np
 from OpenGL.GL import *
 import math
@@ -170,6 +171,7 @@ class Shape:
         self.np_texcoord = None
         self.position = np.array([0.0, 0.0, 0.0])
         self.scaling = np.array([1.0, 1.0, 1.0])
+        self.rotation = np.array([0.0, 0.0, 0.0])
 
     def setPosition(self, x, y, z):
         self.position[0] = x
@@ -193,8 +195,23 @@ class Shape:
     def getScalingMatrix(self):
         return scale(self.scaling[0], self.scaling[1], self.scaling[2])
 
+    def setRotationX(self, angle):
+        self.rotation[0] = angle
+    
+    def setRotationY(self, angle):
+        self.rotation[1] = angle
+
+    def setRotationZ(self, angle):
+        self.rotation[2] = angle
+
+    def getRotationMatrix(self):
+        #TODO: use a cache system to reduce computations
+        return rotate(self.rotation[0], 1.0, 0.0, 0.0).dot(
+                rotate(self.rotation[1], 0.0, 1.0, 0.0)).dot(
+                rotate(self.rotation[2], 0.0, 0.0, 1.0))
+
     def getMatrix(self):
-        return self.getPositionMatrix().dot(self.getScalingMatrix())
+        return self.getRotationMatrix().dot(self.getPositionMatrix()).dot(self.getScalingMatrix())
 
     def build_buffers(self, vertices, normals, tex_coords, lines=False):
         for val in vertices:
@@ -264,13 +281,13 @@ class Shape:
 
         if self.texcoord_vbo:
             self.att_texcoord = glGetAttribLocation(program, "aTexCoord")
-            print('att location ' + str(self.att_texcoord) )
+            #print('att location ' + str(self.att_texcoord) )
             if self.att_texcoord>=0:
                 glBindBuffer(GL_ARRAY_BUFFER, self.texcoord_vbo)
                 glEnableVertexAttribArray(self.att_texcoord)
                 glVertexAttribPointer(self.att_texcoord, 2, GL_FLOAT, False, 0, ctypes.c_void_p(0))
 
-        print('Buffers ready -  vertex_att ' + str(self.att_vertex) + ' normal_att ' + str(self.att_normal) + ' texcoord_att ' + str(self.att_texcoord))
+        #print('Buffers ready -  vertex_att ' + str(self.att_vertex) + ' normal_att ' + str(self.att_normal) + ' texcoord_att ' + str(self.att_texcoord))
 
 
         glDrawArrays(self.type, 0, self.nb_points)
@@ -284,20 +301,8 @@ class Shape:
 
 
 # Class object
-class OBJ(Shape):
+class OBJ :
     generate_on_init = True
-    @classmethod
-    def loadTexture(cls, imagefile):
-        surf = pygame.image.load(imagefile)
-        image = pygame.image.tostring(surf, 'RGBA', 1)
-        ix, iy = surf.get_rect().size
-        texid = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, texid)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ix, iy, 0, GL_RGBA, GL_UNSIGNED_BYTE, image)
-        return texid
-
     @classmethod
     def loadMaterial(cls, filename):
         contents = {}
@@ -316,19 +321,18 @@ class OBJ(Shape):
                 # load the texture referred to by this declaration
                 mtl[values[0]] = values[1]
                 imagefile = os.path.join(dirname, mtl['map_Kd'])
-                mtl['texture_Kd'] = cls.loadTexture(imagefile)
+                mtl['texture_Kd'] = Texture(imagefile)
             else:
                 mtl[values[0]] = list(map(float, values[1:]))
         return contents
 
     def __init__(self, filename, swapyz=False):
         """Loads a Wavefront OBJ file. """
-        Shape.__init__(self, filename)
         loc_vertices = []
         loc_normals = []
         loc_texcoords = []
         loc_faces = []
-        
+        loc_mtl = None
         material = None
         for line in open(filename, "r"):
             if line.startswith('#'): continue
@@ -349,7 +353,8 @@ class OBJ(Shape):
             elif values[0] in ('usemtl', 'usemat'):
                 material = values[1]
             elif values[0] == 'mtllib':
-                self.mtl = self.loadMaterial(os.path.join(filename, values[1]))
+                #loc_mtl.append(self.loadMaterial(os.path.join(filename, values[1])))
+                loc_mtl = self.loadMaterial(os.path.join(values[1]))
             elif values[0] == 'f':
                 face = []
                 texcoords = []
@@ -370,9 +375,20 @@ class OBJ(Shape):
         all_vertices = []
         all_normals = []
         all_texcoords = []
+        self.shapes = []
+        prev_mat = None
         for face in loc_faces:
             vertices, normals, texture_coords, material = face
-            
+            if material != prev_mat:
+                if len(all_vertices) > 0:
+                    myShape = Shape("shapy")
+                    myShape.build_buffers(all_vertices, all_normals, all_texcoords)
+                    myShape.mtl = loc_mtl[prev_mat]
+                    self.shapes.append(myShape)
+                all_vertices = []
+                all_normals = []
+                all_texcoords = []
+                prev_mat = material
             
             for i in range(len(vertices)):
                 if i == 3:
@@ -391,9 +407,20 @@ class OBJ(Shape):
                     all_texcoords.append(loc_texcoords[texture_coords[i] - 1])
                 all_vertices.append(loc_vertices[vertices[i] - 1])
 
-        print('Model loaded')
-        self.build_buffers(all_vertices, all_normals, all_texcoords)
-        print('Buffer created')
+        if len(all_vertices):
+            myShape = Shape("shapy")
+            myShape.build_buffers(all_vertices, all_normals, all_texcoords)
+            myShape.mtl = loc_mtl[prev_mat]
+            prev_mat = material
+            self.shapes.append(myShape)
+
+    def draw(self, program, sTexture):
+        for shape in self.shapes:
+            if 'texture_Kd' in shape.mtl:
+                shape.mtl['texture_Kd'].activate(sTexture)
+            shape.draw(program)
+
+
 
 
 # Rectangle shape, with texture units and no normal
@@ -421,6 +448,85 @@ class Rectangle(Shape):
             (0.0, ty_min),
             (1.0, ty_max),
             (0.0, ty_max)]
+        )
+
+class Cube(Shape):
+    def __init__(self, name, flip = False):
+        Shape.__init__(self, name)
+        ty_min = 0.0
+        ty_max = 1.0
+        if flip == True:
+            ty_min = 1.0
+            ty_max = 0.0
+
+        self.build_buffers(
+            [
+            ### back face
+            ( -1.000000, -1.000000, -1.000000),
+            ( 1.000000, -1.000000, -1.000000),
+            ( 1.000000, 1.000000, -1.000000),
+            ( -1.000000, -1.000000, -1.000000),
+            ( 1.000000, 1.000000, -1.000000),
+            ( -1.000000, 1.000000, -1.000000),
+
+            ### front face
+            ( -1.000000, -1.000000, 1.000000),
+            ( 1.000000, -1.000000, 1.000000),
+            ( 1.000000, 1.000000, 1.000000),
+            ( -1.000000, -1.000000, 1.000000),
+            ( 1.000000, 1.000000, 1.000000),
+            ( -1.000000, 1.000000, 1.000000),
+
+            ### top face
+            (-1.0, 1.0, -1.0),
+            (1.0, 1.0, -1.0),
+            (-1.0, 1.0, 1.0),
+            (1.0, 1.0, 1.0),
+            (1.0, 1.0, -1.0),
+            (-1.0, 1.0, -1.0),
+
+            ### bottom face
+            (-1.0, -1.0, -1.0),
+            (1.0, -1.0, -1.0),
+            (-1.0, -1.0, 1.0),
+            (1.0, -1.0, 1.0),
+            (1.0, -1.0, -1.0),
+            (-1.0, -1.0, -1.0),
+            ],
+            None,
+            [
+            ### back face
+            (0.0, ty_min),
+            (1.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_max),
+            
+            ### front face
+            (0.0, ty_min),
+            (1.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_max),
+
+            ### top face
+            (0.0, ty_min),
+            (1.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_max),
+
+            ### bottom face
+            (0.0, ty_min),
+            (1.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_min),
+            (1.0, ty_max),
+            (0.0, ty_max),
+            ]
         )
 
 
@@ -479,12 +585,12 @@ def perspective(fovy, aspect, z_near, z_far):
 
 #creates an orthogonal perspective projection matrix
 def ortho(left, right, top, bottom, z_near, z_far):
-    m11 = 2 / (right-left);
-    m22 = 2 / (top-bottom);
-    m33 = -2 / (z_far-z_near);
-    m34 = (right+left) / (right-left);
-    m42 = (top+bottom) / (top-bottom);
-    m43 = (z_far+z_near) / (z_far-z_near);
+    m11 = 2 / (right-left)
+    m22 = 2 / (top-bottom)
+    m33 = -2 / (z_far-z_near)
+    m34 = (right+left) / (right-left)
+    m42 = (top+bottom) / (top-bottom)
+    m43 = (z_far+z_near) / (z_far-z_near)
     return np.array([
         [m11, 0, 0,  0],
         [0, m22, 0,  0],
