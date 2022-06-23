@@ -1,15 +1,14 @@
 #!/usr/bin/env python
-from __future__ import division
+import os
 from OpenGL.GL import *
 import numpy as np
 import pygame
 from pygame.math import Vector3
 
 #local imports
-from feather.shapes.geometry import *
-from feather.program import Program
-from feather.texture import Texture
-from feather.framebuffer import FrameBuffer
+from feather.shapes import Rectangle, Cube
+from feather import Program, Texture, FrameBuffer
+from feather.camera import *
 from interlacer import Interlacer
 
 filePath = os.path.dirname(os.path.abspath(__file__))
