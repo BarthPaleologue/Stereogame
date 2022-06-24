@@ -1,5 +1,6 @@
 import os
-from geometry import *
+from feather.texture import Texture
+from feather.shapes.shape import Shape
 
 class OBJsanstex(Shape):
     generate_on_init = True
@@ -26,8 +27,8 @@ class OBJsanstex(Shape):
                 mtl[values[0]] = list(map(float, values[1:]))
         return contents
 
-    def __init__(self, filename, swapyz=False):
-        Shape.__init__(self,"bomby")
+    def __init__(self, filename, swapyz, scene):
+        Shape.__init__(self, "bomby", scene)
         """Loads a Wavefront OBJ file. """
         loc_vertices = []
         loc_normals = []

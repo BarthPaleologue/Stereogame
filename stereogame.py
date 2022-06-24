@@ -7,7 +7,10 @@ from pygame.math import Vector3
 from feather import Texture, FrameBuffer, Scene, Screen
 from feather.shapes import Rectangle, Cube, Sphere
 from feather.materials import ColorMaterial, TextureMaterial
+from feather.projections import *
+from feather.algebra import *
 from feather.camera import *
+from feather.shapes.sphere import Sphere
 from interlacer import Interlacer
 
 from game import Player, Battlefield
@@ -24,9 +27,16 @@ if __name__ == "__main__":
 	
 	######## DECLARATION DES SHAPES
 
-	battlefield = Battlefield("battly", 4, 2, 7, scene)
+	sphere = Sphere("sphery", False, scene)
+	sphere.setScaling(0.3, 0.3, 0.3)
+	sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
+	sphere.setMaterial(sphereMat)
+
+	battlefield = Battlefield("battly", 7, 7, 7, scene)
 	battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
 	battlefield.setMaterial(battleMat)
+
+	#gun = OBJsanstex("./assets/awp.obj", False, scene)
 	
 	rect = Rectangle('rect', False, scene)
 	rect.setPosition(-6, -3, 0)
@@ -61,6 +71,7 @@ if __name__ == "__main__":
 	ident_matrix = np.identity(4, dtype=np.float32)
 
 	######### DECLARATION DES JOUEURS
+
 	eye_distance = 0.008
 	position1 = Vector3(-5, 0, 0)
 	position2 = Vector3(5, 0, 0)
@@ -81,7 +92,7 @@ if __name__ == "__main__":
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
 	
-	fbo = FrameBuffer(fbo_width, fbo_height)
+	#fbo = FrameBuffer(fbo_width, fbo_height)
 
 	######### DECLARATION DE L'ENTRELACEUR
 
@@ -98,7 +109,7 @@ if __name__ == "__main__":
 	running = True
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
-		deltaTime = (time - getTicksLastFrame)
+		deltaTime = time - getTicksLastFrame
 		getTicksLastFrame = time
 
 		###### UPDATE ETAT DES SHAPES
@@ -114,10 +125,11 @@ if __name__ == "__main__":
 
 		###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
-		player1.getOeilGauche().getFrameBuffer().bind()
+		fbo = player1.getOeilGauche().getFrameBuffer()
+		fbo.bind()
 		glViewport(0, 0, fbo_width, fbo_height)
 
-		view_matrix = lookat(player1.getOeilGauche(), player1.getEye_Target())
+		view_matrix = lookat(player1.getOeilGauche().getPosition(), player1.getEye_Target())
 		scene.render(perspective_mx, model_matrix, view_matrix)
 
 		###### DESSIN DES FRAMEBUFFER SUR L'ECRAN

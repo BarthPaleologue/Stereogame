@@ -1,12 +1,14 @@
 import numpy as np
 from OpenGL.GL import *
+from feather.transform import Transform
 from feather.algebra import *
 from feather.materials import DefaultMaterial
 
 # Object wrapper for shapes in GLSL, builds GPU buffers holding vertex info`
 # typically used by derived shapes (rectangle etc.)
-class Shape:
+class Shape(Transform):
     def __init__(self, name, scene = None):
+        Transform.__init__(self)
         self.name = name
         self.vertex_vbo = None
         self.texcoord_vbo = None
@@ -17,54 +19,15 @@ class Shape:
         self.nb_points = 0
         self.np_texcoord = None
 
-        self.material = DefaultMaterial()
+        self.vertices = None
+        self.normals = None
+        self.texcoords = None
 
-        self.position = np.array([0.0, 0.0, 0.0])
-        self.scaling = np.array([1.0, 1.0, 1.0])
-        self.rotation = np.array([0.0, 0.0, 0.0])
+        self.material = DefaultMaterial()
 
         if scene is not None:
             scene.addShape(self)
 
-    def setPosition(self, x, y, z):
-        self.position[0] = x
-        self.position[1] = y
-        self.position[2] = z
-
-    def getPosition(self):
-        return self.position
-
-    def getPositionMatrix(self):
-        return translate(self.position[0], self.position[1], self.position[2])
-
-    def setScaling(self, x, y, z):
-        self.scaling[0] = x
-        self.scaling[1] = y
-        self.scaling[2] = z
-
-    def getScaling(self):
-        return self.scaling
-
-    def getScalingMatrix(self):
-        return scale(self.scaling[0], self.scaling[1], self.scaling[2])
-
-    def setRotationX(self, angle):
-        self.rotation[0] = angle
-    
-    def setRotationY(self, angle):
-        self.rotation[1] = angle
-
-    def setRotationZ(self, angle):
-        self.rotation[2] = angle
-
-    def getRotationMatrix(self):
-        #TODO: use a cache system to reduce computations
-        return rotate(self.rotation[0], 1.0, 0.0, 0.0).dot(
-                rotate(self.rotation[1], 0.0, 1.0, 0.0)).dot(
-                rotate(self.rotation[2], 0.0, 0.0, 1.0))
-
-    def getMatrix(self):
-        return self.getRotationMatrix().dot(self.getPositionMatrix()).dot(self.getScalingMatrix())
 
     def setMaterial(self, material):
         self.material = material
@@ -83,6 +46,11 @@ class Shape:
                 print('Invalid number of points in vertice ' + str(val))
                 exit()
         self.nb_points = int(len(vertices))
+
+        self.vertices = vertices
+        self.normals = normals
+        self.texcoords = tex_coords
+
         vertices = np.array(vertices, dtype=np.float32)
         if lines:
             self.type = GL_LINE_STRIP

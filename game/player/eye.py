@@ -5,6 +5,7 @@ from pygame.math import Vector3
 #local imports
 from feather.camera import *
 from feather import FrameBuffer
+from feather.algebra import *
 
 class Eye:
 

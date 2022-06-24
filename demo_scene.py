@@ -4,10 +4,11 @@ import pygame
 from pygame.math import Vector3
 
 #local imports
-from feather import Texture, FrameBuffer, Scene
+from feather import Texture, FrameBuffer, Scene, Screen, Camera
 from feather.shapes import Rectangle, Cube
 from feather.materials import ColorMaterial, TextureMaterial
-from feather.camera import *
+from feather.projections import *
+from feather.algebra import *
 from interlacer import Interlacer
 
 if __name__ == "__main__":
@@ -48,10 +49,12 @@ if __name__ == "__main__":
 	galaxy_rect.setMaterial(galaxyMat)
 	
 	# screen
-	screen = Rectangle('screen', True)
+	screen = Screen('screen')
 
 	#create matrices
-	perspective_mx = perspective(45, width / height, 0.1, 100)
+
+	camera = Camera(45, width / height)
+
 	model_matrix = np.identity(4, dtype=np.float32)
 	ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
 	ident_matrix = np.identity(4, dtype=np.float32)
@@ -106,7 +109,7 @@ if __name__ == "__main__":
 				rect.material.color = (0.0, 1.0, 0.0)
 			else:
 				rect.material.color = (0.0, 0.0, 1.0)
-			scene.render(perspective_mx, model_matrix, view_matrices[i])
+			scene.render(camera.getProjectionMatrix(), model_matrix, view_matrices[i])
 
 		glUseProgram(0)
 		#render to main video output
