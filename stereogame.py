@@ -7,7 +7,8 @@ from pygame.math import Vector3
 from feather import Texture, FrameBuffer, Scene, Screen
 from feather.shapes import Rectangle, Cube, Sphere
 from feather.materials import ColorMaterial, TextureMaterial
-from feather.camera import *
+from feather.projections import *
+from feather.algebra import *
 from feather.loaders import OBJsanstex
 from interlacer import Interlacer
 

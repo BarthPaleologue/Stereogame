@@ -3,7 +3,7 @@ import numpy as np
 from pygame.math import Vector3
 
 #local imports
-from feather.camera import *
+from feather.projections import *
 
 class Eye:
 
