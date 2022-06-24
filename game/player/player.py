@@ -1,13 +1,15 @@
 from game.player.eye import Eye
+from pygame.math import Vector3
 
 class Player :
     
-    def __init__(self, position, perspective_mx, gamepad):
+    def __init__(self, position, perspective_mx, gamepad, eye_target) :
         self.position = position
         self.angleVision = perspective_mx
+        self.eye_target = eye_target
         self.batte = None ### Initialiser la batte ici
-        self.oeilGauche = None ### Initialiser l'oeil gauche ici
-        self.oeilDroit = None ### Initialiser l'oeil droit ici
+        self.oeilGauche = Eye((position[0] + 0.008/2.0, 0, 5), eye_target) ### Initialiser l'oeil gauche ici
+        self.oeilDroit = Eye((position[0] - 0.008/2.0, 0, 5), eye_target) ### Initialiser l'oeil droit ici
         self.gamepad = gamepad
         self.invincible = False
         self.state = 0
@@ -35,6 +37,9 @@ class Player :
             self.invincible = False
         else :
             self.invincible = True
+    
+    def getEye_Target(self) :
+        return self.eye_target
     
     def reverseView(self) :
         self.oeilDroit, self.oeilGauche = self.oeilGauche, self.oeilDroit

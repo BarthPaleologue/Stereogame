@@ -51,23 +51,19 @@ if __name__ == "__main__":
 	# screen
 	screen = Screen('screen')
 
-	#create matrices
+	# create matrices
 
-	camera = Camera(45, width / height)
+	rightCamera = Camera(45, width / height)
+	leftCamera = Camera(45, width / height)
 
 	model_matrix = np.identity(4, dtype=np.float32)
 	ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
 	ident_matrix = np.identity(4, dtype=np.float32)
 
-	eyeTarget = Vector3(0, 0, 0)
-
 	eye_distance = 0.008
 
-	right_eye = Vector3(-eye_distance / 2, 0, 5)
-	right_view_matrix = lookat(right_eye, eyeTarget)
-
-	left_eye = Vector3(eye_distance / 2, 0, 5)
-	left_view_matrix = lookat(left_eye, eyeTarget)
+	rightCamera.setPosition(-eye_distance / 2, 0, 5)
+	leftCamera.setPosition(eye_distance / 2, 0, 5)
 
 	interlacer = Interlacer()
 
@@ -81,15 +77,17 @@ if __name__ == "__main__":
 	fbo_left = FrameBuffer(fbo_width, fbo_height)
 
 	fbos = [fbo_right, fbo_left]
-	view_matrices = [right_view_matrix, left_view_matrix]
+	cameras = [rightCamera, leftCamera]
 
-	time = 0.0
+	getTicksLastFrame = 0.0
 	x,z = 0.0, 0.0
 	circleRadius = 1.7
 
 	running = True
 	while running:
-		time += 0.01
+		time = pygame.time.get_ticks() / 1000.0
+		deltaTime = time - getTicksLastFrame
+		getTicksLastFrame = time
 		
 		yellow_cube.setRotationY(45.0 + time * 50.0)
 		yellow_cube.setRotationX(60.0 * time)
@@ -109,7 +107,7 @@ if __name__ == "__main__":
 				rect.material.color = (0.0, 1.0, 0.0)
 			else:
 				rect.material.color = (0.0, 0.0, 1.0)
-			scene.render(camera.getProjectionMatrix(), model_matrix, view_matrices[i])
+			scene.render(cameras[i].getProjectionMatrix(), model_matrix, cameras[i].computeViewMatrix())
 
 		glUseProgram(0)
 		#render to main video output
@@ -157,12 +155,11 @@ if __name__ == "__main__":
 			rect2.setPosition(6, 3, z_position_rect)
 			print("z_position_rect : ", z_position_rect)
 		if keys[pygame.K_g] :
-			eyeTarget = Vector3(eye_distance / 2, 0, 0)
+			rightCamera.setTarget(Vector3(eye_distance / 2, 0, 0))
 		if keys[pygame.K_d] :
-			eyeTarget = Vector3(-eye_distance / 2, 0, 0)
+			rightCamera.setTarget(Vector3(-eye_distance / 2, 0, 0))
 		if keys[pygame.K_f] :
-			eyeTarget = Vector3(0, 0, 0)
-		view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
+			rightCamera.setTarget(Vector3(0, 0, 0))
 
 		
 		events = pygame.event.get()
