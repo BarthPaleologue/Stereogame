@@ -9,6 +9,7 @@ from feather.shapes import Rectangle, Cube
 from feather.material import ColorMaterial, TextureMaterial
 from feather.camera import *
 from interlacer import Interlacer
+from game.Battlefield import Battlefield
 
 if __name__ == "__main__":
 	pygame.init()
@@ -21,6 +22,10 @@ if __name__ == "__main__":
 	scene = Scene()
 	
 	######## DECLARATION DES SHAPES
+
+	battlefield = Battlefield("battly",4,2,7,False,scene)
+	battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
+	battlefield.setMaterial(battleMat)
 	
 	rect = Rectangle('rect', False, scene)
 	rect.setPosition(-6, -3, 0)
