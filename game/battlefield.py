@@ -21,8 +21,10 @@ class Battlefield(Cube):
     
     
 
-    def isCollision(self,r,x,y,z): # cette fonction prend en paramètres un poins dans l'espace
-                            # et renvoie True s'il y a collision entre ce point et la battlefield
+    def isCollision(self,r,center): # cette fonction prend en paramètres un poins dans l'espace
+                            # et renvoie True s'il y a collision entre ce point et la
+                            #  battlefield
+        x,y,z = center[0], center[1], center[2]
         if x+r == self.size_x or x-r == -self.size_x:
             return True
         elif y+r == self.size_y or y-r == -self.size_y:
@@ -32,7 +34,8 @@ class Battlefield(Cube):
         else:
             return False
 
-    def whereCollision(self,r,x,y,z):
+    def whereCollision(self,r,center):
+        x,y,z = center[0], center[1], center[2]
         if x+r == self.size_x:
             return "right"
         elif x-r == -self.size_x:
@@ -47,6 +50,22 @@ class Battlefield(Cube):
             return "back"
         else:
             return "No Collision"
+    def normalVector(face):
+        if face == "right":
+            return [-1,0,0]
+        elif face == "left":
+            return [1,0,0]
+        elif face == "top":
+            return [0,-1,0]
+        elif face == "bottom":
+            return [0,1,0]
+        elif face == "front":
+            return [0,0,-1]
+        elif face == "back":
+            return [0,0,1]
+        else:
+            [0,0,0]
+        
     
     
     
