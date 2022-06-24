@@ -1,8 +1,8 @@
 class Player :
     
-    def __init__(self, position, angleVision, batte, oeilGauche, oeilDroit, gamepad, invincible, state) :
+    def __init__(self, position, perspective_mx, batte, oeilGauche, oeilDroit, gamepad, invincible) :
         self.position = position
-        self.angleVision = angleVision
+        self.angleVision = perspective_mx
         self.batte = batte
         self.oeilGauche = oeilGauche
         self.oeilDroit = oeilDroit

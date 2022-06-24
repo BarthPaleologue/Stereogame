@@ -4,6 +4,7 @@ import pygame
 from pygame.math import Vector3
 
 #local imports
+from game import Player
 from feather import Texture, FrameBuffer, Scene
 from feather.shapes import Rectangle, Cube
 from feather.material import ColorMaterial, TextureMaterial
@@ -55,10 +56,16 @@ if __name__ == "__main__":
 	ident_matrix = np.identity(4, dtype=np.float32)
 
 	######### DECLARATION DES JOUEURS
-
-	eyeTarget = Vector3(0, 0, 0)
-
 	eye_distance = 0.008
+	position1 = Vector3(-5, 0, 0)
+	position2 = Vector3(5, 0, 0)
+	perspective_mx1 = perspective(45, width / height, 0.1, 100)
+	perspective_mx2 = perspective(45, width / height, 0.1, 100)
+	player1 = Player(position1, perspective_mx1, batte, oeilGauche, oeilDroit, gamepad)
+	player2 = Player(position2, perspective_mx2, batte, oeilGauche, oeilDroit, gamepad)
+	eyeTarget = Vector3(0, 0, 0)
+	# perspective_mx : 45 = abgleVision
+
 
 	eye = Vector3(-eye_distance / 2, 0, 5)
 	view_matrix = lookat(eye, eyeTarget)
