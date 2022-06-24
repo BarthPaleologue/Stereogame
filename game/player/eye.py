@@ -1,6 +1,7 @@
 from OpenGL.GL import *
 import numpy as np
 from pygame.math import Vector3
+import pygame
 
 #local imports
 from feather.camera import *
@@ -10,7 +11,9 @@ from feather.algebra import *
 class Eye:
 
     def __init__(self, position, eye_target) :
-        self.frameBuffer = FrameBuffer(int(1920/2), int(1080/2))
+        infoObject = pygame.display.Info()
+        width, height = infoObject.current_w, infoObject.current_h
+        self.frameBuffer = FrameBuffer(int(width/2), int(height/2))
         self.view_matrix = lookat(position, eye_target)
         self.position = position
         self.eye_target = eye_target
