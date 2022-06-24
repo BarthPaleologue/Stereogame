@@ -1,3 +1,5 @@
+from game.eye import Eye
+
 class Player :
     
     def __init__(self, position, perspective_mx, gamepad) :
@@ -8,7 +10,7 @@ class Player :
         self.oeilDroit = None ### Initialiser l'oeil droit ici
         self.gamepad = gamepad
         self.invincible = False
-        #self.state = state
+        self.state = 0
 
     def getPosition(self) :
         return self.position
