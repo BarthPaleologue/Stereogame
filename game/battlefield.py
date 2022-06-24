@@ -8,7 +8,7 @@ class Battlefield(Cube):
         self.size_y = size_y
         self.size_z= size_z
         Cube.__init__(self, name, False, scene)
-        self.setScaling(size_x,size_y,size_z)
+        self.setScaling(size_x, size_y, size_z)
 
     def getSizex(self):
         return self.size_x

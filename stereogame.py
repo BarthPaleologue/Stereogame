@@ -4,7 +4,7 @@ import pygame
 from pygame.math import Vector3
 
 #local imports
-from feather import Texture, FrameBuffer, Scene
+from feather import Texture, FrameBuffer, Scene, Screen
 from feather.shapes import Rectangle, Cube, Sphere
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.camera import *
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 	
 	######### DECLARATION DE L'ECRAN
 
-	screen = Rectangle('screen', True)
+	screen = Screen('screen')
 
 	######### MATRICES UTILES
 
