@@ -141,30 +141,26 @@ if __name__ == "__main__":
 		if keys[pygame.K_s]:
 			circleRadius -= 0.05
 			print("Eye distance : ", eye_distance)
-			view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
 		if keys[pygame.K_UP]:
 			eye_distance += 0.001
 			print("Eye distance : ", eye_distance)
-			view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
 		if keys[pygame.K_DOWN] :
 			eye_distance -= 0.001
-			view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
 		if keys[pygame.K_RIGHT] :
 			z_position_rect += 0.01
 			rect2.setPosition(6, 3, z_position_rect)
 			print("z_position_rect : ", z_position_rect)
-			view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
 		if keys[pygame.K_LEFT] :
 			z_position_rect -= 0.01
 			rect2.setPosition(6, 3, z_position_rect)
 			print("z_position_rect : ", z_position_rect)
-			view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
 		if keys[pygame.K_g] :
-			view_matrices = [lookat(Vector3(-eye_distance, 0, 5), eyeTarget), lookat(Vector3(0, 0, 5), eyeTarget)]
+			eyeTarget = Vector3(eye_distance / 2, 0, 0)
 		if keys[pygame.K_d] :
-			view_matrices = [lookat(Vector3(0, 0, 5), eyeTarget), lookat(Vector3(eye_distance, 0, 5), eyeTarget)]
+			eyeTarget = Vector3(-eye_distance / 2, 0, 0)
 		if keys[pygame.K_f] :
-			view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
+			eyeTarget = Vector3(0, 0, 0)
+		view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
 
 		
 		events = pygame.event.get()
