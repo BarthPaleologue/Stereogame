@@ -1,6 +1,7 @@
 from locale import normalize
 import math
 import numpy as np
+import pygame
 
 #creates a rotation matrix of angle (in degrees) around axis vec3(x,y,z)
 def rotate(angle, x, y, z):
@@ -47,5 +48,22 @@ def reflection(vec, normal):
         res[i]=2*ps*normal[i] - vec[i]
     return res
 
-print(reflection([-1,-1,-1],[0,1,0]))
 
+
+
+#creates a lookat view matrix looking at center from eye with up-vector equal to Y axis
+def lookat(eye, center):
+    zaxis = center - eye
+    zaxis = zaxis.normalize()
+    up = pygame.math.Vector3(0, 1, 0)
+
+    xaxis = zaxis.cross(up).normalize()
+    yaxis = xaxis.cross(zaxis).normalize()
+    zaxis = -zaxis
+
+    return np.array([
+        [xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye)],
+        [yaxis.x, yaxis.y, yaxis.z, -yaxis.dot(eye)],
+        [zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye)],
+        [0, 0, 0, 1]
+    ]).transpose().dot(scale(1, -1, 1))

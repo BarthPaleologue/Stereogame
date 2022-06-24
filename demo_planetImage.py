@@ -3,9 +3,10 @@ import numpy as np
 import pygame
 
 #local imports
-from feather import Texture
+from feather import Texture, Screen
 from feather.shapes import Rectangle
-from feather.camera import *
+from feather.projections import *
+from feather.algebra import *
 from interlacer import Interlacer
 
 if __name__ == "__main__":
@@ -14,8 +15,8 @@ if __name__ == "__main__":
 	pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
 	pygame.display.toggle_fullscreen()
 
-	rect = Rectangle('rect')
-	screen = Rectangle('screen', True)
+	rect = Rectangle('rect', False)
+	screen = Screen('screen')
 
 	#create matrices
 	ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
