@@ -24,7 +24,7 @@ if __name__ == "__main__":
 	
 	######## DECLARATION DES SHAPES
 
-	battlefield = Battlefield("battly",4,2,7,False,scene)
+	battlefield = Battlefield("battly", 4, 2, 7, scene)
 	battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
 	battlefield.setMaterial(battleMat)
 	
