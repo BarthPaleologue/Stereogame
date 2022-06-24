@@ -1,6 +1,7 @@
 import numpy as np
 from OpenGL.GL import *
 from feather.algebra import *
+from feather.material import DefaultMaterial
 
 # Object wrapper for shapes in GLSL, builds GPU buffers holding vertex info`
 # typically used by derived shapes (rectangle etc.)
@@ -16,7 +17,7 @@ class Shape:
         self.nb_points = 0
         self.np_texcoord = None
 
-        self.material = None
+        self.material = DefaultMaterial()
 
         self.position = np.array([0.0, 0.0, 0.0])
         self.scaling = np.array([1.0, 1.0, 1.0])
