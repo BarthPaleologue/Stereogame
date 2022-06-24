@@ -73,8 +73,8 @@ if __name__ == "__main__":
 	######### DECLARATION DES JOUEURS
 
 	eye_distance = 0.008
-	position1 = Vector3(-5, 0, 0)
-	position2 = Vector3(5, 0, 0)
+	position1 = Vector3(-0, 0, -5)
+	position2 = Vector3(0, 0, -5)
 	perspective_mx1 = perspective(45, width / height, 0.1, 100).dot(rotate(270 ,0 ,1 ,0))
 	perspective_mx2 = perspective(45, width / height, 0.1, 100).dot(rotate(90, 0, 1, 0))
 	
