@@ -8,6 +8,7 @@ from feather import Texture, FrameBuffer, Scene, Screen
 from feather.shapes import Rectangle, Cube, Sphere
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.camera import *
+from feather.loaders import OBJsanstex
 from interlacer import Interlacer
 
 from game import Player, Battlefield
@@ -27,6 +28,8 @@ if __name__ == "__main__":
 	battlefield = Battlefield("battly", 4, 2, 7, scene)
 	battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
 	battlefield.setMaterial(battleMat)
+
+	#gun = OBJsanstex("./assets/awp.obj", False, scene)
 	
 	rect = Rectangle('rect', False, scene)
 	rect.setPosition(-6, -3, 0)
@@ -61,6 +64,7 @@ if __name__ == "__main__":
 	ident_matrix = np.identity(4, dtype=np.float32)
 
 	######### DECLARATION DES JOUEURS
+
 	eye_distance = 0.008
 	position1 = Vector3(-5, 0, 0)
 	position2 = Vector3(5, 0, 0)
@@ -97,7 +101,7 @@ if __name__ == "__main__":
 	running = True
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
-		deltaTime = (time - getTicksLastFrame)
+		deltaTime = time - getTicksLastFrame
 		getTicksLastFrame = time
 
 		###### UPDATE ETAT DES SHAPES
