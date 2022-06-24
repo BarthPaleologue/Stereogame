@@ -1,4 +1,4 @@
-from game.eye import Eye
+from game.player.eye import Eye
 
 class Player :
     
