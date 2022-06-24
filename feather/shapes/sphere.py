@@ -1,6 +1,6 @@
 from feather.shapes.shape import Shape
 from math import sqrt
-r = 1/25
+r = 1/20
 class Sphere(Shape):
     def __init__(self, name, flip, scene = None):
         Shape.__init__(self, name, scene)

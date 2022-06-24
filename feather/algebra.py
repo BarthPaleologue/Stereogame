@@ -1,3 +1,4 @@
+from locale import normalize
 import math
 import numpy as np
 
@@ -36,3 +37,15 @@ def scale(x, y, z):
         [0, 0, z, 0],
         [0, 0, 0, 1],
     ])
+def reflection(vec, normal):
+    for i in range(3):
+        vec[i]=-vec[i]
+    ps = (vec[0]*normal[0] + vec[1]*normal[1] + vec[2]*normal[2])
+    # return 2*ps*normal - vec
+    res = [0,0,0]
+    for i in range(3):
+        res[i]=2*ps*normal[i] - vec[i]
+    return res
+
+print(reflection([-1,-1,-1],[0,1,0]))
+
