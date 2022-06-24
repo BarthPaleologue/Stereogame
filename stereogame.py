@@ -4,15 +4,14 @@ import pygame
 from pygame.math import Vector3
 
 #local imports
-from feather import Texture, FrameBuffer, Scene
-from feather.shapes import Rectangle, Cube
+from feather import Texture, FrameBuffer, Scene, Screen
+from feather.shapes import Rectangle, Cube, Sphere
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.camera import *
 from feather.shapes.sphere import Sphere
 from interlacer import Interlacer
-from game.Battlefield import Battlefield
 
-from game import Player
+from game import Player, Battlefield
 
 if __name__ == "__main__":
 	pygame.init()
@@ -31,9 +30,11 @@ if __name__ == "__main__":
 	sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
 	sphere.setMaterial(sphereMat)
 
-	battlefield = Battlefield("battly",7,7,7,False,scene)
+	battlefield = Battlefield("battly",7,7,7,scene)
 	battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
 	battlefield.setMaterial(battleMat)
+
+	#gun = OBJsanstex("./assets/awp.obj", False, scene)
 	
 	rect = Rectangle('rect', False, scene)
 	rect.setPosition(-6, -3, 0)
@@ -58,7 +59,7 @@ if __name__ == "__main__":
 	
 	######### DECLARATION DE L'ECRAN
 
-	screen = Rectangle('screen', True)
+	screen = Screen('screen')
 
 	######### MATRICES UTILES
 
@@ -68,6 +69,7 @@ if __name__ == "__main__":
 	ident_matrix = np.identity(4, dtype=np.float32)
 
 	######### DECLARATION DES JOUEURS
+
 	eye_distance = 0.008
 	position1 = Vector3(-5, 0, 0)
 	position2 = Vector3(5, 0, 0)
@@ -103,9 +105,8 @@ if __name__ == "__main__":
 
 	running = True
 	while running:
-		#time = pygame.time.get_ticks() / 1000.0
-		time = 1
-		deltaTime = (time - getTicksLastFrame)
+		time = pygame.time.get_ticks() / 1000.0
+		deltaTime = time - getTicksLastFrame
 		getTicksLastFrame = time
 
 		###### UPDATE ETAT DES SHAPES

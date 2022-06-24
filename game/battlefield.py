@@ -3,12 +3,12 @@ from feather.shapes import Cube
 
 class Battlefield(Cube):
     
-    def __init__(self, name, size_x, size_y, size_z, flip, scene = None):
+    def __init__(self, name, size_x, size_y, size_z, scene = None):
         self.size_x = size_x
         self.size_y = size_y
         self.size_z= size_z
-        Cube.__init__(self, name, flip, scene)
-        self.setScaling(size_x,size_y,size_z)
+        Cube.__init__(self, name, False, scene)
+        self.setScaling(size_x, size_y, size_z)
 
     def getSizex(self):
         return self.size_x

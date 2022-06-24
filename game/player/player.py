@@ -1,8 +1,8 @@
-from game.eye import Eye
+from game.player.eye import Eye
 
 class Player :
     
-    def __init__(self, position, perspective_mx, gamepad) :
+    def __init__(self, position, perspective_mx, gamepad):
         self.position = position
         self.angleVision = perspective_mx
         self.batte = None ### Initialiser la batte ici
