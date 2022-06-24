@@ -72,7 +72,9 @@ if __name__ == "__main__":
 
 	interlacer = Interlacer()
 
-	time = 0.0
+	######### DECLARATION DES VARIABLES DE LA BOUCLE
+
+	getTicksLastFrame = 0.0
 	x,z = 0.0, 0.0
 	circleRadius = 1.7
 
@@ -80,12 +82,14 @@ if __name__ == "__main__":
 
 	running = True
 	while running:
-		time += 0.01
+		time = pygame.time.get_ticks() / 1000.0
+		deltaTime = (time - getTicksLastFrame)
+		getTicksLastFrame = time
 
 		###### UPDATE ETAT DES SHAPES
 		
-		yellow_cube.setRotationY(45.0 + time * 50.0)
-		yellow_cube.setRotationX(60.0 * time)
+		yellow_cube.setRotationY(45.0 + time * 70.0)
+		yellow_cube.setRotationX(80.0 * time)
 
 		rotationSpeed = 1
 		x = math.cos(time * rotationSpeed) * circleRadius
