@@ -11,9 +11,10 @@ from feather.camera import *
 from interlacer import Interlacer
 
 if __name__ == "__main__":
-	#width, height = 1920, 1080
 	pygame.init()
+	#width, height = 1920, 1080
 	infoObject = pygame.display.Info()
+	width, height = infoObject.current_w, infoObject.current_h
 	pygame.display.set_mode((infoObject.current_w, infoObject.current_h), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
 	#pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
 	#pygame.display.toggle_fullscreen()
