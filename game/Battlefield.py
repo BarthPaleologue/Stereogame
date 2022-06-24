@@ -1,112 +1,55 @@
-from geometry import *
-class Battlefield(Shape):
-    def __init__(self, size_x, size_y, size_z, flip = False):
-        name = "battlefield"
-        Shape.__init__(self, name)
-        ty_min = 0.0
-        ty_max = 1.0
-        if flip == True:
-            ty_min = 1.0
-            ty_max = 0.0
-        
-        self.build_buffers(
-            [
-            ### front face
-            ( -size_x, -size_y, size_z), #1
-            ( size_x, -size_y, size_z),#2
-            ( size_x, size_y, size_z),#3
-            ( -size_x, -size_y, size_z),#1
-            ( -size_x, size_y, size_z),#4
-            ( size_x, -size_y, size_z),#3
+from feather.shapes import Cube
 
-            ### back face
-            ( -size_x, -size_y, -size_z), #B1
-            ( size_x, -size_y, size_z),#B2
-            ( size_x, size_y, -size_z),#B3
-            ( -size_x, -size_y, -size_z),#B1
-            ( -size_x, size_y, -size_z),#B4
-            ( size_x, size_y, -size_z),#B3
 
-            ### top face
-            (-size_x, size_y, size_z),#4
-            (size_x, size_y, size_z),#3
-            (size_x, size_y, -size_z),#B3
-            (-size_x, size_y, size_z),#4
-            (-size_x, size_y, -size_z),#B4
-            (size_x, size_y, -size_z),#B3
+class Battlefield(Cube):
+    
+    def __init__(self, name, size_x, size_y, size_z, flip, scene = None):
+        self.size_x = size_x
+        self.size_y = size_y
+        self.size_z= size_z
+        Cube.__init__(self, name, flip, scene)
+        self.setScaling(size_x,size_y,size_z)
 
-            ### bottom face
-            (-size_x, -size_y, size_z),#1
-            (size_x, -size_y, size_z),#2
-            (size_x, -size_y, -size_z),#B2
-            (-size_x, -size_y, size_z),#1
-            (-size_x, -size_y, -size_z),#B1
-            (size_x, -size_y, -size_z),#B2
+    def getSizex(self):
+        return self.size_x
 
-            ### left side face
-            (-size_x, size_y, size_z),#4
-            (-size_x, -size_y, size_z),#1
-            (-size_x, -size_y, -size_z),#B1
-            (-size_x, size_y, size_z),#4
-            (-size_x, size_y, -size_z),#B4
-            (-size_x, -size_y, -size_z),#B1
-            ### right side face
-            (size_x, size_y, size_z),#3
-            (size_x, -size_y, size_z),#2
-            (size_x, -size_y, -size_z),#B2
-            (size_x, size_y, size_z),#3
-            (size_x, size_y, -size_z),#B3
-            (size_x, -size_y, -size_z),#B2
+    def getSizey(self):
+        return self.size_y
 
-            ],
-            None,
-            [
-            ### back face
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
-            
-            ### front face
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
+    def getSizez(self):
+        return self.size_z
+    
+    
 
-            ### top face
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
+    def isCollision(self,r,x,y,z): # cette fonction prend en paramètres un poins dans l'espace
+                            # et renvoie True s'il y a collision entre ce point et la battlefield
+        if x+r == self.size_x or x-r == -self.size_x:
+            return True
+        elif y+r == self.size_y or y-r == -self.size_y:
+            return True
+        elif z+r == self.size_z or z-r == -self.size_z:
+            return True
+        else:
+            return False
 
-            ### bottom face
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
+    def whereCollision(self,r,x,y,z):
+        if x+r == self.size_x:
+            return "right"
+        elif x-r == -self.size_x:
+            return "left"
+        elif y+r == self.size_y:
+            return "top"
+        elif y-r == -self.size_y:
+            return "bottom"
+        elif z+r == self.size_z:
+            return "front"
+        elif z-r == -self.size_z:
+            return "back"
+        else:
+            return "No Collision"
+    
+    
+    
 
-            ### left side
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
-            ### right side 
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
-            ]
-        )
+
 
