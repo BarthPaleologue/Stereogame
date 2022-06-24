@@ -1,14 +1,9 @@
 from OpenGL.GL import *
 import numpy as np
-import pygame
 from pygame.math import Vector3
 
 #local imports
-from feather import Texture, FrameBuffer, Scene
-from feather.shapes import Rectangle, Cube
-from feather.material import ColorMaterial, TextureMaterial
 from feather.camera import *
-from interlacer import Interlacer
 
 class Oeil :
 

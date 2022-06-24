@@ -25,12 +25,17 @@ On peut ensuite ajouter des shapes à notre scène :
 
 ```py
 from feather.shapes import Cube
-from feather.materials import ColorMaterial
 
 cube = Cube("cube", False, scene)
-
-cubeMaterial = ColorMaterial(1.0, 0.0, 0.0)
-cube.setMaterial(cubeMaterial)
 ```
 
-Notez que l'on doit affecter un matérial à la shape car il n'y a pas de material par défaut à l'heure actuelle
+### Utiliser les materials
+
+On peut ajouter un material à une shape :
+
+```py
+from feather.materials import ColorMaterial
+
+colorMat = ColorMaterial(1.0, 0.0, 0.0)
+cube.setMaterial(colorMat)
+```
