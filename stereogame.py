@@ -9,9 +9,8 @@ from feather.shapes import Rectangle, Cube, Sphere
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.camera import *
 from interlacer import Interlacer
-from game.Battlefield import Battlefield
 
-from game import Player
+from game import Player, Battlefield
 
 if __name__ == "__main__":
 	pygame.init()

@@ -8,7 +8,6 @@ from feather import Texture, FrameBuffer, Scene
 from feather.shapes import Rectangle, Cube
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.camera import *
-from game.Battlefield import Battlefield
 from interlacer import Interlacer
 
 if __name__ == "__main__":
@@ -47,11 +46,6 @@ if __name__ == "__main__":
 
 	galaxyMat = TextureMaterial(Texture("./assets/Galaxy.jpg"))
 	galaxy_rect.setMaterial(galaxyMat)
-
-	# Test battlefield
-	battlefield = Battlefield("battly", 4,1,7,False, scene)
-	battleTexture = TextureMaterial(Texture("./assets/tennis.png"))
-	battlefield.setMaterial(battleTexture)
 	
 	# screen
 	screen = Rectangle('screen', True)
@@ -92,7 +86,7 @@ if __name__ == "__main__":
 
 	running = True
 	while running:
-		time = 0.01
+		time += 0.01
 		
 		yellow_cube.setRotationY(45.0 + time * 50.0)
 		yellow_cube.setRotationX(60.0 * time)
