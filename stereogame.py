@@ -64,18 +64,19 @@ if __name__ == "__main__":
 	eye_distance = 0.008
 	position1 = Vector3(-5, 0, 0)
 	position2 = Vector3(5, 0, 0)
-	perspective_mx1 = perspective(45, width / height, 0.1, 100)
-	perspective_mx2 = perspective(45, width / height, 0.1, 100)
+	perspective_mx1 = perspective(45, width / height, 0.1, 100).dot(rotate(270 ,0 ,1 ,0))
+	perspective_mx2 = perspective(45, width / height, 0.1, 100).dot(rotate(90, 0, 1, 0))
 	
-	player1 = Player(position1, perspective_mx1, None)
-	player2 = Player(position2, perspective_mx2, None)
+	player1 = Player(position1, perspective_mx1, None, position2)
+	player2 = Player(position2, perspective_mx2, None, position1)
 	
-	eyeTarget = Vector3(0, 0, 0)
+	
+	'''eyeTarget = Vector3(0, 0, 0)
 	# perspective_mx : 45 = abgleVision
 
 
 	eye = Vector3(-eye_distance / 2, 0, 5)
-	view_matrix = lookat(eye, eyeTarget)
+	view_matrix = lookat(eye, eyeTarget)'''
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
@@ -113,9 +114,10 @@ if __name__ == "__main__":
 
 		###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
-		fbo.bind()
+		player1.getOeilGauche().getFrameBuffer().bind()
 		glViewport(0, 0, fbo_width, fbo_height)
 
+		view_matrix = lookat(player1.getOeilGauche(), player1.getEye_Target())
 		scene.render(perspective_mx, model_matrix, view_matrix)
 
 		###### DESSIN DES FRAMEBUFFER SUR L'ECRAN

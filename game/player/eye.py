@@ -4,12 +4,13 @@ from pygame.math import Vector3
 
 #local imports
 from feather.camera import *
+from feather import FrameBuffer
 
 class Eye:
 
-    def __init__(self, frameBuffer, view_matrix, position, eye_target) :
-        self.frameBuffer = frameBuffer
-        self.view_matrix = view_matrix
+    def __init__(self, position, eye_target) :
+        self.frameBuffer = FrameBuffer(int(1920/2), int(1080/2))
+        self.view_matrix = lookat(position, eye_target)
         self.position = position
         self.eye_target = eye_target
     #position espace (vetc3)
@@ -17,6 +18,9 @@ class Eye:
 
     def getFrameBuffer(self) :
         return self.frameBuffer
+
+    def setFrameBuffer(self, frameBuffer) :
+        self.frameBuffer = frameBuffer
 
     def getView_Matrix(self) :
         return self.view_matrix
