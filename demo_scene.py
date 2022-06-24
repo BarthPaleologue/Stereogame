@@ -154,11 +154,19 @@ if __name__ == "__main__":
 		if keys[pygame.K_RIGHT] :
 			z_position_rect += 0.01
 			rect2.setPosition(6, 3, z_position_rect)
+			print("z_position_rect : ", z_position_rect)
 		if keys[pygame.K_LEFT] :
 			z_position_rect -= 0.01
 			rect2.setPosition(6, 3, z_position_rect)
-
+			print("z_position_rect : ", z_position_rect)
+		if keys[pygame.K_g] :
+			eyeTarget = Vector3(eye_distance / 2, 0, 0)
+		if keys[pygame.K_d] :
+			eyeTarget = Vector3(-eye_distance / 2, 0, 0)
+		if keys[pygame.K_f] :
+			eyeTarget = Vector3(0, 0, 0)
 		view_matrices = [lookat(Vector3(-eye_distance / 2, 0, 5), eyeTarget), lookat(Vector3(eye_distance / 2, 0, 5), eyeTarget)]
+
 		
 		events = pygame.event.get()
 		for event in events:
