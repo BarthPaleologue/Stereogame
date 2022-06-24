@@ -8,6 +8,7 @@ from feather import Texture, FrameBuffer, Scene
 from feather.shapes import Rectangle, Cube
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.camera import *
+from feather.shapes.sphere import Sphere
 from interlacer import Interlacer
 from game.Battlefield import Battlefield
 
@@ -25,7 +26,12 @@ if __name__ == "__main__":
 	
 	######## DECLARATION DES SHAPES
 
-	battlefield = Battlefield("battly",4,2,7,False,scene)
+	sphere = Sphere("sphery",False,scene)
+	sphere.setScaling(0.3,0.3,0.3)
+	sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
+	sphere.setMaterial(sphereMat)
+
+	battlefield = Battlefield("battly",7,7,7,False,scene)
 	battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
 	battlefield.setMaterial(battleMat)
 	
@@ -97,7 +103,8 @@ if __name__ == "__main__":
 
 	running = True
 	while running:
-		time = pygame.time.get_ticks() / 1000.0
+		#time = pygame.time.get_ticks() / 1000.0
+		time = 1
 		deltaTime = (time - getTicksLastFrame)
 		getTicksLastFrame = time
 
