@@ -414,6 +414,7 @@ class OBJ :
             prev_mat = material
             self.shapes.append(myShape)
 
+    # Drawing the object 
     def draw(self, program, sTexture):
         for shape in self.shapes:
             if 'texture_Kd' in shape.mtl:
@@ -450,7 +451,7 @@ class Rectangle(Shape):
             (0.0, ty_max)]
         )
 
-class Cube(Shape):
+class Cube(Shape): # non complète, il manque deux faces ainsi que deux triangles
     def __init__(self, name, flip = False):
         Shape.__init__(self, name)
         ty_min = 0.0

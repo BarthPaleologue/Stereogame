@@ -1,51 +1,77 @@
-
 import pygame
 from pygame.locals import *
+
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from fileLoader import *
 
+import math
 
-if __name__ == "__main__":
-    pygame.init()
-    display = (1000,600)
-    pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
-    glMatrixMode(GL_PROJECTION) # <---- specify projection matrix
-    gluPerspective(90, (display[0]/display[1]), 0.1, 100)
+pygame.init()
+display = (800, 800)
+scree = pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
-    glMatrixMode(GL_MODELVIEW)  # <---- specify model view matrix
-    glTranslatef(0.0, 0.0, -5)
+glEnable(GL_DEPTH_TEST)
 
-    # import file
-    model = OBJ('hammer.obj', swapyz=True)
-    angle =0
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-        
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        
-        # draw model
-        glPushMatrix()
-        
+sphere = gluNewQuadric() #Create new sphere
 
-        model.render()
-        glPopMatrix()
-        pygame.display.flip()
-        pygame.time.wait(10)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            
-            if event.type == KEYDOWN: #fleche gauche augmente angle de rotation, droite diminue
-                if event.key == K_LEFT:
-                    angle += 1
-                elif event.key == K_RIGHT:
-                    angle -= 1
-                glRotatef(angle, 3, 1, 1)
+glMatrixMode(GL_PROJECTION)
+gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
+
+glMatrixMode(GL_MODELVIEW)
+gluLookAt(0, -8, 0, 0, 0, 0, 0, 0, 1)
+viewMatrix = glGetFloatv(GL_MODELVIEW_MATRIX)
+glLoadIdentity()
+
+run = True
+while run:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN:
+                run = False  
+
+    keypress = pygame.key.get_pressed()
+
+    # init model view matrix
+    glLoadIdentity()
+
+    # init the view matrix
+    glPushMatrix()
+    glLoadIdentity()
+
+    # apply the movment 
+    if keypress[pygame.K_w]:
+        glTranslatef(0,0,0.1)
+    if keypress[pygame.K_s]:
+        glTranslatef(0,0,-0.1)
+    if keypress[pygame.K_d]:
+        glTranslatef(-0.1,0,0)
+    if keypress[pygame.K_a]:
+        glTranslatef(0.1,0,0)
+
+    # multiply the current matrix by the get the new view matrix and store the final vie matrix 
+    glMultMatrixf(viewMatrix)
+    viewMatrix = glGetFloatv(GL_MODELVIEW_MATRIX)
+
+    # apply view matrix
+    glPopMatrix()
+    glMultMatrixf(viewMatrix)
+
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT) #Clear the screen
+
+    glPushMatrix()
+
+    glTranslatef(-1.5, 0, 0) #Move to the place
+    glColor4f(0.5, 0.2, 0.2, 1) #Put color
+    gluSphere(sphere, 1.0, 32, 16) #Draw sphere
+
+    glPopMatrix()
+
+    pygame.display.flip() #Update the screen
+    pygame.time.wait(10)
+
+pygame.quit()
         
         
         
