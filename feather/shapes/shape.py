@@ -19,6 +19,10 @@ class Shape(Transform):
         self.nb_points = 0
         self.np_texcoord = None
 
+        self.vertices = None
+        self.normals = None
+        self.texcoords = None
+
         self.material = DefaultMaterial()
 
         if scene is not None:
@@ -42,6 +46,11 @@ class Shape(Transform):
                 print('Invalid number of points in vertice ' + str(val))
                 exit()
         self.nb_points = int(len(vertices))
+
+        self.vertices = vertices
+        self.normals = normals
+        self.texcoords = tex_coords
+
         vertices = np.array(vertices, dtype=np.float32)
         if lines:
             self.type = GL_LINE_STRIP
