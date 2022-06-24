@@ -1,13 +1,13 @@
 class Player :
     
-    def __init__(self, position, perspective_mx, batte, oeilGauche, oeilDroit, gamepad, invincible) :
+    def __init__(self, position, perspective_mx, gamepad) :
         self.position = position
         self.angleVision = perspective_mx
-        self.batte = batte
-        self.oeilGauche = oeilGauche
-        self.oeilDroit = oeilDroit
+        self.batte = None ### Initialiser la batte ici
+        self.oeilGauche = None ### Initialiser l'oeil gauche ici
+        self.oeilDroit = None ### Initialiser l'oeil droit ici
         self.gamepad = gamepad
-        self.invincible = invincible
+        self.invincible = False
         #self.state = state
 
     def getPosition(self) :

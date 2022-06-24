@@ -4,12 +4,13 @@ import pygame
 from pygame.math import Vector3
 
 #local imports
-from game import Player
 from feather import Texture, FrameBuffer, Scene
 from feather.shapes import Rectangle, Cube
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.camera import *
 from interlacer import Interlacer
+
+from game import Player
 
 if __name__ == "__main__":
 	pygame.init()
@@ -61,8 +62,10 @@ if __name__ == "__main__":
 	position2 = Vector3(5, 0, 0)
 	perspective_mx1 = perspective(45, width / height, 0.1, 100)
 	perspective_mx2 = perspective(45, width / height, 0.1, 100)
-	player1 = Player(position1, perspective_mx1, batte, oeilGauche, oeilDroit, gamepad)
-	player2 = Player(position2, perspective_mx2, batte, oeilGauche, oeilDroit, gamepad)
+	
+	player1 = Player(position1, perspective_mx1, None)
+	player2 = Player(position2, perspective_mx2, None)
+	
 	eyeTarget = Vector3(0, 0, 0)
 	# perspective_mx : 45 = abgleVision
 
