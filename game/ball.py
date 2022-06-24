@@ -1,8 +1,13 @@
 from feather.shapes import Shape
 
 class Ball(Shape):
-        def __init__(self, name, position, velocity, acceleration ,trajectory, scene, flip = None):
+        def __init__(self, name, position, velocity, acceleration,  scene, flip = None):
+
             Shape.__init__(self, name, scene)
+            self.position = position
+            self.velocity = velocity
+            self.acceleration = acceleration
+            
             ty_min = 0.0
             ty_max = 1.0
             if flip == True:
