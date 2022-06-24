@@ -9,7 +9,8 @@ from feather.shapes import Rectangle, Cube, Sphere
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.projections import *
 from feather.algebra import *
-from feather.loaders import OBJsanstex
+from feather.camera import *
+from feather.shapes.sphere import Sphere
 from interlacer import Interlacer
 
 from game import Player, Battlefield
@@ -26,7 +27,12 @@ if __name__ == "__main__":
 	
 	######## DECLARATION DES SHAPES
 
-	battlefield = Battlefield("battly", 4, 2, 7, scene)
+	sphere = Sphere("sphery",False,scene)
+	sphere.setScaling(0.3,0.3,0.3)
+	sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
+	sphere.setMaterial(sphereMat)
+
+	battlefield = Battlefield("battly",7,7,7,scene)
 	battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
 	battlefield.setMaterial(battleMat)
 
