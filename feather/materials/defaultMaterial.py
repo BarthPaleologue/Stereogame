@@ -1,4 +1,4 @@
-from feather.material import ColorMaterial
+from feather.materials import ColorMaterial
 
 class DefaultMaterial(ColorMaterial):
     def __init__(self):
