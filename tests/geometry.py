@@ -451,7 +451,7 @@ class Rectangle(Shape):
             (0.0, ty_max)]
         )
 
-class Cube(Shape): # non complète, il manque deux faces ainsi que deux triangles
+class Cube(Shape): 
     def __init__(self, name, flip = False):
         Shape.__init__(self, name)
         ty_min = 0.0
