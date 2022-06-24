@@ -34,7 +34,7 @@ if __name__ == "__main__":
 	yellow_cube.setRotationY(45)
 	
 	cubeMat = ColorMaterial(1.0, 1.0, 0.0)
-	yellow_cube.setMaterial(cubeMat)
+	#yellow_cube.setMaterial(cubeMat)
 
 	galaxy_rect = Rectangle('galaxy_rect', True, scene)
 	galaxy_rect.setPosition(0, 0, -6)
