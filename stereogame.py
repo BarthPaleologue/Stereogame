@@ -71,28 +71,14 @@ if __name__ == "__main__":
 	ident_matrix = np.identity(4, dtype=np.float32)
 
 	######### DECLARATION DES JOUEURS
-
-	eye_distance = 0.008
-	position1 = Vector3(-0, 0, -5)
-	position2 = Vector3(0, 0, -5)
-	perspective_mx1 = perspective(45, width / height, 0.1, 100).dot(rotate(270 ,0 ,1 ,0))
-	perspective_mx2 = perspective(45, width / height, 0.1, 100).dot(rotate(90, 0, 1, 0))
 	
-	player1 = Player(position1, perspective_mx1, None, position2)
-	player2 = Player(position2, perspective_mx2, None, position1)
-	
-	
-	'''eyeTarget = Vector3(0, 0, 0)
-	# perspective_mx : 45 = abgleVision
-
-
-	eye = Vector3(-eye_distance / 2, 0, 5)
-	view_matrix = lookat(eye, eyeTarget)'''
+	player1 = Player(None)
+	player1.setPosition(0, 0, -5)
+	player2 = Player(None)
+	player2.setPosition(0, 0, -5)
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
-	
-	#fbo = FrameBuffer(fbo_width, fbo_height)
 
 	######### DECLARATION DE L'ENTRELACEUR
 
@@ -113,6 +99,8 @@ if __name__ == "__main__":
 		getTicksLastFrame = time
 
 		###### UPDATE ETAT DES SHAPES
+
+		player1.oeilGauche.setRotationY(time * 50.0)
 		
 		yellow_cube.setRotationY(45.0 + time * 70.0)
 		yellow_cube.setRotationX(80.0 * time)
@@ -125,12 +113,11 @@ if __name__ == "__main__":
 
 		###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
-		fbo = player1.getOeilGauche().getFrameBuffer()
+		fbo = player1.oeilGauche.frameBuffer
 		fbo.bind()
 		glViewport(0, 0, fbo_width, fbo_height)
 
-		view_matrix = lookat(player1.getOeilGauche().getPosition(), player1.getEye_Target())
-		scene.render(perspective_mx, model_matrix, view_matrix)
+		scene.render(player1.oeilGauche.getProjectionMatrix(), model_matrix, player1.oeilGauche.computeViewMatrix())
 
 		###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 

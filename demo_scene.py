@@ -92,6 +92,9 @@ if __name__ == "__main__":
 		yellow_cube.setRotationY(45.0 + time * 50.0)
 		yellow_cube.setRotationX(60.0 * time)
 
+		#rightCamera.setRotationY(time * 50)
+		#leftCamera.setRotationY(time * 50)
+
 		rotationSpeed = 1
 		x = math.cos(time * rotationSpeed) * circleRadius
 		z = math.sin(time * rotationSpeed) * circleRadius
