@@ -1,5 +1,6 @@
 # Class object
 import os
+from feather.materials.textureMaterial import TextureMaterial
 from feather.texture import Texture
 from feather.shapes.shape import Shape
 
@@ -29,7 +30,7 @@ class OBJ :
                 mtl[values[0]] = list(map(float, values[1:]))
         return contents
 
-    def __init__(self, filename, swapyz=False):
+    def __init__(self, filename, swapyz, scene):
         """Loads a Wavefront OBJ file. """
         loc_vertices = []
         loc_normals = []
@@ -111,9 +112,12 @@ class OBJ :
                 all_vertices.append(loc_vertices[vertices[i] - 1])
 
         if len(all_vertices):
-            myShape = Shape("shapy")
+            myShape = Shape("shapy", scene)
             myShape.build_buffers(all_vertices, all_normals, all_texcoords)
             myShape.mtl = loc_mtl[prev_mat]
+            print(myShape.mtl)
+            myShapeMat = TextureMaterial(myShape.mtl['texture_Kd'])
+            myShape.setMaterial(myShapeMat)
             prev_mat = material
             self.shapes.append(myShape)
 

@@ -81,20 +81,20 @@ class Shape(Transform):
 
         if tex_coords != None:
             if self.nb_points != len(tex_coords):
-                print('Invalid number of points in tex_coords ' + str(len(tex_coords)) + ' expecting ' + str(self.nb_points * 2))
+                #print('Invalid number of points in tex_coords ' + str(len(tex_coords)) + ' expecting ' + str(self.nb_points * 2))
                 exit()
             for val in tex_coords:
                 if len(val) != 2:
-                    print('Invalid number of points in normals ' + str(val))
+                    #print('Invalid number of points in normals ' + str(val))
                     exit()
             tex_coords = np.array(tex_coords, dtype=np.float32)
             self.texcoord_vbo = glGenBuffers(1)
             glBindBuffer(GL_ARRAY_BUFFER, self.texcoord_vbo)
             glBufferData(GL_ARRAY_BUFFER, self.nb_points*2*4, tex_coords, GL_STATIC_DRAW)
             self.np_texcoord = tex_coords
-            print('Tex coords ' + str(tex_coords))
+            #print('Tex coords ' + str(tex_coords))
 
-        print('Buffers generated - Number of points ' + str(self.nb_points) + ' vertex_vbo ' + str(self.vertex_vbo) + ' normal_vbo ' + str(self.normal_vbo) + ' texcoord_vbo ' + str(self.texcoord_vbo))
+        #print('Buffers generated - Number of points ' + str(self.nb_points) + ' vertex_vbo ' + str(self.vertex_vbo) + ' normal_vbo ' + str(self.normal_vbo) + ' texcoord_vbo ' + str(self.texcoord_vbo))
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 
