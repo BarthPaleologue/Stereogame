@@ -1,5 +1,7 @@
 from OpenGL.GL import *
 import numpy as np
+from game.player.GamePad import GamePad
+from game.player.Keyboard import Keyboard
 import pygame
 from pygame.math import Vector3
 
@@ -91,8 +93,12 @@ if __name__ == "__main__":
 	circleRadius = 1.7
 
 	######### GAME LOOP
+	buttons = Keyboard()
 
+	pygame.joystick.init() # initialize joysticks
+	joy = GamePad(0)
 	running = True
+	print(pygame.joystick.get_count())
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
 		deltaTime = time - getTicksLastFrame
@@ -100,12 +106,12 @@ if __name__ == "__main__":
 
 		###### UPDATE ETAT DES SHAPES
 
-		player1.oeilGauche.setRotationY(time * 50.0)
+		#player1.oeilGauche.setRotationY(time * 50.0)
 		
 		yellow_cube.setRotationY(45.0 + time * 70.0)
 		yellow_cube.setRotationX(80.0 * time)
 
-		rotationSpeed = 1
+		rotationSpeed = 0
 		x = math.cos(time * rotationSpeed) * circleRadius
 		z = math.sin(time * rotationSpeed) * circleRadius
 
@@ -149,12 +155,6 @@ if __name__ == "__main__":
 
 		####### GESTION DES ENTREES CLAVIER
 
-		keys = pygame.key.get_pressed()
-		if keys[pygame.K_z]:
-			circleRadius += 0.05
-		if keys[pygame.K_s]:
-			circleRadius -= 0.05
-
 		events = pygame.event.get()
 		for event in events:
 			if event.type == pygame.QUIT:
@@ -163,3 +163,25 @@ if __name__ == "__main__":
 				x, y = event.rel
 				if any(event.buttons):
 					model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
+			# pour tester si le programme detecte les appuie sur les boutons
+			"""if event.type == pygame.JOYBUTTONDOWN:
+				print("Joystick button pressed.")
+			if event.type == pygame.JOYBUTTONUP:
+				print("Joystick button pressed.")"""
+			
+
+		
+		buttons.update()
+		if buttons.isBattePressed():
+			print("batty")
+		joy.update()
+		if joy.isBattePressed():
+			print("joybatty")
+		
+		keys = pygame.key.get_pressed()
+		if keys[pygame.K_z]:
+			circleRadius += 0.05
+		if keys[pygame.K_s]:
+			circleRadius -= 0.05
+
+		

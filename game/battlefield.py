@@ -65,10 +65,3 @@ class Battlefield(Cube):
             return [0,0,1]
         else:
             [0,0,0]
-        
-    
-    
-    
-
-
-
