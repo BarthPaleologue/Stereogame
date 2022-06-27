@@ -1,5 +1,7 @@
 from OpenGL.GL import *
 import numpy as np
+from game.player.GamePad import GamePad
+from game.player.Keyboard import Keyboard
 import pygame
 from pygame.math import Vector3
 
@@ -15,13 +17,23 @@ from interlacer import Interlacer
 
 from game import Player, Battlefield
 
+def drawEyeToFrameBuffer(eye, scene, testMat, testTexture):
+	eye.frameBuffer.bind()
+	glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
+
+
+	testMat.texture = testTexture
+
+	scene.render(eye.getProjectionMatrix(), model_matrix, eye.computeViewMatrix())
+
+
 if __name__ == "__main__":
 	pygame.init()
-	#width, height = 1920, 1080
-	infoObject = pygame.display.Info()
-	width, height = infoObject.current_w, infoObject.current_h
+	width, height = 1920, 1080
+	#infoObject = pygame.display.Info()
+	#width, height = infoObject.current_w, infoObject.current_h
 	pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
-	#pygame.display.toggle_fullscreen()
+	pygame.display.toggle_fullscreen()
 
 	scene = Scene()
 	
@@ -29,35 +41,38 @@ if __name__ == "__main__":
 
 	sphere = Sphere("sphery", False, scene)
 	sphere.setScaling(0.3, 0.3, 0.3)
-	sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
+	sphereMat = TextureMaterial(Texture("./assets/space.png"))
 	sphere.setMaterial(sphereMat)
 
 	battlefield = Battlefield("battly", 7, 7, 7, scene)
-	battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
+	battleMat = TextureMaterial(Texture("./assets/tron2.png"))
 	battlefield.setMaterial(battleMat)
 
 	#gun = OBJsanstex("./assets/awp.obj", False, scene)
 	
-	rect = Rectangle('rect', False, scene)
+	rect = Rectangle('rect', True, scene)
 	rect.setPosition(-6, -3, 0)
 	rect.setScaling(0.5, 0.5, 1)
 
-	rectMat = ColorMaterial(1.0, 0.0, 0.0)
+	rectMat = TextureMaterial(Texture("./assets/black.jpg"))
 	rect.setMaterial(rectMat)
 
 	yellow_cube = Cube('yellow_cube', True, scene)
 	yellow_cube.setScaling(0.5, 0.5, 0.5)
 	yellow_cube.setRotationY(45)
 	
-	cubeMat = ColorMaterial(1.0, 1.0, 0.0)
+	cubeMat = TextureMaterial(Texture("./assets/tennis.png"))
 	yellow_cube.setMaterial(cubeMat)
 
 	galaxy_rect = Rectangle('galaxy_rect', True, scene)
-	galaxy_rect.setPosition(0, 0, -6)
+	galaxy_rect.setPosition(0, 0, -15)
 	galaxy_rect.setScaling(8 * width / height, 8, 1)
 
 	galaxyMat = TextureMaterial(Texture("./assets/Galaxy.jpg"))
 	galaxy_rect.setMaterial(galaxyMat)
+
+	blackTex = Texture("./assets/black.jpg")
+	numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
 	
 	######### DECLARATION DE L'ECRAN
 
@@ -72,10 +87,13 @@ if __name__ == "__main__":
 
 	######### DECLARATION DES JOUEURS
 	
-	player1 = Player(None)
+	player1 = Player(False, None)
 	player1.setPosition(0, 0, -5)
-	player2 = Player(None)
-	player2.setPosition(0, 0, -5)
+	player2 = Player(False, None)
+	player2.setPosition(0, 0, 5)
+
+	player3 = Player(False, None)
+	player3.setPosition(0, 0, -7)
 
 	fbo_width = int(width/2)
 	fbo_height = int(height/2)
@@ -88,11 +106,15 @@ if __name__ == "__main__":
 
 	getTicksLastFrame = 0.0
 	x,z = 0.0, 0.0
-	circleRadius = 1.7
+	circleRadius = 2.5
 
 	######### GAME LOOP
+	buttons = Keyboard()
 
+	pygame.joystick.init() # initialize joysticks
+	joy = GamePad(0)
 	running = True
+	print(pygame.joystick.get_count())
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
 		deltaTime = time - getTicksLastFrame
@@ -100,12 +122,12 @@ if __name__ == "__main__":
 
 		###### UPDATE ETAT DES SHAPES
 
-		player1.oeilGauche.setRotationY(time * 50.0)
+		#player1.oeilGauche.setRotationY(time * 50.0)
 		
 		yellow_cube.setRotationY(45.0 + time * 70.0)
 		yellow_cube.setRotationX(80.0 * time)
 
-		rotationSpeed = 1
+		rotationSpeed = 0
 		x = math.cos(time * rotationSpeed) * circleRadius
 		z = math.sin(time * rotationSpeed) * circleRadius
 
@@ -113,11 +135,22 @@ if __name__ == "__main__":
 
 		###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
-		fbo = player1.oeilGauche.frameBuffer
-		fbo.bind()
-		glViewport(0, 0, fbo_width, fbo_height)
+		### PLAYER 1
+		drawEyeToFrameBuffer(player1.oeilDroit, scene, rectMat,  numTextures[0])
+		drawEyeToFrameBuffer(player1.oeilGauche, scene, rectMat,  numTextures[1])
 
-		scene.render(player1.oeilGauche.getProjectionMatrix(), model_matrix, player1.oeilGauche.computeViewMatrix())
+		### SEPARATION
+		drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat, numTextures[2])
+		drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[3])
+
+		### PLAYER 2
+		drawEyeToFrameBuffer(player2.oeilDroit, scene, rectMat,  numTextures[4])
+		drawEyeToFrameBuffer(player2.oeilGauche, scene, rectMat,  numTextures[5])
+
+		### SEPARATION
+		drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat,  numTextures[6])
+		drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[7])
+		
 
 		###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
@@ -132,16 +165,22 @@ if __name__ == "__main__":
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 
 		###### ENTRELACEMENT DES FRAMEBUFFERS
+
+		offset = 0
+
 		interlacer.use(ortho_mx, ident_matrix)
 
-		interlacer.setTextureFromFBO(fbo, 0)
-		interlacer.setTextureFromFBO(fbo, 1)
-		interlacer.setTextureFromFBO(fbo, 2)
-		interlacer.setTextureFromFBO(fbo, 3)
-		interlacer.setTextureFromFBO(fbo, 4)
-		interlacer.setTextureFromFBO(fbo, 5)
-		interlacer.setTextureFromFBO(fbo, 6)
-		interlacer.setTextureFromFBO(fbo, 7)
+		interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, (0 + offset) % 8)
+		interlacer.setTextureFromFBO(player1.oeilGauche.frameBuffer, (1 + offset) % 8)
+		
+		interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (2 + offset) % 8)
+		interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (3 + offset) % 8)
+		
+		interlacer.setTextureFromFBO(player2.oeilDroit.frameBuffer, (4 + offset) % 8)
+		interlacer.setTextureFromFBO(player2.oeilGauche.frameBuffer, (5 + offset) % 8)
+		
+		interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (6 + offset) % 8)
+		interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (7 + offset) % 8)
 
 		screen.draw(interlacer.program)
 
@@ -154,6 +193,14 @@ if __name__ == "__main__":
 			circleRadius += 0.05
 		if keys[pygame.K_s]:
 			circleRadius -= 0.05
+		if keys[pygame.K_q]:
+			player1.setEyeDistance(player1.eyeDistance + 0.001)
+			player2.setEyeDistance(player2.eyeDistance + 0.001)
+			player3.setEyeDistance(player3.eyeDistance + 0.001)
+		if keys[pygame.K_d]:
+			player1.setEyeDistance(player1.eyeDistance - 0.001)
+			player2.setEyeDistance(player2.eyeDistance - 0.001)
+			player3.setEyeDistance(player3.eyeDistance - 0.001)
 
 		events = pygame.event.get()
 		for event in events:
@@ -163,3 +210,25 @@ if __name__ == "__main__":
 				x, y = event.rel
 				if any(event.buttons):
 					model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
+			# pour tester si le programme detecte les appuie sur les boutons
+			"""if event.type == pygame.JOYBUTTONDOWN:
+				print("Joystick button pressed.")
+			if event.type == pygame.JOYBUTTONUP:
+				print("Joystick button pressed.")"""
+			
+
+		
+		buttons.update()
+		if buttons.isBattePressed():
+			print("batty")
+		joy.update()
+		if joy.isBattePressed():
+			print("joybatty")
+		
+		keys = pygame.key.get_pressed()
+		if keys[pygame.K_z]:
+			circleRadius += 0.05
+		if keys[pygame.K_s]:
+			circleRadius -= 0.05
+
+		

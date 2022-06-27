@@ -56,7 +56,7 @@ class Battlefield(Cube):
         if face == "right":
             return np.array([-1,0,0]), np.array([0,1,1])
         elif face == "left":
-            return np.array([1,0,0]), np.array([0,1,1])
+            return np.array([1,0,0]), np.arrray([0,1,1])
         elif face == "top":
             return np.array([0,-1,0]), np.array([1,0,1])
         elif face == "bottom":
