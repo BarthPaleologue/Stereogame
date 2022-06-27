@@ -23,6 +23,8 @@ viewMatrix = glGetFloatv(GL_MODELVIEW_MATRIX)
 glLoadIdentity()
 
 run = True
+joystick = pygame.joystick.Joystick(0)
+joystick.init()
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -30,9 +32,11 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN:
                 run = False  
-
+        if event.type == pygame.JOYBUTTONDOWN:
+            print("Joystick button pressed.")
+    
     keypress = pygame.key.get_pressed()
-
+    
     # init model view matrix
     glLoadIdentity()
 
