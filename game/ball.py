@@ -13,8 +13,8 @@ class Ball(Sphere):
 
         def update(self):
             self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
-            newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
-            self.velocity = newVelocity
+            #newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
+            #self.velocity = newVelocity
             
         def setVelocity(self, x, y, z):
            self.velocity = np.array([x, y, z])

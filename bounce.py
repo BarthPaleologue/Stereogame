@@ -30,20 +30,9 @@ if __name__ == "__main__":
     sphere = Ball("sphery", False,1, scene)
     sphere.setPosition(-2, -3, 2)
     sphere.setScaling(0.3, 0.3, 0.3)
-    sphere.setVelocity(0.01, 0.02, 0)
+    sphere.setVelocity(0.01, -0.02, 0)
     sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
     sphere.setMaterial(sphereMat)
-
-    """
-
-    sphere = Ball("sphery", False,  1,scene)
-    #sphere = Ball("sphery", position = [-5,-6,0], velocity = [0.001,0.001,0.001], radius =  scene = scene)
-    ##sphere = Ball("sphery", radius = 1, scene = scene)
-    sphere.setPosition(-6, -3, 0)
- #   sphere.setVelocity(0.001, 0.001, 0.001)
-    sphere.setScaling(0.3, 0.3, 0.3)
-    sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
-    sphere.setMaterial(sphereMat)"""
 
     battlefield = Battlefield("battly", 7, 7, 7, scene)
     battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
@@ -98,30 +87,16 @@ if __name__ == "__main__":
         getTicksLastFrame = time
 
         ###### UPDATE ETAT DES SHAPES
-
-        #pygame.time.wait(1000)
-
-        sphere.update()
-        print(sphere.getPosition())
         
         if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
-            print("COLLISION")
-            vectors = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
-            normVect = vectors
-            #wallVect = vectors[1]
+            normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
             oldVelocity = sphere.getVelocity()
-
             newVelocity = reflection(oldVelocity, normVect)
 
             sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
 
-            #normal = np.multiply(normVect,np.dot(oldVelocity, np.multiply(normVect, -1)))
-            #tangent = np.multiply(wallVect,np.dot(oldVelocity, wallVect))
-            #print(oldVelocity)
-            #newVelocity = np.add(np.multiply(normVect,np.dot(oldVelocity, np.multiply(normVect, -1))), np.multiply(wallVect,np.dot(oldVelocity, wallVect)))
-            #print( "vectors : ", vectors , "newVolicty : " ,newVelocity)
-            #sphere.setVelocity(newVelocity)
-    #########################        sphere.update()
+        sphere.update()
+
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 

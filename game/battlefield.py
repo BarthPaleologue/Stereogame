@@ -38,17 +38,17 @@ class Battlefield(Cube):
 
     def whereCollision(self, r, center):
         x,y,z = center[0], center[1], center[2]
-        if x+r == self.size_x:
+        if x+r >= self.size_x:
             return "right"
-        elif x-r == -self.size_x:
+        elif x-r <= -self.size_x:
             return "left"
-        elif y+r == self.size_y:
+        elif y+r >= self.size_y:
             return "top"
-        elif y-r == -self.size_y:
+        elif y-r <= -self.size_y:
             return "bottom"
-        elif z+r == self.size_z:
+        elif z+r >= self.size_z:
             return "front"
-        elif z-r == -self.size_z:
+        elif z-r <= -self.size_z:
             return "back"
         else:
             return "No Collision"
