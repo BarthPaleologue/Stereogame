@@ -5,17 +5,22 @@ from pygame.math import Vector3
 
 class Player(Transform):
     
-    def __init__(self, gamepad) :
+    def __init__(self, flip, gamepad) :
         Transform.__init__(self)
         self.batte = None ### Initialiser la batte ici
         
-        self.eyeDistance = 0.008
+        self.eyeDistance = 0.0069
 
         self.oeilGauche = Eye() ### Initialiser l'oeil gauche ici
         self.oeilGauche.setPosition(-self.eyeDistance / 2, 0, 0)
 
         self.oeilDroit = Eye() ### Initialiser l'oeil droit ici
         self.oeilDroit.setPosition(self.eyeDistance / 2, 0, 0)
+
+        if(flip):
+            self.oeilDroit, self.oeilGauche = self.oeilGauche, self.oeilDroit
+
+        self.setEyesTarget(0, 0, 0)
 
         self.gamepad = gamepad
         self.invincible = False
@@ -75,3 +80,12 @@ class Player(Transform):
         self.oeilDroit.setPosition(x - self.eyeDistance / 2, y, z)
         self.oeilGauche.setPosition(x + self.eyeDistance / 2, y, z)
         return super().setPosition(x, y, z)
+
+    def setEyesTarget(self, x, y, z):
+        self.oeilDroit.setTarget(Vector3(x, y, z))
+        self.oeilGauche.setTarget(Vector3(x, y, z))
+
+    def setEyeDistance(self, eyeDistance):
+        self.eyeDistance = eyeDistance
+        self.oeilDroit.setPosition(self.position[0] - self.eyeDistance / 2, self.position[1], self.position[2])
+        self.oeilGauche.setPosition(self.position[0] + self.eyeDistance / 2, self.position[1], self.position[2])
