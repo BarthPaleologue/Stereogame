@@ -35,7 +35,7 @@ class Battlefield(Cube):
         else:
             return False
 
-    def whereCollision(self,r, center):
+    def whereCollision(self, r, center):
         x,y,z = center[0], center[1], center[2]
         if x+r == self.size_x:
             return "right"
