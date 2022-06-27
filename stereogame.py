@@ -13,6 +13,7 @@ from feather.projections import *
 from feather.algebra import *
 from feather.camera import *
 from feather.shapes.sphere import Sphere
+from feather.loaders.objloader import OBJ
 from interlacer import Interlacer
 
 from game import Player, Battlefield
@@ -39,12 +40,17 @@ if __name__ == "__main__":
 	
 	######## DECLARATION DES SHAPES
 
+	#skull = OBJ("./assets/skull.obj", False, scene)
+	#for(i, shape) in enumerate(skull.shapes):
+	#	shape.setScaling(0.05, 0.05, 0.05)
+	#	shape.setRotationX(90)
+
 	sphere = Sphere("sphery", False, scene)
 	sphere.setScaling(0.3, 0.3, 0.3)
 	sphereMat = TextureMaterial(Texture("./assets/space.png"))
 	sphere.setMaterial(sphereMat)
 
-	battlefield = Battlefield("battly", 7, 7, 7, scene)
+	battlefield = Battlefield("battly", 7, 3, 10, scene)
 	battleMat = TextureMaterial(Texture("./assets/tron2.png"))
 	battlefield.setMaterial(battleMat)
 
@@ -115,7 +121,6 @@ if __name__ == "__main__":
 	joystick.init()
 	joy = GamePad(0)
 	running = True
-	print(pygame.joystick.get_count())
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
 		deltaTime = time - getTicksLastFrame
@@ -174,14 +179,18 @@ if __name__ == "__main__":
 		interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, (0 + offset) % 8)
 		interlacer.setTextureFromFBO(player1.oeilGauche.frameBuffer, (1 + offset) % 8)
 		
-		interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (2 + offset) % 8)
-		interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (3 + offset) % 8)
+		#interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (2 + offset) % 8)
+		#interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (3 + offset) % 8)
+		interlacer.setTextureFromImage(blackTex, (2 + offset) % 8)
+		interlacer.setTextureFromImage(blackTex, (3 + offset) % 8)
 		
 		interlacer.setTextureFromFBO(player2.oeilDroit.frameBuffer, (4 + offset) % 8)
 		interlacer.setTextureFromFBO(player2.oeilGauche.frameBuffer, (5 + offset) % 8)
 		
-		interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (6 + offset) % 8)
-		interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (7 + offset) % 8)
+		#interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (6 + offset) % 8)
+		#interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (7 + offset) % 8)
+		interlacer.setTextureFromImage(blackTex, (6 + offset) % 8)
+		interlacer.setTextureFromImage(blackTex, (7 + offset) % 8)
 
 		screen.draw(interlacer.program)
 
@@ -219,9 +228,9 @@ if __name__ == "__main__":
 		buttons.update()
 		if buttons.isBattePressed():
 			print("batty")
-		joy.update()
-		if joy.isBattePressed():
-			print("joybatty")
+		#joy.update()
+		#if joy.isBattePressed():
+		#	print("joybatty")
 		
 
 		keys = pygame.key.get_pressed()

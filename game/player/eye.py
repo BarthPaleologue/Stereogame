@@ -15,7 +15,7 @@ class Eye(Camera):
         width, height = 1920, 1080
         Camera.__init__(self, 45, width/height)
         
-        self.frameBuffer = FrameBuffer(int(width/4), int(height/4))
+        self.frameBuffer = FrameBuffer(int(width/2), int(height/2))
 
     def getFrameBuffer(self) :
         return self.frameBuffer
