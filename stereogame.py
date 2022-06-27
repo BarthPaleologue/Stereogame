@@ -117,9 +117,12 @@ if __name__ == "__main__":
 	######### GAME LOOP
 	buttons = Keyboard()
 
-	joystick = pygame.joystick.Joystick(0)
-	joystick.init()
-	joy = GamePad(0)
+	pygame.joystick.init()
+	if pygame.joystick.get_count() > 0 :
+		joystick = pygame.joystick.Joystick(0)
+	#joystick = pygame.joystick.Joystick(0)
+	#joystick.init()
+		joy = GamePad(0)
 	running = True
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
@@ -238,9 +241,3 @@ if __name__ == "__main__":
 			circleRadius += 0.05
 		if keys[pygame.K_s]:
 			circleRadius -= 0.05
-
-		
-			
-			
-	
-		

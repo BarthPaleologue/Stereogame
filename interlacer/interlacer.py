@@ -7,7 +7,7 @@ class Interlacer(Program):
         ### load shader code
         with open(os.path.join(filePath, 'shaders/interlaceVertex.glsl'), 'r') as file:
             interlacerVertex = file.read()
-        with open(os.path.join(filePath, 'shaders/interlaceFragment.glsl'), 'r') as file:
+        with open(os.path.join(filePath, 'shaders/interlaceFloatFragment.glsl'), 'r') as file:
             interlacerFragment = file.read()
 
         ### init program
