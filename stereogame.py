@@ -117,10 +117,9 @@ if __name__ == "__main__":
 	######### GAME LOOP
 	buttons = Keyboard()
 
-	#pygame.joystick.init() # initialize joysticks
-	#joy = GamePad(0)
-	#print(pygame.joystick.get_count())
-
+	joystick = pygame.joystick.Joystick(0)
+	joystick.init()
+	joy = GamePad(0)
 	running = True
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
@@ -213,8 +212,7 @@ if __name__ == "__main__":
 			player2.setEyeDistance(player2.eyeDistance - 0.001)
 			player3.setEyeDistance(player3.eyeDistance - 0.001)
 
-		events = pygame.event.get()
-		for event in events:
+		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				running = False
 			if event.type == pygame.MOUSEMOTION:
@@ -222,11 +220,9 @@ if __name__ == "__main__":
 				if any(event.buttons):
 					model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
 			# pour tester si le programme detecte les appuie sur les boutons
-			"""if event.type == pygame.JOYBUTTONDOWN:
+			if event.type == pygame.JOYBUTTONDOWN:
 				print("Joystick button pressed.")
-			if event.type == pygame.JOYBUTTONUP:
-				print("Joystick button pressed.")"""
-			
+		
 
 		
 		buttons.update()
@@ -236,10 +232,15 @@ if __name__ == "__main__":
 		#if joy.isBattePressed():
 		#	print("joybatty")
 		
+
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_z]:
 			circleRadius += 0.05
 		if keys[pygame.K_s]:
 			circleRadius -= 0.05
 
+		
+			
+			
+	
 		
