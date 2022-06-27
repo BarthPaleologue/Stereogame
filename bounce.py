@@ -28,9 +28,9 @@ if __name__ == "__main__":
     ######## DECLARATION DES SHAPES
 
     sphere = Ball("sphery", False,1, scene)
-    sphere.setPosition(-6, -3, 5)
+    sphere.setPosition(-2, -3, 2)
     sphere.setScaling(0.3, 0.3, 0.3)
-    sphere.setVelocity(0, 1, 0)
+    sphere.setVelocity(0.01, 0.02, 0)
     sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
     sphere.setMaterial(sphereMat)
 
@@ -57,20 +57,6 @@ if __name__ == "__main__":
 
     rectMat = ColorMaterial(1.0, 0.0, 0.0)
     rect.setMaterial(rectMat)
-
-    yellow_cube = Cube('yellow_cube', True, scene)
-    yellow_cube.setScaling(0.5, 0.5, 0.5)
-    yellow_cube.setRotationY(45)
-    
-    cubeMat = ColorMaterial(1.0, 1.0, 0.0)
-    yellow_cube.setMaterial(cubeMat)
-
-    galaxy_rect = Rectangle('galaxy_rect', True, scene)
-    galaxy_rect.setPosition(0, 0, -6)
-    galaxy_rect.setScaling(8 * width / height, 8, 1)
-
-    galaxyMat = TextureMaterial(Texture("./assets/Galaxy.jpg"))
-    galaxy_rect.setMaterial(galaxyMat)
     
     ######### DECLARATION DE L'ECRAN
 
@@ -112,17 +98,8 @@ if __name__ == "__main__":
         getTicksLastFrame = time
 
         ###### UPDATE ETAT DES SHAPES
-        
-        yellow_cube.setRotationY(45.0 + time * 70.0)
-        yellow_cube.setRotationX(80.0 * time)
 
-        rotationSpeed = 1
-        x = math.cos(time * rotationSpeed) * circleRadius
-        z = math.sin(time * rotationSpeed) * circleRadius
-
-        yellow_cube.setPosition(x, 0, z)
-
-        pygame.time.wait(1000)
+        #pygame.time.wait(1000)
 
         sphere.update()
         print(sphere.getPosition())
@@ -130,14 +107,19 @@ if __name__ == "__main__":
         if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
             print("COLLISION")
             vectors = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
-            normVect = vectors[0]
-            wallVect = vectors[1]
+            normVect = vectors
+            #wallVect = vectors[1]
             oldVelocity = sphere.getVelocity()
-            normal = np.multiply(normVect,np.dot(oldVelocity, np.multiply(normVect, -1)))
-            tangent = np.multiply(wallVect,np.dot(oldVelocity, wallVect))
-            print(oldVelocity)
-           # newVelocity = np.add(np.multiply(normVect,np.dot(oldVelocity, np.multiply(normVect, -1))), np.multiply(wallVect,np.dot(oldVelocity, wallVect)))
-           # print( "vectors : ", vectors , "newVolicty : " ,newVelocity)
+
+            newVelocity = reflection(oldVelocity, normVect)
+
+            sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
+
+            #normal = np.multiply(normVect,np.dot(oldVelocity, np.multiply(normVect, -1)))
+            #tangent = np.multiply(wallVect,np.dot(oldVelocity, wallVect))
+            #print(oldVelocity)
+            #newVelocity = np.add(np.multiply(normVect,np.dot(oldVelocity, np.multiply(normVect, -1))), np.multiply(wallVect,np.dot(oldVelocity, wallVect)))
+            #print( "vectors : ", vectors , "newVolicty : " ,newVelocity)
             #sphere.setVelocity(newVelocity)
     #########################        sphere.update()
 
