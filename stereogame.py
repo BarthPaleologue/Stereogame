@@ -119,8 +119,9 @@ if __name__ == "__main__":
 
 	pygame.joystick.init()
 	if pygame.joystick.get_count() > 0 :
-		joystick = pygame.joystick.Joystick(0)
-		joy = GamePad(0)
+		for i in range (pygame.joystick.get_count()) :
+			joystick = pygame.joystick.Joystick(i)
+			joy = GamePad(i)
 	running = True
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
@@ -232,7 +233,7 @@ if __name__ == "__main__":
 		if pygame.joystick.get_count() > 0 :
 			joy.update()
 			if joy.isBattePressed():
-				print("joybatty")
+				circleRadius += 0.05
 		
 
 		keys = pygame.key.get_pressed()
