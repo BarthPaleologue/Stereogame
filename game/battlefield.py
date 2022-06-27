@@ -1,4 +1,5 @@
 from feather.shapes import Cube
+import numpy as np
 
 
 class Battlefield(Cube):
@@ -34,7 +35,7 @@ class Battlefield(Cube):
         else:
             return False
 
-    def whereCollision(self,r,center):
+    def whereCollision(self,r, center):
         x,y,z = center[0], center[1], center[2]
         if x+r == self.size_x:
             return "right"
@@ -50,21 +51,22 @@ class Battlefield(Cube):
             return "back"
         else:
             return "No Collision"
-    def normalVector(face):
+
+    def normalVector(self, face):
         if face == "right":
-            return [-1,0,0]
+            return np.array([-1,0,0]), np.array([0,1,1])
         elif face == "left":
-            return [1,0,0]
+            return np.array([1,0,0]), np.arrray([0,1,1])
         elif face == "top":
-            return [0,-1,0]
+            return np.array([0,-1,0]), np.array([1,0,1])
         elif face == "bottom":
-            return [0,1,0]
+            return np.array([0,1,0]), np.array([1,0,1])
         elif face == "front":
-            return [0,0,-1]
+            return np.array([0,0,-1]), np.array([1,1,0])
         elif face == "back":
-            return [0,0,1]
+            return np.array([0,0,1]), np.array([1,1,0])
         else:
-            [0,0,0]
+            return np.array([0,0,0]), np.array([0,0,0])
         
     
     
