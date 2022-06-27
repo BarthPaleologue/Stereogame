@@ -7,7 +7,7 @@ class Battlefield(Cube):
     def __init__(self, name, size_x, size_y, size_z, scene = None):
         self.size_x = size_x
         self.size_y = size_y
-        self.size_z= size_z
+        self.size_z = size_z
         Cube.__init__(self, name, False, scene)
         self.setScaling(size_x, size_y, size_z)
 
@@ -27,11 +27,11 @@ class Battlefield(Cube):
                             #  battlefield
         x,y,z = center[0], center[1], center[2]
 
-        if x+r >= self.size_x or x-r <= -self.size_x:
+        if x+r >= self.size_x/2 or x-r <= -self.size_x:
             return True
-        if y+r >= self.size_y or y-r <= -self.size_y:
+        if y+r >= self.size_y/2 or y-r <= -self.size_y:
             return True
-        if z+r >= self.size_z or z-r <= -self.size_z:
+        if z+r >= self.size_z/2 or z-r <= -self.size_z:
             return True
 
         return False

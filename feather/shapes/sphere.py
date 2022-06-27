@@ -1,14 +1,17 @@
 from feather.shapes.shape import Shape
 from math import sqrt
-r = 1/sqrt(2.5)
 class Sphere(Shape):
-    def __init__(self, name, flip, radius = r, scene = None):
+    def __init__(self, name, flip, scene = None):
         Shape.__init__(self, name, scene)
         ty_min = 0.0
         ty_max = 1.0
         if flip == True:
             ty_min = 1.0
             ty_max = 0.0
+
+        r = 1 / sqrt(2.5)
+
+        self.setScaling(1, 1, 1)
 
         self.build_buffers(
             [
@@ -189,3 +192,6 @@ class Sphere(Shape):
 
     def getRadius(self):
         return self.radius
+
+    def setScaling(self, x, y, z):
+        return super().setScaling(x*0.5, y*0.5, z*0.5)

@@ -1,3 +1,4 @@
+from random import random
 from OpenGL.GL import *
 import numpy as np
 from game.player.GamePad import GamePad
@@ -48,12 +49,11 @@ if __name__ == "__main__":
 
     sphere = Ball("sphery", False,1, scene)
     sphere.setPosition(-2, 0, 2)
-    sphere.setScaling(0.5, 0.5, 0.5)
-    sphere.setVelocity(0.01, -0.02, 0)
+    sphere.setVelocity((random() - 0.5) / 50.0, (random() - 0.5) / 50.0, 0)
     sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
     sphere.setMaterial(sphereMat)
 
-    battlefield = Battlefield("battly", 7, 3, 10, scene)
+    battlefield = Battlefield("battly", 14, 6, 20, scene)
     battleMat = TextureMaterial(Texture("./assets/tron2.png"))
     battlefield.setMaterial(battleMat)
 
@@ -67,18 +67,17 @@ if __name__ == "__main__":
     rect.setMaterial(rectMat)
 
     yellow_cube = Cube('yellow_cube', True, scene)
-    yellow_cube.setScaling(0.5, 0.5, 0.5)
     yellow_cube.setRotationY(45)
     
     cubeMat = TextureMaterial(Texture("./assets/tennis.png"))
     yellow_cube.setMaterial(cubeMat)
 
-    galaxy_rect = Rectangle('galaxy_rect', True, scene)
-    galaxy_rect.setPosition(0, 0, -15)
-    galaxy_rect.setScaling(8 * width / height, 8, 1)
+    #galaxy_rect = Rectangle('galaxy_rect', True, scene)
+    #galaxy_rect.setPosition(0, 0, -15)
+    #galaxy_rect.setScaling(8 * width / height, 8, 1)
 
-    galaxyMat = TextureMaterial(Texture("./assets/Galaxy.jpg"))
-    galaxy_rect.setMaterial(galaxyMat)
+    #galaxyMat = TextureMaterial(Texture("./assets/Galaxy.jpg"))
+    #galaxy_rect.setMaterial(galaxyMat)
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]

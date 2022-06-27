@@ -1,3 +1,4 @@
+from random import random
 from OpenGL.GL import *
 import numpy as np
 import pygame
@@ -27,14 +28,17 @@ if __name__ == "__main__":
     
     ######## DECLARATION DES SHAPES
 
-    sphere = Ball("sphery", False,1, scene)
-    sphere.setPosition(-2, -3, 2)
-    sphere.setScaling(0.3, 0.3, 0.3)
-    sphere.setVelocity(0.01, -0.02, 0)
-    sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
-    sphere.setMaterial(sphereMat)
+    spheres = []
 
-    battlefield = Battlefield("battly", 7, 7, 7, scene)
+    for i in range(50):
+        sphere = Ball("sphery", False, random(), scene)
+        sphere.setPosition(-random(), random() - 0.5, random())
+        sphere.setVelocity((random() - 0.5) / 20.0, (random() - 0.5) / 20.0, 0)
+        sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
+        sphere.setMaterial(sphereMat)
+        spheres.append(sphere)
+
+    battlefield = Battlefield("battly", 14, 6, 20, scene)
     battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
     battlefield.setMaterial(battleMat)
 
@@ -88,21 +92,25 @@ if __name__ == "__main__":
 
         ###### UPDATE ETAT DES SHAPES
         
-        if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
-            normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
-            oldVelocity = sphere.getVelocity()
-            newVelocity = reflection(oldVelocity, normVect)
+        for sphere in spheres:
+            if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
+                normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
+                oldVelocity = sphere.getVelocity()
+                newVelocity = reflection(oldVelocity, normVect)
 
-            sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
+                sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
 
-        sphere.update()
+            sphere.update()
+            sphere.setRotationY(time * 50.0 * sphere.radius)
+            sphere.setRotationX(time * 60.0 * sphere.radius)
+            sphere.setRotationZ(time * 40.0 * sphere.radius)
 
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         fbo = player1.oeilGauche.frameBuffer
         fbo.bind()
-        glViewport(0, 0, fbo_width, fbo_height)
+        glViewport(0, 0, fbo.width, fbo.height)
 
         scene.render(player1.oeilGauche.getProjectionMatrix(), model_matrix, player1.oeilGauche.computeViewMatrix())
 

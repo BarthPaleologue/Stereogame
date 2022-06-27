@@ -9,6 +9,8 @@ class Cube(Shape):
             ty_min = 1.0
             ty_max = 0.0
 
+        self.setScaling(1, 1, 1)
+
         self.build_buffers(
             [
             ### back face
@@ -110,3 +112,7 @@ class Cube(Shape):
             (0.0, ty_max),
             ]
         )
+
+
+    def setScaling(self, x, y, z):
+        return super().setScaling(x*0.5, y*0.5, z*0.5)
