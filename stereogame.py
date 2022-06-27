@@ -117,10 +117,11 @@ if __name__ == "__main__":
 	######### GAME LOOP
 	buttons = Keyboard()
 
-	pygame.joystick.init() # initialize joysticks
-	joy = GamePad(0)
+	#pygame.joystick.init() # initialize joysticks
+	#joy = GamePad(0)
+	#print(pygame.joystick.get_count())
+
 	running = True
-	print(pygame.joystick.get_count())
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
 		deltaTime = time - getTicksLastFrame
@@ -231,9 +232,9 @@ if __name__ == "__main__":
 		buttons.update()
 		if buttons.isBattePressed():
 			print("batty")
-		joy.update()
-		if joy.isBattePressed():
-			print("joybatty")
+		#joy.update()
+		#if joy.isBattePressed():
+		#	print("joybatty")
 		
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_z]:

@@ -1,7 +1,6 @@
 from OpenGL.GL import *
 import numpy as np
 import pygame
-from pygame.math import Vector3
 
 #local imports
 from feather import Texture, FrameBuffer, Scene, Screen
@@ -86,9 +85,9 @@ if __name__ == "__main__":
 
     ######### DECLARATION DES JOUEURS
     
-    player1 = Player(None)
+    player1 = Player(False, None)
     player1.setPosition(0, 0, -5)
-    player2 = Player(None)
+    player2 = Player(False, None)
     player2.setPosition(0, 0, -5)
 
     fbo_width = int(width/2)
@@ -113,13 +112,9 @@ if __name__ == "__main__":
         getTicksLastFrame = time
 
         ###### UPDATE ETAT DES SHAPES
-
-#        player1.oeilGauche.setRotationY(time * 50.0)
         
         yellow_cube.setRotationY(45.0 + time * 70.0)
         yellow_cube.setRotationX(80.0 * time)
-
-
 
         rotationSpeed = 1
         x = math.cos(time * rotationSpeed) * circleRadius
