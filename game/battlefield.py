@@ -22,18 +22,19 @@ class Battlefield(Cube):
     
     
 
-    def isCollision(self,r,center): # cette fonction prend en paramètres un poins dans l'espace
+    def isCollision(self, r, center): # cette fonction prend en paramètres un poins dans l'espace
                             # et renvoie True s'il y a collision entre ce point et la
                             #  battlefield
         x,y,z = center[0], center[1], center[2]
-        if x+r == self.size_x or x-r == -self.size_x:
+
+        if x+r >= self.size_x or x-r <= -self.size_x:
             return True
-        elif y+r == self.size_y or y-r == -self.size_y:
+        if y+r >= self.size_y or y-r <= -self.size_y:
             return True
-        elif z+r == self.size_z or z-r == -self.size_z:
+        if z+r >= self.size_z or z-r <= -self.size_z:
             return True
-        else:
-            return False
+
+        return False
 
     def whereCollision(self, r, center):
         x,y,z = center[0], center[1], center[2]
@@ -54,19 +55,19 @@ class Battlefield(Cube):
 
     def normalVector(self, face):
         if face == "right":
-            return np.array([-1,0,0]), np.array([0,1,1])
+            return np.array([-1,0,0])
         elif face == "left":
-            return np.array([1,0,0]), np.arrray([0,1,1])
+            return np.array([1,0,0])
         elif face == "top":
-            return np.array([0,-1,0]), np.array([1,0,1])
+            return np.array([0,-1,0])
         elif face == "bottom":
-            return np.array([0,1,0]), np.array([1,0,1])
+            return np.array([0,1,0])
         elif face == "front":
-            return np.array([0,0,-1]), np.array([1,1,0])
+            return np.array([0,0,-1])
         elif face == "back":
-            return np.array([0,0,1]), np.array([1,1,0])
+            return np.array([0,0,1])
         else:
-            return np.array([0,0,0]), np.array([0,0,0])
+            return np.array([0,0,0])
         
     
     

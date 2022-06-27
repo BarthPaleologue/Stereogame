@@ -117,9 +117,9 @@ if __name__ == "__main__":
 	######### GAME LOOP
 	buttons = Keyboard()
 
-	joystick = pygame.joystick.Joystick(0)
-	joystick.init()
-	joy = GamePad(0)
+	#joystick = pygame.joystick.Joystick(0)
+	#joystick.init()
+	#joy = GamePad(0)
 	running = True
 	while running:
 		time = pygame.time.get_ticks() / 1000.0
