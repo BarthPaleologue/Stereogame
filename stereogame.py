@@ -120,8 +120,6 @@ if __name__ == "__main__":
 	pygame.joystick.init()
 	if pygame.joystick.get_count() > 0 :
 		joystick = pygame.joystick.Joystick(0)
-	#joystick = pygame.joystick.Joystick(0)
-	#joystick.init()
 		joy = GamePad(0)
 	running = True
 	while running:
@@ -231,9 +229,10 @@ if __name__ == "__main__":
 		buttons.update()
 		if buttons.isBattePressed():
 			print("batty")
-		#joy.update()
-		#if joy.isBattePressed():
-		#	print("joybatty")
+		if pygame.joystick.get_count() > 0 :
+			joy.update()
+			if joy.isBattePressed():
+				print("joybatty")
 		
 
 		keys = pygame.key.get_pressed()
