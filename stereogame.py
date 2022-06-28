@@ -4,7 +4,6 @@ import numpy as np
 from game.player.GamePad import GamePad
 from game.player.Keyboard import Keyboard
 import pygame
-from pygame.math import Vector3
 
 #local imports
 from feather import Texture, FrameBuffer, Scene, Screen
@@ -40,7 +39,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
     
     ######## DECLARATION DES SHAPES
 
@@ -48,7 +47,7 @@ if __name__ == "__main__":
 
     spheres = []
     for i in range(10):
-        sphere = Ball("sphery", False,1, scene)
+        sphere = Ball("sphery", False, 1, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 10.0, (random() - 0.5) / 10.0, (random() - 0.5) / 10.0)
         sphereMat = TextureMaterial(sphereTex)
@@ -56,12 +55,12 @@ if __name__ == "__main__":
         spheres.append(sphere)
 
     # object 10485_Baseball_bat_v1_max8
-    bat = RowOBJ("./assets/baseball/batB.obj",False,scene)
+    bat = RowOBJ("./assets/baseball/batB.obj", False,scene)
     #bat.setScaling(0.5,0.5,0.5)
     bat.setPosition(0,0,0)
     batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
     batMat2 = ColorMaterial(0.5, 0.5, 0.5)
-    bat.setMaterial(batMat2)
+    bat.setMaterial(batMat)
 
     battlefield = Battlefield("battly", 10, 6, 20, scene)
     battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
@@ -80,7 +79,7 @@ if __name__ == "__main__":
     cubeMat = TextureMaterial(Texture("./assets/tennis.png"))
     yellow_cube.setMaterial(cubeMat)
 
-    blackTex = Texture("./assets/plane_views.png")
+    blackTex = Texture("./assets/black.jpg")
     numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
     
     ######### DECLARATION DE L'ECRAN
@@ -124,6 +123,7 @@ if __name__ == "__main__":
     if pygame.joystick.get_count() > 0 :
         joystick = pygame.joystick.Joystick(0)
         joy = GamePad(0)
+    
     running = True
     while running:
         time = pygame.time.get_ticks() / 1000.0
@@ -157,20 +157,20 @@ if __name__ == "__main__":
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         ### PLAYER 1
-        drawEyeToFrameBuffer(player1.oeilDroit, scene, rectMat,  numTextures[0])
-        drawEyeToFrameBuffer(player1.oeilGauche, scene, rectMat,  numTextures[1])
+        drawEyeToFrameBuffer(player1.oeilDroit, scene, rectMat,  numTextures[1])
+        drawEyeToFrameBuffer(player1.oeilGauche, scene, rectMat,  numTextures[2])
 
         ### SEPARATION
-        #drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat, numTextures[2])
-        #drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[3])
+        #drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat, numTextures[3])
+        #drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[4])
 
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.oeilDroit, scene, rectMat,  numTextures[4])
-        drawEyeToFrameBuffer(player2.oeilGauche, scene, rectMat,  numTextures[5])
+        drawEyeToFrameBuffer(player2.oeilDroit, scene, rectMat,  numTextures[5])
+        drawEyeToFrameBuffer(player2.oeilGauche, scene, rectMat,  numTextures[6])
 
         ### SEPARATION
-        #drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat,  numTextures[6])
-        #drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[7])
+        #drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat,  numTextures[7])
+        #drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[0])
         
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
@@ -191,25 +191,25 @@ if __name__ == "__main__":
 
         if DOES_INTERLACE:
 
-            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 0)
-            interlacer.setTextureFromFBO(player1.oeilGauche.frameBuffer, 1)
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 1)
+            interlacer.setTextureFromFBO(player1.oeilGauche.frameBuffer, 2)
             #interlacer.setTextureFromImage(blackTex, 0)
             #interlacer.setTextureFromImage(blackTex, 1)
 
             #interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (2 + offset) % 8)
             #interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (3 + offset) % 8)
-            interlacer.setTextureFromImage(blackTex, 2)
             interlacer.setTextureFromImage(blackTex, 3)
+            interlacer.setTextureFromImage(blackTex, 4)
             
-            interlacer.setTextureFromFBO(player2.oeilDroit.frameBuffer, 4)
-            interlacer.setTextureFromFBO(player2.oeilGauche.frameBuffer, 5)
+            interlacer.setTextureFromFBO(player2.oeilDroit.frameBuffer, 5)
+            interlacer.setTextureFromFBO(player2.oeilGauche.frameBuffer, 6)
             #interlacer.setTextureFromImage(blackTex, 4)
             #interlacer.setTextureFromImage(blackTex, 5)
 
             #interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (6 + offset) % 8)
             #interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (7 + offset) % 8)
-            interlacer.setTextureFromImage(blackTex, 6)
             interlacer.setTextureFromImage(blackTex, 7)
+            interlacer.setTextureFromImage(blackTex, 0)
 
         else:
             interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 0)
@@ -223,7 +223,7 @@ if __name__ == "__main__":
 
         screen.draw(interlacer.program)
 
-        pygame.display.flip() # why do we need that tho ?
+        pygame.display.flip()
 
         ####### GESTION DES ENTREES CLAVIER
 
