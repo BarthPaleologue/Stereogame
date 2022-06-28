@@ -29,12 +29,13 @@ if __name__ == "__main__":
     ######## DECLARATION DES SHAPES
 
     spheres = []
+    sphereTex = Texture("./assets/space.png")
 
     for i in range(50):
         sphere = Ball("sphery", False, random(), scene)
         sphere.setPosition(-random(), random() - 0.5, random())
         sphere.setVelocity((random() - 0.5) / 20.0, (random() - 0.5) / 20.0, 0)
-        sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
+        sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         spheres.append(sphere)
 

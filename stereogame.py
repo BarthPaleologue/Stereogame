@@ -47,20 +47,25 @@ if __name__ == "__main__":
     #	shape.setScaling(0.05, 0.05, 0.05)
     #	shape.setRotationX(90)
 
-    sphere = Ball("sphery", False,1, scene)
-    sphere.setPosition(-2, 0, 2)
-    sphere.setVelocity((random() - 0.5) / 50.0, (random() - 0.5) / 50.0, 0)
-    sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
-    sphere.setMaterial(sphereMat)
+    sphereTex = Texture("./assets/space.png")
 
-    battlefield = Battlefield("battly", 14, 6, 20, scene)
+    spheres = []
+    for i in range(10):
+        sphere = Ball("sphery", False,1, scene)
+        sphere.setPosition(-2, 0, 0)
+        sphere.setVelocity((random() - 0.5) / 10.0, (random() - 0.5) / 10.0, (random() - 0.5) / 10.0)
+        sphereMat = TextureMaterial(sphereTex)
+        sphere.setMaterial(sphereMat)
+        spheres.append(sphere)
+
+    battlefield = Battlefield("battly", 6, 3, 20, scene)
     battleMat = TextureMaterial(Texture("./assets/tron2.png"))
     battlefield.setMaterial(battleMat)
 
     #gun = OBJsanstex("./assets/awp.obj", False, scene)
     
     rect = Rectangle('rect', True, scene)
-    rect.setPosition(-6, -3, 0)
+    rect.setPosition(-5, 0, 0)
     rect.setScaling(0.5, 0.5, 1)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
@@ -71,13 +76,6 @@ if __name__ == "__main__":
     
     cubeMat = TextureMaterial(Texture("./assets/tennis.png"))
     yellow_cube.setMaterial(cubeMat)
-
-    #galaxy_rect = Rectangle('galaxy_rect', True, scene)
-    #galaxy_rect.setPosition(0, 0, -15)
-    #galaxy_rect.setScaling(8 * width / height, 8, 1)
-
-    #galaxyMat = TextureMaterial(Texture("./assets/Galaxy.jpg"))
-    #galaxy_rect.setMaterial(galaxyMat)
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
@@ -96,12 +94,12 @@ if __name__ == "__main__":
     ######### DECLARATION DES JOUEURS
     
     player1 = Player(False, None)
-    player1.setPosition(0, 0, -5)
+    player1.setPosition(0, 0, -10)
     player2 = Player(False, None)
-    player2.setPosition(0, 0, 5)
+    player2.setPosition(0, 0, 10)
 
-    player3 = Player(False, None)
-    player3.setPosition(0, 0, -7)
+    #player3 = Player(False, None)
+    #player3.setPosition(0, 0, -7)
 
     fbo_width = int(width/2)
     fbo_height = int(height/2)
@@ -142,17 +140,19 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
-            normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
-            oldVelocity = sphere.getVelocity()
-            newVelocity = reflection(oldVelocity, normVect)
+        for sphere in spheres:
+            if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
+                normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
+                oldVelocity = sphere.getVelocity()
+                newVelocity = reflection(oldVelocity, normVect)
 
-            sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
+                sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
 
-        sphere.update()
-        sphere.setRotationY(time * 50.0)
-        sphere.setRotationX(time * 60.0)
-        sphere.setRotationZ(time * 40.0)
+        
+            sphere.update()
+            sphere.setRotationY(time * 50.0)
+            sphere.setRotationX(time * 60.0)
+            sphere.setRotationZ(time * 40.0)
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
@@ -161,16 +161,16 @@ if __name__ == "__main__":
         drawEyeToFrameBuffer(player1.oeilGauche, scene, rectMat,  numTextures[1])
 
         ### SEPARATION
-        drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat, numTextures[2])
-        drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[3])
+        #drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat, numTextures[2])
+        #drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[3])
 
         ### PLAYER 2
         drawEyeToFrameBuffer(player2.oeilDroit, scene, rectMat,  numTextures[4])
         drawEyeToFrameBuffer(player2.oeilGauche, scene, rectMat,  numTextures[5])
 
         ### SEPARATION
-        drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat,  numTextures[6])
-        drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[7])
+        #drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat,  numTextures[6])
+        #drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[7])
         
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
@@ -221,11 +221,11 @@ if __name__ == "__main__":
         if keys[pygame.K_q]:
             player1.setEyeDistance(player1.eyeDistance + 0.001)
             player2.setEyeDistance(player2.eyeDistance + 0.001)
-            player3.setEyeDistance(player3.eyeDistance + 0.001)
+            #player3.setEyeDistance(player3.eyeDistance + 0.001)
         if keys[pygame.K_d]:
             player1.setEyeDistance(player1.eyeDistance - 0.001)
             player2.setEyeDistance(player2.eyeDistance - 0.001)
-            player3.setEyeDistance(player3.eyeDistance - 0.001)
+            #player3.setEyeDistance(player3.eyeDistance - 0.001)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
