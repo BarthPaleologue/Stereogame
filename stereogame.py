@@ -58,7 +58,6 @@ if __name__ == "__main__":
         sphere.setMaterial(sphereMat)
         spheres.append(sphere)
 
-    battlefield = Battlefield("battly", 6, 3, 20, scene)
     # object 10485_Baseball_bat_v1_max8
     bat = RowOBJ("./assets/baseball/batA.obj",False,scene)
     batMat = TextureMaterial(Texture("./assets/space.png"))
