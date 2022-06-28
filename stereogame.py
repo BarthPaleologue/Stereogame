@@ -143,7 +143,7 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        for sphere in spheres:        
+        for sphere in spheres:      
             sphere.update()
             sphere.addRotation(deltaTime * 50.0, deltaTime * 50.0, deltaTime * 50.0)
 

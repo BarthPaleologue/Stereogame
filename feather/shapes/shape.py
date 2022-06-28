@@ -25,8 +25,10 @@ class Shape(Transform):
 
         self.material = DefaultMaterial()
 
-        if scene is not None:
-            scene.addShape(self)
+        self.scene = scene
+
+        if self.scene is not None:
+            self.scene.addShape(self)
 
 
     def setMaterial(self, material):
@@ -130,3 +132,6 @@ class Shape(Transform):
         if self.att_texcoord>=0:
             glDisableVertexAttribArray(self.att_texcoord)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+    def destroy(self):
+        self.scene.removeShape(self)
