@@ -39,13 +39,10 @@ if __name__ == "__main__":
     pygame.display.toggle_fullscreen()
 
     scene = Scene()
+
+    DOES_INTERLACE = False
     
     ######## DECLARATION DES SHAPES
-
-    #skull = OBJ("./assets/skull.obj", False, scene)
-    #for(i, shape) in enumerate(skull.shapes):
-    #	shape.setScaling(0.05, 0.05, 0.05)
-    #	shape.setRotationX(90)
 
     sphereTex = Texture("./assets/space.png")
 
@@ -62,18 +59,13 @@ if __name__ == "__main__":
     bat = RowOBJ("./assets/baseball/batB.obj",False,scene)
     #bat.setScaling(0.5,0.5,0.5)
     bat.setPosition(0,0,0)
-    batMat = TextureMaterial(Texture("./assets/Baseball/wood.jpg"))
-    bat.setMaterial(batMat)
-    #skull = OBJ("./assets/skull.obj", False, scene)
-    #for(i, shape) in enumerate(skull.shapes):
-    #	shape.setScaling(0.05, 0.05, 0.05)
-    #	shape.setRotationX(90)
+    batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
+    batMat2 = ColorMaterial(0.5, 0.5, 0.5)
+    bat.setMaterial(batMat2)
 
-    battlefield = Battlefield("battly", 14, 6, 20, scene)
+    battlefield = Battlefield("battly", 10, 6, 20, scene)
     battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
     battlefield.setMaterial(battleMat)
-
-    #gun = OBJsanstex("./assets/awp.obj", False, scene)
     
     rect = Rectangle('rect', True, scene)
     rect.setPosition(-5, 0, 0)
@@ -88,7 +80,7 @@ if __name__ == "__main__":
     cubeMat = TextureMaterial(Texture("./assets/tennis.png"))
     yellow_cube.setMaterial(cubeMat)
 
-    blackTex = Texture("./assets/black.jpg")
+    blackTex = Texture("./assets/plane_views.png")
     numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
     
     ######### DECLARATION DE L'ECRAN
@@ -109,8 +101,8 @@ if __name__ == "__main__":
     player2 = Player(False, None)
     player2.setPosition(0, 0, 10)
 
-    #player3 = Player(False, None)
-    #player3.setPosition(0, 0, -7)
+    player3 = Player(False, None)
+    player3.setPosition(0, 0, -7)
 
     fbo_width = int(width/2)
     fbo_height = int(height/2)
@@ -140,10 +132,9 @@ if __name__ == "__main__":
 
         ###### UPDATE ETAT DES SHAPES
 
-        #player1.oeilGauche.setRotationY(time * 50.0)
+        bat.addRotationZ(20.0 * deltaTime)
         
-        yellow_cube.setRotationY(45.0 + time * 70.0)
-        yellow_cube.setRotationX(80.0 * time)
+        yellow_cube.addRotationY(deltaTime * 70.0).addRotationX(deltaTime * 80.0)
 
         rotationSpeed = 1
         x = math.cos(time * rotationSpeed) * circleRadius
@@ -161,9 +152,7 @@ if __name__ == "__main__":
 
         
             sphere.update()
-            sphere.setRotationY(time * 50.0)
-            sphere.setRotationX(time * 60.0)
-            sphere.setRotationZ(time * 40.0)
+            sphere.addRotation(deltaTime * 50.0, deltaTime * 50.0, deltaTime * 50.0)
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
@@ -198,25 +187,39 @@ if __name__ == "__main__":
 
         ###### ENTRELACEMENT DES FRAMEBUFFERS
 
-        offset = 0
-
         interlacer.use(ortho_mx, ident_matrix)
 
-        interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, (0 + offset) % 8)
-        interlacer.setTextureFromFBO(player1.oeilGauche.frameBuffer, (1 + offset) % 8)
-        
-        #interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (2 + offset) % 8)
-        #interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (3 + offset) % 8)
-        interlacer.setTextureFromImage(blackTex, (2 + offset) % 8)
-        interlacer.setTextureFromImage(blackTex, (3 + offset) % 8)
-        
-        interlacer.setTextureFromFBO(player2.oeilDroit.frameBuffer, (4 + offset) % 8)
-        interlacer.setTextureFromFBO(player2.oeilGauche.frameBuffer, (5 + offset) % 8)
-        
-        #interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (6 + offset) % 8)
-        #interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (7 + offset) % 8)
-        interlacer.setTextureFromImage(blackTex, (6 + offset) % 8)
-        interlacer.setTextureFromImage(blackTex, (7 + offset) % 8)
+        if DOES_INTERLACE:
+
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 0)
+            interlacer.setTextureFromFBO(player1.oeilGauche.frameBuffer, 1)
+            #interlacer.setTextureFromImage(blackTex, 0)
+            #interlacer.setTextureFromImage(blackTex, 1)
+
+            #interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (2 + offset) % 8)
+            #interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (3 + offset) % 8)
+            interlacer.setTextureFromImage(blackTex, 2)
+            interlacer.setTextureFromImage(blackTex, 3)
+            
+            interlacer.setTextureFromFBO(player2.oeilDroit.frameBuffer, 4)
+            interlacer.setTextureFromFBO(player2.oeilGauche.frameBuffer, 5)
+            #interlacer.setTextureFromImage(blackTex, 4)
+            #interlacer.setTextureFromImage(blackTex, 5)
+
+            #interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (6 + offset) % 8)
+            #interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (7 + offset) % 8)
+            interlacer.setTextureFromImage(blackTex, 6)
+            interlacer.setTextureFromImage(blackTex, 7)
+
+        else:
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 0)
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 1)
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 2)
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 3)
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 4)
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 5)
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 6)
+            interlacer.setTextureFromFBO(player1.oeilDroit.frameBuffer, 7)
 
         screen.draw(interlacer.program)
 
