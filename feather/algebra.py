@@ -66,3 +66,15 @@ def lookat(eye, center):
         [zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye)],
         [0, 0, 0, 1]
     ]).transpose().dot(scale(1, -1, 1))
+
+
+def dot(a, b):
+    return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]
+
+def applyMat4ToVector3(matrix, x, y, z):
+    # returns the vector3 result of applying the matrix to the vector3 (x,y,z)
+    return np.array([
+        matrix[0][0]*x + matrix[0][1]*y + matrix[0][2]*z + matrix[0][3],
+        matrix[1][0]*x + matrix[1][1]*y + matrix[1][2]*z + matrix[1][3],
+        matrix[2][0]*x + matrix[2][1]*y + matrix[2][2]*z + matrix[2][3],
+    ])

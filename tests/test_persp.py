@@ -1,10 +1,6 @@
-#!/usr/bin/env python
-from __future__ import division
 from OpenGL.GL import *
 import numpy as np
-import math
 import pygame
-from Battlefield import Battlefield
 from Bomb import Bomb
 
 #local imports
@@ -48,11 +44,9 @@ if __name__ == "__main__":
 	pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
 	rect = Rectangle('rect')
 	rect_flip = Rectangle('rect_flip', True)
-	#cube = Cube('cube', True)
-	#obj = OBJ('./skull.obj')
-	bomb = Bomb()
+
 	#create matrices
-	battlefield = Battlefield('bataillon', 2.0, 2.0, 3.0)
+
 	perspective_mx = perspective(45, width/height, 0.1, 100)
 	model_matrix = np.identity(4, dtype=np.float32)
 
@@ -63,8 +57,8 @@ if __name__ == "__main__":
 
 	prog1 = Program(vs_tx, fs_tx)
 	sTexture1 = prog1.getUniformLocation("sTexture")
-	texture1 = Texture("res/Galaxy.jpg")
-	texture3 = Texture("res/tennis.jpg")
+	texture1 = Texture("../assets/Galaxy.jpg")
+	texture3 = Texture("../assets/tennis.png")
 	prog2 = Program(vs_tx, fs_flat)
 	uCol = prog2.getUniformLocation("col")
 	prog3 = Program(vs_tx, fs_tx)
@@ -85,12 +79,11 @@ if __name__ == "__main__":
 		texture3.activate(sTexture3)
 		mv_matrix = translate(0, 0, -2).dot(model_matrix).dot(eyemx)
 		prog1.use(perspective_mx, mv_matrix)
-		#glUniform4f(uCol, 1, 0, 0, 1)
-		#texture.activate(sTexture)
-		#obj.draw(prog1.program, sTexture)
-		#cube.draw(prog1.program)
-		bomb.draw(prog1.program,sTexture1)
-		battlefield.draw(prog3.program)
+		glUniform4f(uCol, 1, 0, 0, 1)
+		texture.activate(sTexture)
+		obj.draw(prog1.program, sTexture)
+		cube.draw(prog1.program)
+
 		pygame.display.flip()
 
 		events = pygame.event.get()

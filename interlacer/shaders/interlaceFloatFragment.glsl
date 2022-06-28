@@ -8,9 +8,9 @@ void main() {
     float y = gl_FragCoord.y - 0.5;
     
     // The view indices for the current pixel
-    float Ri = mod(3.0 * x + y + 7.0, 8.0);
-    float Gi = mod(3.0 * x + y + 8.0, 8.0);
-    float Bi = mod(3.0 * x + y + 9.0, 8.0);
+    float Ri = mod(3.0 * x + y + 8.0, 8.0);
+    float Gi = mod(3.0 * x + y + 9.0, 8.0);
+    float Bi = mod(3.0 * x + y + 10.0, 8.0);
     
     // init pixel colors to black
     float r = 0.0;

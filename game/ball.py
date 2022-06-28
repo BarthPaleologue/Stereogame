@@ -1,19 +1,28 @@
 from feather.shapes import Sphere, Rectangle
+from feather.algebra import reflection
 import numpy as np
 
 class Ball(Sphere):
-        def __init__(self, name, flip,  radius, scene):
+        def __init__(self, name, flip,  radius, battlefield, scene):
 
             Sphere.__init__(self, name, flip, scene)
             self.position = np.array([0.0, 0.0, 0.0])
             self.velocity = np.array([0.0, 0.0, 0.0])
             self.acceleration = np.array([0.0, 0.0, 0.0])
             self.radius = radius
+            self.battlefield = battlefield
 
             self.setScaling(radius, radius, radius)
 
 
         def update(self):
+            if self.battlefield.isCollision(self.getRadius(), self.getPosition()):
+                normVect = self.battlefield.normalVector(self.battlefield.whereCollision(self.getRadius(), self.getPosition()))
+                oldVelocity = self.getVelocity()
+                newVelocity = reflection(oldVelocity, normVect)
+
+                self.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
+
             self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
             newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
             self.velocity = newVelocity
