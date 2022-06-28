@@ -1,6 +1,7 @@
 from random import random
 from OpenGL.GL import *
 import numpy as np
+from game.main import Bomb
 from game.player.GamePad import GamePad
 from game.player.Keyboard import Keyboard
 import pygame
@@ -19,6 +20,7 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield
 from game.ball import  Ball
+from game.Bomb import Bomb
 
 def drawEyeToFrameBuffer(eye, scene, testMat, testTexture):
     eye.frameBuffer.bind()
@@ -50,15 +52,14 @@ if __name__ == "__main__":
     sphereTex = Texture("./assets/space.png")
 
     spheres = []
-    for i in range(10):
-        sphere = Ball("sphery", False,1, scene)
+    for i in range(1):
+        sphere = Bomb("sphery", False,1, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 10.0, (random() - 0.5) / 10.0, (random() - 0.5) / 10.0)
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         spheres.append(sphere)
 
-    # object 10485_Baseball_bat_v1_max8
     bat = RowOBJ("./assets/baseball/batB.obj",False,scene)
     #bat.setScaling(0.5,0.5,0.5)
     bat.setPosition(0,0,0)
@@ -70,8 +71,8 @@ if __name__ == "__main__":
     #	shape.setRotationX(90)
 
     battlefield = Battlefield("battly", 14, 6, 20, scene)
-    battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
-    battlefield.setMaterial(battleMat)
+    #battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
+    #battlefield.setMaterial(battleMat)
 
     #gun = OBJsanstex("./assets/awp.obj", False, scene)
     
@@ -151,7 +152,7 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        for sphere in spheres:
+        """for sphere in spheres:
             if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
                 normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
                 oldVelocity = sphere.getVelocity()
@@ -163,7 +164,16 @@ if __name__ == "__main__":
             sphere.update()
             sphere.setRotationY(time * 50.0)
             sphere.setRotationX(time * 60.0)
-            sphere.setRotationZ(time * 40.0)
+            sphere.setRotationZ(time * 40.0)"""
+        for bomb in spheres:
+            if battlefield.isCollision(bomb.getRadius(), bomb.getPosition()):
+                bomb.explode()
+            bomb.update()
+            bomb.setRotationY(time * 50.0)
+            bomb.setRotationX(time * 60.0)
+            bomb.setRotationZ(time * 40.0)
+            
+
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 

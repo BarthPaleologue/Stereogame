@@ -18,7 +18,7 @@ class Shape(Transform):
         self.att_texcoord = -1
         self.nb_points = 0
         self.np_texcoord = None
-
+        self.scene = scene
         self.vertices = None
         self.normals = None
         self.texcoords = None
@@ -130,3 +130,6 @@ class Shape(Transform):
         if self.att_texcoord>=0:
             glDisableVertexAttribArray(self.att_texcoord)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+    def setScene(self,scene):
+        self.scene = scene
