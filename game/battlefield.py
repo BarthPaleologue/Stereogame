@@ -7,7 +7,7 @@ class Battlefield(Cube):
     def __init__(self, name, size_x, size_y, size_z, scene = None):
         self.size_x = size_x
         self.size_y = size_y
-        self.size_z= size_z
+        self.size_z = size_z
         Cube.__init__(self, name, False, scene)
         self.setScaling(size_x, size_y, size_z)
 
@@ -22,32 +22,33 @@ class Battlefield(Cube):
     
     
 
-    def isCollision(self,r,center): # cette fonction prend en paramètres un poins dans l'espace
+    def isCollision(self, r, center): # cette fonction prend en paramètres un poins dans l'espace
                             # et renvoie True s'il y a collision entre ce point et la
                             #  battlefield
         x,y,z = center[0], center[1], center[2]
-        if x+r == self.size_x or x-r == -self.size_x:
-            return True
-        elif y+r == self.size_y or y-r == -self.size_y:
-            return True
-        elif z+r == self.size_z or z-r == -self.size_z:
-            return True
-        else:
-            return False
 
-    def whereCollision(self,r, center):
+        if x+r >= self.size_x/2 or x-r <= -self.size_x:
+            return True
+        if y+r >= self.size_y/2 or y-r <= -self.size_y:
+            return True
+        if z+r >= self.size_z/2 or z-r <= -self.size_z:
+            return True
+
+        return False
+
+    def whereCollision(self, r, center):
         x,y,z = center[0], center[1], center[2]
-        if x+r == self.size_x:
+        if x+r >= self.size_x:
             return "right"
-        elif x-r == -self.size_x:
+        elif x-r <= -self.size_x:
             return "left"
-        elif y+r == self.size_y:
+        elif y+r >= self.size_y:
             return "top"
-        elif y-r == -self.size_y:
+        elif y-r <= -self.size_y:
             return "bottom"
-        elif z+r == self.size_z:
+        elif z+r >= self.size_z:
             return "front"
-        elif z-r == -self.size_z:
+        elif z-r <= -self.size_z:
             return "back"
         else:
             return "No Collision"

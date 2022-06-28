@@ -4,11 +4,13 @@ import numpy as np
 class Ball(Sphere):
         def __init__(self, name, flip,  radius, scene):
 
-            Sphere.__init__(self, name, flip, radius, scene)
+            Sphere.__init__(self, name, flip, scene)
             self.position = np.array([0.0, 0.0, 0.0])
             self.velocity = np.array([0.0, 0.0, 0.0])
             self.acceleration = np.array([0.0, 0.0, 0.0])
             self.radius = radius
+
+            self.setScaling(radius, radius, radius)
 
 
         def update(self):

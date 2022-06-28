@@ -1,3 +1,4 @@
+from random import random
 from OpenGL.GL import *
 import numpy as np
 import pygame
@@ -27,25 +28,17 @@ if __name__ == "__main__":
     
     ######## DECLARATION DES SHAPES
 
-    sphere = Ball("sphery", False,1, scene)
-    sphere.setPosition(-6, -3, 5)
-    sphere.setScaling(0.3, 0.3, 0.3)
-    sphere.setVelocity(0, 1, 0)
-    sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
-    sphere.setMaterial(sphereMat)
+    spheres = []
 
-    """
+    for i in range(50):
+        sphere = Ball("sphery", False, random(), scene)
+        sphere.setPosition(-random(), random() - 0.5, random())
+        sphere.setVelocity((random() - 0.5) / 20.0, (random() - 0.5) / 20.0, 0)
+        sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
+        sphere.setMaterial(sphereMat)
+        spheres.append(sphere)
 
-    sphere = Ball("sphery", False,  1,scene)
-    #sphere = Ball("sphery", position = [-5,-6,0], velocity = [0.001,0.001,0.001], radius =  scene = scene)
-    ##sphere = Ball("sphery", radius = 1, scene = scene)
-    sphere.setPosition(-6, -3, 0)
- #   sphere.setVelocity(0.001, 0.001, 0.001)
-    sphere.setScaling(0.3, 0.3, 0.3)
-    sphereMat = TextureMaterial(Texture("./assets/tennis.png"))
-    sphere.setMaterial(sphereMat)"""
-
-    battlefield = Battlefield("battly", 7, 7, 7, scene)
+    battlefield = Battlefield("battly", 14, 6, 20, scene)
     battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
     battlefield.setMaterial(battleMat)
 
@@ -57,20 +50,6 @@ if __name__ == "__main__":
 
     rectMat = ColorMaterial(1.0, 0.0, 0.0)
     rect.setMaterial(rectMat)
-
-    yellow_cube = Cube('yellow_cube', True, scene)
-    yellow_cube.setScaling(0.5, 0.5, 0.5)
-    yellow_cube.setRotationY(45)
-    
-    cubeMat = ColorMaterial(1.0, 1.0, 0.0)
-    yellow_cube.setMaterial(cubeMat)
-
-    galaxy_rect = Rectangle('galaxy_rect', True, scene)
-    galaxy_rect.setPosition(0, 0, -6)
-    galaxy_rect.setScaling(8 * width / height, 8, 1)
-
-    galaxyMat = TextureMaterial(Texture("./assets/Galaxy.jpg"))
-    galaxy_rect.setMaterial(galaxyMat)
     
     ######### DECLARATION DE L'ECRAN
 
@@ -113,39 +92,25 @@ if __name__ == "__main__":
 
         ###### UPDATE ETAT DES SHAPES
         
-        yellow_cube.setRotationY(45.0 + time * 70.0)
-        yellow_cube.setRotationX(80.0 * time)
+        for sphere in spheres:
+            if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
+                normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
+                oldVelocity = sphere.getVelocity()
+                newVelocity = reflection(oldVelocity, normVect)
 
-        rotationSpeed = 1
-        x = math.cos(time * rotationSpeed) * circleRadius
-        z = math.sin(time * rotationSpeed) * circleRadius
+                sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
 
-        yellow_cube.setPosition(x, 0, z)
+            sphere.update()
+            sphere.setRotationY(time * 50.0 * sphere.radius)
+            sphere.setRotationX(time * 60.0 * sphere.radius)
+            sphere.setRotationZ(time * 40.0 * sphere.radius)
 
-        pygame.time.wait(1000)
-
-        sphere.update()
-        print(sphere.getPosition())
-        
-        if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
-            print("COLLISION")
-            vectors = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
-            normVect = vectors[0]
-            wallVect = vectors[1]
-            oldVelocity = sphere.getVelocity()
-            normal = np.multiply(normVect,np.dot(oldVelocity, np.multiply(normVect, -1)))
-            tangent = np.multiply(wallVect,np.dot(oldVelocity, wallVect))
-            print(oldVelocity)
-           # newVelocity = np.add(np.multiply(normVect,np.dot(oldVelocity, np.multiply(normVect, -1))), np.multiply(wallVect,np.dot(oldVelocity, wallVect)))
-           # print( "vectors : ", vectors , "newVolicty : " ,newVelocity)
-            #sphere.setVelocity(newVelocity)
-    #########################        sphere.update()
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         fbo = player1.oeilGauche.frameBuffer
         fbo.bind()
-        glViewport(0, 0, fbo_width, fbo_height)
+        glViewport(0, 0, fbo.width, fbo.height)
 
         scene.render(player1.oeilGauche.getProjectionMatrix(), model_matrix, player1.oeilGauche.computeViewMatrix())
 
