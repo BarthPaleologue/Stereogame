@@ -1,4 +1,5 @@
 from OpenGL.GL import *
+from feather.texture import Texture
 
 # object wrapping GLSL program and shader setup
 #
@@ -56,8 +57,11 @@ class Program:
         glUniformMatrix4fv(self.u_proj_mx, 1, GL_FALSE, proj_mx)
         glUniformMatrix4fv(self.u_mv_mx, 1, GL_FALSE, view_mx)
 
-    def getUniformLocation(self, name):
+    def getUniformLocation(self, name: str):
         return glGetUniformLocation(self.program, name)
+
+    def setFloat(self, uniformName: str, x: float):
+        glUniform1f(self.getUniformLocation(uniformName), x)
 
     def setVector3(self, uniformName: str, x: float, y: float, z: float):
         glUniform3f(self.getUniformLocation(uniformName), x, y, z)
@@ -65,5 +69,5 @@ class Program:
     def setVector4(self, uniformName: str, x: float, y: float, z: float, w: float):
         glUniform4f(self.getUniformLocation(uniformName), x, y, z, w)
 
-    def setTexture(self, uniformName: str, texture):
+    def setTexture(self, uniformName: str, texture: Texture):
         texture.activate(self.getUniformLocation(uniformName), 0)

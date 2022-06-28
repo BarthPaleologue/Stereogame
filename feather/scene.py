@@ -7,6 +7,10 @@ class Scene():
     def addShape(self, shape):
         self.shapes.append(shape)
 
+    def removeShape(self, shape):
+        self.shapes.remove(shape)
+        del shape
+
     def render(self, perspective_mx, model_matrix, view_matrix):
         glClearColor(0.0, 0.0, 0.2, 1.0)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
