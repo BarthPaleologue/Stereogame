@@ -8,25 +8,31 @@ class Transform():
         self.rotation = np.array([0.0, 0.0, 0.0])
 
     def setPosition(self, x, y, z):
+        """Sets the object's position and returns the object"""
         self.position[0] = x
         self.position[1] = y
         self.position[2] = z
+        return self
 
     def getPosition(self):
         return self.position
 
     def translate(self, x, y, z):
+        """Translates the object by the given amount and returns the object"""
         self.position[0] += x
         self.position[1] += y
         self.position[2] += z
+        return self
 
     def getPositionMatrix(self):
         return translate(self.position[0], self.position[1], self.position[2])
 
     def setScaling(self, x, y, z):
+        """Sets the object's scaling and returns the object"""
         self.scaling[0] = x
         self.scaling[1] = y
         self.scaling[2] = z
+        return self
 
     def getScaling(self):
         return self.scaling

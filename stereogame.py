@@ -1,19 +1,18 @@
 from random import random
 from OpenGL.GL import *
+from feather.materials.shaderMaterial import ShaderMaterial
 import numpy as np
 from game.player.GamePad import GamePad
 from game.player.Keyboard import Keyboard
 import pygame
 
 #local imports
-from feather import Texture, FrameBuffer, Scene, Screen
-from feather.shapes import Rectangle, Cube, Sphere
+from feather import Texture, Scene, Screen
+from feather.shapes import Rectangle, Cube
 from feather.materials import ColorMaterial, TextureMaterial
 from feather.projections import *
 from feather.algebra import *
 from feather.camera import *
-from feather.shapes.sphere import Sphere
-from feather.loaders.objloader import OBJ
 from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield
@@ -39,36 +38,38 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
     
     ######## DECLARATION DES SHAPES
 
-    sphereTex = Texture("./assets/space.png")
-
-    spheres = []
-    for i in range(10):
-        sphere = Ball("sphery", False, 1, scene)
-        sphere.setPosition(-2, 0, 0)
-        sphere.setVelocity((random() - 0.5) / 10.0, (random() - 0.5) / 10.0, (random() - 0.5) / 10.0)
-        sphereMat = TextureMaterial(sphereTex)
-        sphere.setMaterial(sphereMat)
-        spheres.append(sphere)
-
     # object 10485_Baseball_bat_v1_max8
-    bat = RowOBJ("./assets/baseball/batB.obj", False,scene)
-    #bat.setScaling(0.5,0.5,0.5)
-    bat.setPosition(0,0,0)
+    bat = RowOBJ("./assets/baseball/batB.obj", False, scene)
+    bat.setPosition(0, 0, 0)
     batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
     batMat2 = ColorMaterial(0.5, 0.5, 0.5)
     bat.setMaterial(batMat)
 
     battlefield = Battlefield("battly", 10, 6, 20, scene)
     battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
+    #battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
+    #battleMat2.updateFunction = lambda battleMat2:
+    #battleMat2.setUniform("u_time", pygame.time.get_ticks() / 1000.0)
+        
     battlefield.setMaterial(battleMat)
+
+    sphereTex = Texture("./assets/space.png")
+
+    spheres = []
+    for i in range(10):
+        sphere = Ball("sphery", False, 1, battlefield, scene)
+        sphere.setPosition(-2, 0, 0)
+        sphere.setVelocity((random() - 0.5) / 10.0, (random() - 0.5) / 10.0, (random() - 0.5) / 10.0)
+        sphereMat = TextureMaterial(sphereTex)
+        sphere.setMaterial(sphereMat)
+        spheres.append(sphere)
     
     rect = Rectangle('rect', True, scene)
-    rect.setPosition(-5, 0, 0)
-    rect.setScaling(0.5, 0.5, 1)
+    rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
@@ -97,7 +98,7 @@ if __name__ == "__main__":
     
     player1 = Player(False, None)
     player1.setPosition(0, 0, -10)
-    player2 = Player(False, None)
+    player2 = Player(True, None)
     player2.setPosition(0, 0, 10)
 
     player3 = Player(False, None)
@@ -142,15 +143,7 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        for sphere in spheres:
-            if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
-                normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
-                oldVelocity = sphere.getVelocity()
-                newVelocity = reflection(oldVelocity, normVect)
-
-                sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
-
-        
+        for sphere in spheres:        
             sphere.update()
             sphere.addRotation(deltaTime * 50.0, deltaTime * 50.0, deltaTime * 50.0)
 
