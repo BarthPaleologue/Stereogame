@@ -14,17 +14,34 @@ class Bat(RowOBJ):
         self.velocity = np.array([0.0, 0.0, 0.0])
         self.ends = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
         self.radius = 0
+        self.counter = 0
+        self.isStriking = False
+        self.beginZ = 50
+        self.beginY = 30
+        self.endZ = 50
+        self.endY = -40
+        self.state = 0
+        self.animationDuration = 0.2
+        self.batReturn = False
 
-    def strike(self):#a finir
-        self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
-        self.setRotationXAround(5, 10, 20, 30)
-     #   newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
-      #  self.velocity = newVelocity
+    def strike(self):
+            self.isStriking = True
 
-    def move(self):
-        self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
-        newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
-        self.velocity = newVelocity
+    def update(self, deltaTime) :
+        if self.isStriking :
+            print(self.state)
+            self.state = self.counter/self.animationDuration
+            self.setRotation(0, self.state*self.endY + (1-self.state)*self.beginY, self.state*self.endZ + (1-self.state)*self.beginZ)
+
+            if self.state<=1 and not self.batReturn:
+                self.counter += deltaTime
+            if self.state > 1 or self.batReturn:
+                self.batReturn = True
+                self.counter -= deltaTime
+                if self.state<=0:
+                    self.isStriking = False
+                    self.batReturn = False
+
         
     def setVelocity(self, x, y, z):
         self.velocity = np.array([x, y, z])
@@ -32,14 +49,11 @@ class Bat(RowOBJ):
     def getVelocity(self):
         return self.velocity
 
-    def setAcceleration(self, x, y, z):
-        self.acceleration = np.array([x, y, z])
-
-    def getAcceleration(self):
-        return self.acceleration
-
     def setRadius(self, radius):
         self.radius = radius
+
+    def setStriking(self, state):
+        self.isStriking = state
     
     def getRadius(self):
         return self.radius
@@ -48,7 +62,5 @@ class Bat(RowOBJ):
         self.ends = ends
     
     def getEnds(self):
-        futurePosition = np.array([self.position[0]+self.velocity[0], self.position[1]+self.velocity[1], self.position[2]+self.velocity[2]])
-        ends = np.add(self.vertices, np.full((len(self.vertices), 3), futurePosition))
-        return ends
+        return self.ends
 
