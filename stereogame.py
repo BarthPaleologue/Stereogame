@@ -48,6 +48,7 @@ if __name__ == "__main__":
     #	shape.setRotationX(90)
     # object 10485_Baseball_bat_v1_max8
     bat = RowOBJ("./assets/baseball/batA.obj",False,scene)
+    bat.setScaling(0.1,0.1,0.1)
     batMat = TextureMaterial(Texture("./assets/space.png"))
     bat.setMaterial(batMat)
     #skull = OBJ("./assets/skull.obj", False, scene)

@@ -38,12 +38,7 @@ def scale(x, y, z):
         [0, 0, z, 0],
         [0, 0, 0, 1],
     ])
-<<<<<<< HEAD
     
-=======
-
-
->>>>>>> 89117012bffedd59ade90cdb92d1150648bbb675
 def reflection(vec, normal):
     for i in range(3):
         vec[i]=-vec[i]
