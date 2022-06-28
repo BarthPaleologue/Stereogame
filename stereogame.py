@@ -67,12 +67,6 @@ if __name__ == "__main__":
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         spheres.append(sphere)
-
-    battlefield = Battlefield("battly", 14, 6, 20, scene)
-    #battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
-    #battlefield.setMaterial(battleMat)
-
-    #gun = OBJsanstex("./assets/awp.obj", False, scene)
     
     rect = Rectangle('rect', True, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
@@ -162,17 +156,9 @@ if __name__ == "__main__":
         drawEyeToFrameBuffer(player1.oeilDroit, scene, rectMat,  numTextures[1])
         drawEyeToFrameBuffer(player1.oeilGauche, scene, rectMat,  numTextures[2])
 
-        ### SEPARATION
-        #drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat, numTextures[3])
-        #drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[4])
-
         ### PLAYER 2
         drawEyeToFrameBuffer(player2.oeilDroit, scene, rectMat,  numTextures[5])
         drawEyeToFrameBuffer(player2.oeilGauche, scene, rectMat,  numTextures[6])
-
-        ### SEPARATION
-        #drawEyeToFrameBuffer(player3.oeilDroit, scene, rectMat,  numTextures[7])
-        #drawEyeToFrameBuffer(player3.oeilGauche, scene, rectMat,  numTextures[0])
         
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
@@ -198,8 +184,6 @@ if __name__ == "__main__":
             #interlacer.setTextureFromImage(blackTex, 0)
             #interlacer.setTextureFromImage(blackTex, 1)
 
-            #interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (2 + offset) % 8)
-            #interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (3 + offset) % 8)
             interlacer.setTextureFromImage(blackTex, 3)
             interlacer.setTextureFromImage(blackTex, 4)
             
@@ -208,8 +192,6 @@ if __name__ == "__main__":
             #interlacer.setTextureFromImage(blackTex, 4)
             #interlacer.setTextureFromImage(blackTex, 5)
 
-            #interlacer.setTextureFromFBO(player3.oeilDroit.frameBuffer, (6 + offset) % 8)
-            #interlacer.setTextureFromFBO(player3.oeilGauche.frameBuffer, (7 + offset) % 8)
             interlacer.setTextureFromImage(blackTex, 7)
             interlacer.setTextureFromImage(blackTex, 0)
 
@@ -237,11 +219,9 @@ if __name__ == "__main__":
         if keys[pygame.K_q]:
             player1.setEyeDistance(player1.eyeDistance + 0.001)
             player2.setEyeDistance(player2.eyeDistance + 0.001)
-            #player3.setEyeDistance(player3.eyeDistance + 0.001)
         if keys[pygame.K_d]:
             player1.setEyeDistance(player1.eyeDistance - 0.001)
             player2.setEyeDistance(player2.eyeDistance - 0.001)
-            #player3.setEyeDistance(player3.eyeDistance - 0.001)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -254,8 +234,6 @@ if __name__ == "__main__":
             if event.type == pygame.JOYBUTTONDOWN:
                 print("Joystick button pressed.")
         
-
-        
         keyboard.update()
         if keyboard.isBattePressed():
             print("batty")
@@ -263,10 +241,3 @@ if __name__ == "__main__":
             gamepad.update()
             if gamepad.isBattePressed():
                 print("joybatty")
-        
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_z]:
-            circleRadius += 0.05
-        if keys[pygame.K_s]:
-            circleRadius -= 0.05
