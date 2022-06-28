@@ -5,11 +5,13 @@ import numpy as np
 
 from feather.shapes.shape import Shape
 from feather.loaders import RowOBJ
+from feather.materials import TextureMaterial
+from feather import Texture
 
 class Bat(RowOBJ):
 
-    def __init__(self, filename, swapyz=False, scene=None):
-        RowOBJ.__init__(self, filename, swapyz, scene)
+    def __init__(self, filename, scene=None):
+        RowOBJ.__init__(self, filename, False, scene)
         self.position = np.array([0.0, 0.0, 0.0])
         self.velocity = np.array([0.0, 0.0, 0.0])
         self.ends = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
@@ -24,12 +26,17 @@ class Bat(RowOBJ):
         self.animationDuration = 0.2
         self.batReturn = False
 
+        batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
+        self.setMaterial(batMat)
+
+        self.setScaling(0.7, 0.7, 0.7)
+
     def strike(self):
             self.isStriking = True
 
-    def update(self, deltaTime) :
-        if self.isStriking :
-            print(self.state)
+    def update(self, deltaTime):
+        if self.isStriking:
+            #print(self.state)
             self.state = self.counter/self.animationDuration
             self.setRotation(0, self.state*self.endY + (1-self.state)*self.beginY, self.state*self.endZ + (1-self.state)*self.beginZ)
 

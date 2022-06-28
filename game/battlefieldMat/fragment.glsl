@@ -2,11 +2,6 @@ varying vec2 vTexCoord;
 varying vec3 vPosition;
 varying vec3 vPositionW;
 
-uniform float scaleX;
-uniform float scaleY;
-uniform float scaleZ;
-
-uniform sampler2D battlefieldTexture;
 
 //	Classic Perlin 3D Noise
 //	by Stefan Gustavson

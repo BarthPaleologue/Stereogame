@@ -44,24 +44,11 @@ if __name__ == "__main__":
     ######## DECLARATION DES SHAPES
 
     # object 10485_Baseball_bat_v1_max8
-    bat = Bat("./assets/baseball/batB.obj", False, scene)
-    bat.setPosition(0, 0, 0)
-    batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
-    batMat2 = ColorMaterial(0.5, 0.5, 0.5)
-    bat.setMaterial(batMat)
-    bat.setRotationZ(50.0)
-    bat.setRotationY(30.0)
+    #bat = Bat("./assets/baseball/batB.obj", scene)
 
     battlefield = Battlefield("battly", 10, 6, 20, scene)
     battlefieldTexture = Texture("./assets/textBattle.jpeg")
     battleMat = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
-    def updateMaterial(material: ShaderMaterial):
-        material.setFloat("scaleX", battlefield.size_x)
-        material.setFloat("scaleY", battlefield.size_y)
-        material.setFloat("scaleZ", battlefield.size_z)
-        battleMat.setTexture("battlefieldTexture", battlefieldTexture)
-    battleMat.setUpdateFunction(updateMaterial)
-        
     battlefield.setMaterial(battleMat)
 
     sphereTex = Texture("./assets/space.png")
@@ -70,7 +57,7 @@ if __name__ == "__main__":
     for i in range(10):
         sphere = Projectile("sphery", False, 1, battlefield, scene)
         sphere.setPosition(-2, 0, 0)
-        sphere.setVelocity((random() - 0.5) / 10.0, (random() - 0.5) / 10.0, (random() - 0.5) / 10.0)
+        sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         spheres.append(sphere)
@@ -110,13 +97,10 @@ if __name__ == "__main__":
         joystick = pygame.joystick.Joystick(0)
         gamepad = GamePad(0)
     
-    player1 = Player(False, None)
-    player1.setPosition(0, 0, -10)
-    player2 = Player(True, None)
-    player2.setPosition(0, 0, 10)
-
-    player3 = Player(False, None)
-    player3.setPosition(0, 0, -7)
+    player1 = Player(False, None, scene)
+    player1.setPosition(0, 0, -12)
+    player2 = Player(True, None, scene)
+    player2.setPosition(0, 0, 12)
 
     fbo_width = int(width/2)
     fbo_height = int(height/2)
@@ -141,8 +125,7 @@ if __name__ == "__main__":
 
         ###### UPDATE ETAT DES SHAPES
 
-        bat.update(deltaTime)
-       # bat.addRotationZ(20.0 * deltaTime)
+        player1.batte.update(deltaTime)
         
         yellow_cube.addRotationY(deltaTime * 70.0).addRotationX(deltaTime * 80.0)
 
@@ -235,7 +218,8 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
-                bat.strike()
+                player1.batte.strike()
+                player2.batte.strike()
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):

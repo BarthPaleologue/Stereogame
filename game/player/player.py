@@ -1,12 +1,13 @@
 from feather.transform import Transform
 from game.player.eye import Eye
 from pygame.math import Vector3
+from game.bat import Bat
 
 class Player(Transform):
     
-    def __init__(self, flip, gamepad) :
+    def __init__(self, flip, gamepad, scene) :
         Transform.__init__(self)
-        self.batte = None ### Initialiser la batte ici
+        self.batte = Bat("./assets/baseball/batB.obj", scene)
         
         self.eyeDistance = 0.0069
 
@@ -18,6 +19,8 @@ class Player(Transform):
 
         if(flip):
             self.rightEye, self.leftEye = self.leftEye, self.rightEye
+
+        self.flip = flip
 
         self.setEyesTarget(0, 0, 0)
 
@@ -78,6 +81,15 @@ class Player(Transform):
     def setPosition(self, x, y, z):
         self.rightEye.setPosition(x - self.eyeDistance / 2, y, z)
         self.leftEye.setPosition(x + self.eyeDistance / 2, y, z)
+        self.batte.setPosition(x, y, z)
+        if self.flip:
+            self.batte.translate(0, 0, -0.5)
+            self.batte.setRotationZ(50.0)
+            self.batte.setRotationY(-30.0)
+        else:
+            self.batte.translate(0, 0, 0.5)
+            self.batte.setRotationZ(50.0)
+            self.batte.setRotationY(30.0)
         return super().setPosition(x, y, z)
 
     def setEyesTarget(self, x, y, z):
