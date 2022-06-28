@@ -8,7 +8,7 @@ class Battlefield(Land):
         self.size_x = size_x
         self.size_y = size_y
         self.size_z = size_z
-        Land.__init__(self, name, False, scene)
+        Land.__init__(self, name, False, True, True, True, scene)
         self.setScaling(size_x, size_y, size_z)
 
     def getSizex(self):

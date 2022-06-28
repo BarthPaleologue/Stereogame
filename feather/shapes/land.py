@@ -1,8 +1,12 @@
 from feather.shapes.shape import Shape
 
 class Land(Shape):
-    def __init__(self, name, flip, scene = None):
+    def __init__(self, name, flip, droite, gauche, plafond, scene = None):
         Shape.__init__(self, name, scene)
+        self.droite = droite
+        self.gauche = gauche
+        self.plafond = plafond
+        plafond
         ty_min = 0.0
         ty_max = 1.0
         if flip == True:
@@ -11,74 +15,71 @@ class Land(Shape):
 
         self.setScaling(1, 1, 1)
 
+        array0 = []
+        array1 =[]
+        if plafond == True :
+            array0 += [(-1.0, 1.0, 1.0),
+                        (1.0, 1.0, 1.0),
+                        (1.0, 1.0, -1.0),
+                        (-1.0, 1.0, 1.0),
+                        (1.0, 1.0, -1.0),
+                        (-1.0, 1.0, -1.0)]
+
+            array1 += [(0.0, ty_min),
+                        (1.0, ty_min),
+                        (1.0, ty_max),
+                        (0.0, ty_min),
+                        (1.0, ty_max),
+                        (0.0, ty_max)]
+
+        array0 += [(-1.0, -1.0, 1.0),
+                    (1.0, -1.0, 1.0),
+                    (1.0, -1.0, -1.0),
+                    (-1.0, -1.0, 1.0),
+                    (1.0, -1.0, -1.0),
+                    (-1.0, -1.0, -1.0)]
+
+        array1 += [(0.0, ty_min),
+                    (1.0, ty_min),
+                    (1.0, ty_max),
+                    (0.0, ty_min),
+                    (1.0, ty_max),
+                    (0.0, ty_max)]
+
+        if droite :
+            array0 += [(1.0, -1.0, -1.0),
+                        (1.0, -1.0, 1.0),
+                        (1.0, 1.0, 1.0),
+                        (1.0, -1.0, -1.0),
+                        (1.0, 1.0, 1.0),
+                        (1.0, 1.0, -1.0)]
+
+            array1 += [(0.0, ty_min),
+                        (1.0, ty_min),
+                        (1.0, ty_max),
+                        (0.0, ty_min),
+                        (1.0, ty_max),
+                        (0.0, ty_max)]
+
+        if gauche :
+            array0 += [(-1.0, -1.0, -1.0),
+                        (-1.0, -1.0, 1.0),
+                        (-1.0, 1.0, 1.0),
+                        (-1.0, -1.0, -1.0),
+                        (-1.0, 1.0, 1.0),
+                        (-1.0, 1.0, -1.0)]
+            
+            array1 += [(0.0, ty_min),
+                        (1.0, ty_min),
+                        (1.0, ty_max),
+                        (0.0, ty_min),
+                        (1.0, ty_max),
+                        (0.0, ty_max)]
+
         self.build_buffers(
-            [
-            ### top face
-            (-1.0, 1.0, 1.0),
-            (1.0, 1.0, 1.0),
-            (1.0, 1.0, -1.0),
-            (-1.0, 1.0, 1.0),
-            (1.0, 1.0, -1.0),
-            (-1.0, 1.0, -1.0),
-
-            ### bottom face
-            (-1.0, -1.0, 1.0),
-            (1.0, -1.0, 1.0),
-            (1.0, -1.0, -1.0),
-            (-1.0, -1.0, 1.0),
-            (1.0, -1.0, -1.0),
-            (-1.0, -1.0, -1.0),
-
-            ### right face
-            (1.0, -1.0, -1.0),
-            (1.0, -1.0, 1.0),
-            (1.0, 1.0, 1.0),
-            (1.0, -1.0, -1.0),
-            (1.0, 1.0, 1.0),
-            (1.0, 1.0, -1.0),
-
-            ### left face
-            (-1.0, -1.0, -1.0),
-            (-1.0, -1.0, 1.0),
-            (-1.0, 1.0, 1.0),
-            (-1.0, -1.0, -1.0),
-            (-1.0, 1.0, 1.0),
-            (-1.0, 1.0, -1.0),
-            ],
+            array0,
             None,
-            [
-            ### top face
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
-
-            ### bottom face
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
-
-            ### right face
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
-
-            ### left face
-            (0.0, ty_min),
-            (1.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_min),
-            (1.0, ty_max),
-            (0.0, ty_max),
-            ]
+            array1
         )
 
 
