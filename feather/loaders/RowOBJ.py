@@ -42,7 +42,7 @@ class RowOBJ(Shape):
 
     def __init__(self, filename, swapyz=False, scene=None):
         """Loads a Wavefront OBJ file. """
-        Shape.__init__(self, filename)
+        Shape.__init__(self, filename, scene)
         loc_vertices = []
         loc_normals = []
         loc_texcoords = []

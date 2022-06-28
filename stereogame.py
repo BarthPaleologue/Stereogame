@@ -59,9 +59,10 @@ if __name__ == "__main__":
         spheres.append(sphere)
 
     # object 10485_Baseball_bat_v1_max8
-    bat = RowOBJ("./assets/baseball/batA.obj",False,scene)
-    bat.setScaling(0.1,0.1,0.1)
-    batMat = TextureMaterial(Texture("./assets/space.png"))
+    bat = RowOBJ("./assets/baseball/batB.obj",False,scene)
+    #bat.setScaling(0.5,0.5,0.5)
+    bat.setPosition(0,0,0)
+    batMat = TextureMaterial(Texture("./assets/Baseball/wood.jpg"))
     bat.setMaterial(batMat)
     #skull = OBJ("./assets/skull.obj", False, scene)
     #for(i, shape) in enumerate(skull.shapes):
@@ -69,7 +70,7 @@ if __name__ == "__main__":
     #	shape.setRotationX(90)
 
     battlefield = Battlefield("battly", 14, 6, 20, scene)
-    battleMat = TextureMaterial(Texture("./assets/tron2.png"))
+    battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
     battlefield.setMaterial(battleMat)
 
     #gun = OBJsanstex("./assets/awp.obj", False, scene)
