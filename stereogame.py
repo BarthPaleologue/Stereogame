@@ -18,6 +18,7 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield
 from game.projectile import  Projectile
+from game.bat import Bat
 from game.Bomb import Bomb
 
 def drawEyeToFrameBuffer(eye, scene, testMat, testTexture):
@@ -43,11 +44,13 @@ if __name__ == "__main__":
     ######## DECLARATION DES SHAPES
 
     # object 10485_Baseball_bat_v1_max8
-    bat = RowOBJ("./assets/baseball/batB.obj", False, scene)
+    bat = Bat("./assets/baseball/batB.obj", False, scene)
     bat.setPosition(0, 0, 0)
     batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
     batMat2 = ColorMaterial(0.5, 0.5, 0.5)
     bat.setMaterial(batMat)
+    bat.setRotationZ(50.0)
+    bat.setRotationY(30.0)
 
     battlefield = Battlefield("battly", 10, 6, 20, scene)
     battlefieldTexture = Texture("./assets/textBattle.jpeg")
@@ -138,7 +141,8 @@ if __name__ == "__main__":
 
         ###### UPDATE ETAT DES SHAPES
 
-        bat.addRotationZ(20.0 * deltaTime)
+        bat.update(deltaTime)
+       # bat.addRotationZ(20.0 * deltaTime)
         
         yellow_cube.addRotationY(deltaTime * 70.0).addRotationX(deltaTime * 80.0)
 
@@ -230,6 +234,8 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.KEYDOWN:
+                bat.strike()
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):
