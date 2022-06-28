@@ -2,7 +2,7 @@ from feather.shapes import Sphere, Rectangle
 from feather.algebra import reflection
 import numpy as np
 
-class Ball(Sphere):
+class Projectile(Sphere):
         def __init__(self, name, flip,  radius, battlefield, scene):
 
             Sphere.__init__(self, name, flip, scene)

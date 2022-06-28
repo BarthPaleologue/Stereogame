@@ -17,7 +17,7 @@ from feather.camera import *
 from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield
-from game.ball import  Ball
+from game.projectile import  Projectile
 from game.Bomb import Bomb
 
 def drawEyeToFrameBuffer(eye, scene, testMat, testTexture):
@@ -63,22 +63,12 @@ if __name__ == "__main__":
 
     spheres = []
     for i in range(10):
-        sphere = Ball("sphery", False, 1, battlefield, scene)
+        sphere = Projectile("sphery", False, 1, battlefield, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 10.0, (random() - 0.5) / 10.0, (random() - 0.5) / 10.0)
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         spheres.append(sphere)
-
-    bat = RowOBJ("./assets/baseball/batB.obj",False,scene)
-    #bat.setScaling(0.5,0.5,0.5)
-    bat.setPosition(0,0,0)
-    batMat = TextureMaterial(Texture("./assets/Baseball/wood.jpg"))
-    bat.setMaterial(batMat)
-    #skull = OBJ("./assets/skull.obj", False, scene)
-    #for(i, shape) in enumerate(skull.shapes):
-    #	shape.setScaling(0.05, 0.05, 0.05)
-    #	shape.setRotationX(90)
 
     battlefield = Battlefield("battly", 14, 6, 20, scene)
     #battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
@@ -175,8 +165,8 @@ if __name__ == "__main__":
             sphere.setRotationX(time * 60.0)
             sphere.setRotationZ(time * 40.0)"""
         for bomb in spheres:
-            if battlefield.isCollision(bomb.getRadius(), bomb.getPosition()):
-                bomb.explode()
+            #if battlefield.isCollision(bomb.getRadius(), bomb.getPosition()):
+                #bomb.explode()
             bomb.update()
             bomb.setRotationY(time * 50.0)
             bomb.setRotationX(time * 60.0)

@@ -133,10 +133,8 @@ class Shape(Transform):
             glDisableVertexAttribArray(self.att_texcoord)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-<<<<<<< HEAD
     def setScene(self,scene):
         self.scene = scene
-=======
+        
     def destroy(self):
         self.scene.removeShape(self)
->>>>>>> fb2cf13d26079795cfeea3010f79b101ffb1764a
