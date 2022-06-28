@@ -50,10 +50,14 @@ if __name__ == "__main__":
     bat.setMaterial(batMat)
 
     battlefield = Battlefield("battly", 10, 6, 20, scene)
-    battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
-    #battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
-    #battleMat2.updateFunction = lambda battleMat2:
-    #battleMat2.setUniform("u_time", pygame.time.get_ticks() / 1000.0)
+    battlefieldTexture = Texture("./assets/textBattle.jpeg")
+    battleMat = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
+    def updateMaterial(material: ShaderMaterial):
+        material.setFloat("scaleX", battlefield.size_x)
+        material.setFloat("scaleY", battlefield.size_y)
+        material.setFloat("scaleZ", battlefield.size_z)
+        material.setTexture("battlefieldTexture", battlefieldTexture)
+    battleMat.setUpdateFunction(updateMaterial)
         
     battlefield.setMaterial(battleMat)
 
