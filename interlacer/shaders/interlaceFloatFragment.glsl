@@ -17,37 +17,37 @@ void main() {
     float g = 0.0;
     float b = 0.0;
 
-    float r0 = 1.0;//texture2D(sTextures[0], vTexCoord).r;
-    float g0 = 0.0;//texture2D(sTextures[0], vTexCoord).g;
-    float b0 = 0.0;//texture2D(sTextures[0], vTexCoord).b;
+    float r0 = texture2D(sTextures[0], vTexCoord).r;
+    float g0 = texture2D(sTextures[0], vTexCoord).g;
+    float b0 = texture2D(sTextures[0], vTexCoord).b;
 
-    float r1 = 0.0;//texture2D(sTextures[1], vTexCoord).r;
-    float g1 = 1.0;//texture2D(sTextures[1], vTexCoord).g;
-    float b1 = 0.0;//texture2D(sTextures[1], vTexCoord).b;
+    float r1 = texture2D(sTextures[1], vTexCoord).r;
+    float g1 = texture2D(sTextures[1], vTexCoord).g;
+    float b1 = texture2D(sTextures[1], vTexCoord).b;
 
-    float r2 = 0.0;//texture2D(sTextures[2], vTexCoord).r;
-    float g2 = 0.0;//texture2D(sTextures[2], vTexCoord).g;
-    float b2 = 1.0;//texture2D(sTextures[2], vTexCoord).b;
+    float r2 = texture2D(sTextures[2], vTexCoord).r;
+    float g2 = texture2D(sTextures[2], vTexCoord).g;
+    float b2 = texture2D(sTextures[2], vTexCoord).b;
 
-    float r3 = 1.0;//texture2D(sTextures[3], vTexCoord).r;
-    float g3 = 1.0;//texture2D(sTextures[3], vTexCoord).g;
-    float b3 = 0.0;//texture2D(sTextures[3], vTexCoord).b;
+    float r3 = texture2D(sTextures[3], vTexCoord).r;
+    float g3 = texture2D(sTextures[3], vTexCoord).g;
+    float b3 = texture2D(sTextures[3], vTexCoord).b;
 
-    float r4 = 0.0;//texture2D(sTextures[4], vTexCoord).r;
-    float g4 = 1.0;//texture2D(sTextures[4], vTexCoord).g;
-    float b4 = 1.0;//texture2D(sTextures[4], vTexCoord).b;
+    float r4 = texture2D(sTextures[4], vTexCoord).r;
+    float g4 = texture2D(sTextures[4], vTexCoord).g;
+    float b4 = texture2D(sTextures[4], vTexCoord).b;
 
-    float r5 = 1.0;//texture2D(sTextures[5], vTexCoord).r;
-    float g5 = 0.0;//texture2D(sTextures[5], vTexCoord).g;
-    float b5 = 1.0;//texture2D(sTextures[5], vTexCoord).b;
+    float r5 = texture2D(sTextures[5], vTexCoord).r;
+    float g5 = texture2D(sTextures[5], vTexCoord).g;
+    float b5 = texture2D(sTextures[5], vTexCoord).b;
 
-    float r6 = 1.0;//texture2D(sTextures[6], vTexCoord).r;
-    float g6 = 1.0;//texture2D(sTextures[6], vTexCoord).g;
-    float b6 = 1.0;//texture2D(sTextures[6], vTexCoord).b;
+    float r6 = texture2D(sTextures[6], vTexCoord).r;
+    float g6 = texture2D(sTextures[6], vTexCoord).g;
+    float b6 = texture2D(sTextures[6], vTexCoord).b;
 
-    float r7 = 0.0;//texture2D(sTextures[7], vTexCoord).r;
-    float g7 = 0.0;//texture2D(sTextures[7], vTexCoord).g;
-    float b7 = 0.0;//texture2D(sTextures[7], vTexCoord).b;
+    float r7 = texture2D(sTextures[7], vTexCoord).r;
+    float g7 = texture2D(sTextures[7], vTexCoord).g;
+    float b7 = texture2D(sTextures[7], vTexCoord).b;
 
 
     // VIEW 0
