@@ -1,14 +1,14 @@
-from feather.shapes import Cube
+from feather.shapes.land import Land
 import numpy as np
 
 
-class Battlefield(Cube):
+class Battlefield(Land):
     
     def __init__(self, name, size_x, size_y, size_z, scene = None):
         self.size_x = size_x
         self.size_y = size_y
         self.size_z = size_z
-        Cube.__init__(self, name, False, scene)
+        Land.__init__(self, name, False, scene)
         self.setScaling(size_x, size_y, size_z)
 
     def getSizex(self):
