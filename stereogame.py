@@ -15,7 +15,7 @@ from feather.camera import *
 from feather.shapes.sphere import Sphere
 from feather.loaders.objloader import OBJ
 from interlacer import Interlacer
-
+from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield
 
 def drawEyeToFrameBuffer(eye, scene, testMat, testTexture):
@@ -44,6 +44,10 @@ if __name__ == "__main__":
 	#for(i, shape) in enumerate(skull.shapes):
 	#	shape.setScaling(0.05, 0.05, 0.05)
 	#	shape.setRotationX(90)
+	# object 10485_Baseball_bat_v1_max8
+	bat = RowOBJ("./assets/baseball/batA.obj",False,scene)
+	batMat = TextureMaterial(Texture("./assets/space.png"))
+	bat.setMaterial(batMat)
 
 	sphere = Sphere("sphery", False, scene)
 	sphere.setScaling(0.3, 0.3, 0.3)
@@ -117,9 +121,9 @@ if __name__ == "__main__":
 	######### GAME LOOP
 	buttons = Keyboard()
 
-	joystick = pygame.joystick.Joystick(0)
-	joystick.init()
-	joy = GamePad(0)
+	#joystick = pygame.joystick.Joystick(0)
+	#joystick.init()
+	#joy = GamePad(0)
 	running = True
 	while running:
 		time = pygame.time.get_ticks() / 1000.0

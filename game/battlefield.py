@@ -54,19 +54,19 @@ class Battlefield(Cube):
 
     def normalVector(self, face):
         if face == "right":
-            return np.array([-1,0,0]), np.array([0,1,1])
+            return np.array([-1,0,0])
         elif face == "left":
-            return np.array([1,0,0]), np.arrray([0,1,1])
+            return np.array([1,0,0])
         elif face == "top":
-            return np.array([0,-1,0]), np.array([1,0,1])
+            return np.array([0,-1,0])
         elif face == "bottom":
-            return np.array([0,1,0]), np.array([1,0,1])
+            return np.array([0,1,0])
         elif face == "front":
-            return np.array([0,0,-1]), np.array([1,1,0])
+            return np.array([0,0,-1])
         elif face == "back":
-            return np.array([0,0,1]), np.array([1,1,0])
+            return np.array([0,0,1])
         else:
-            return np.array([0,0,0]), np.array([0,0,0])
+            return np.array([0,0,0])
         
     
     
