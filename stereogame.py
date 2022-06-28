@@ -24,11 +24,9 @@ def drawEyeToFrameBuffer(eye, scene, testMat, testTexture):
     eye.frameBuffer.bind()
     glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
-
     testMat.texture = testTexture
 
     scene.render(eye.getProjectionMatrix(), model_matrix, eye.computeViewMatrix())
-
 
 if __name__ == "__main__":
     pygame.init()
@@ -103,6 +101,13 @@ if __name__ == "__main__":
     ident_matrix = np.identity(4, dtype=np.float32)
 
     ######### DECLARATION DES JOUEURS
+
+    keyboard = Keyboard()
+
+    pygame.joystick.init()
+    if pygame.joystick.get_count() > 0 :
+        joystick = pygame.joystick.Joystick(0)
+        gamepad = GamePad(0)
     
     player1 = Player(False, None)
     player1.setPosition(0, 0, -10)
@@ -126,12 +131,6 @@ if __name__ == "__main__":
     circleRadius = 2.5
 
     ######### GAME LOOP
-    buttons = Keyboard()
-
-    pygame.joystick.init()
-    if pygame.joystick.get_count() > 0 :
-        joystick = pygame.joystick.Joystick(0)
-        joy = GamePad(0)
     
     running = True
     while running:
@@ -151,28 +150,11 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        """for sphere in spheres:
-            if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
-                normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
-                oldVelocity = sphere.getVelocity()
-                newVelocity = reflection(oldVelocity, normVect)
-
-                sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
-
-        
-            sphere.update()
-            sphere.setRotationY(time * 50.0)
-            sphere.setRotationX(time * 60.0)
-            sphere.setRotationZ(time * 40.0)"""
         for bomb in spheres:
             #if battlefield.isCollision(bomb.getRadius(), bomb.getPosition()):
                 #bomb.explode()
             bomb.update()
-            bomb.setRotationY(time * 50.0)
-            bomb.setRotationX(time * 60.0)
-            bomb.setRotationZ(time * 40.0)
-            
-
+            bomb.addRotation(deltaTime * 50.0, deltaTime * 60.0, deltaTime * 40.0)
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
@@ -274,12 +256,12 @@ if __name__ == "__main__":
         
 
         
-        buttons.update()
-        if buttons.isBattePressed():
+        keyboard.update()
+        if keyboard.isBattePressed():
             print("batty")
         if pygame.joystick.get_count() > 0 :
-            joy.update()
-            if joy.isBattePressed():
+            gamepad.update()
+            if gamepad.isBattePressed():
                 print("joybatty")
         
 
