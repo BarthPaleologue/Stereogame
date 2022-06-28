@@ -16,15 +16,15 @@ class Bat(RowOBJ):
         self.radius = 0
 
     def strike(self):#a finir
-        self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
-        self.setRotationXAround(5, 10, 20, 30)
+     #   self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
+        self.addRotationZ(20.0)
+        self.addRotationY(10.0)
      #   newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
       #  self.velocity = newVelocity
 
     def move(self):
         self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
-        newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
-        self.velocity = newVelocity
+
         
     def setVelocity(self, x, y, z):
         self.velocity = np.array([x, y, z])
@@ -32,11 +32,7 @@ class Bat(RowOBJ):
     def getVelocity(self):
         return self.velocity
 
-    def setAcceleration(self, x, y, z):
-        self.acceleration = np.array([x, y, z])
 
-    def getAcceleration(self):
-        return self.acceleration
 
     def setRadius(self, radius):
         self.radius = radius
@@ -48,7 +44,5 @@ class Bat(RowOBJ):
         self.ends = ends
     
     def getEnds(self):
-        futurePosition = np.array([self.position[0]+self.velocity[0], self.position[1]+self.velocity[1], self.position[2]+self.velocity[2]])
-        ends = np.add(self.vertices, np.full((len(self.vertices), 3), futurePosition))
-        return ends
+        return self.ends
 

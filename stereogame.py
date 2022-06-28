@@ -36,7 +36,7 @@ if __name__ == "__main__":
     #infoObject = pygame.display.Info()
     #width, height = infoObject.current_w, infoObject.current_h
     pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
-    pygame.display.toggle_fullscreen()
+  #  pygame.display.toggle_fullscreen()
 
     scene = Scene()
 
