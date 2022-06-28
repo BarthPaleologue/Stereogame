@@ -66,3 +66,7 @@ def lookat(eye, center):
         [zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye)],
         [0, 0, 0, 1]
     ]).transpose().dot(scale(1, -1, 1))
+
+
+def dot(a, b):
+    return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]
