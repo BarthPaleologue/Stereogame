@@ -24,6 +24,12 @@ class GamePad(Input):
         
     def isBattePressed(self):
         return self.stateButtons[buttons['SQUARE']] and (not self.stateBefore[buttons['SQUARE']])
+    
+    def turnBatteLeft(self) :
+        return self.stateButtons[buttons['L1']]
+
+    def turnBatteRight(self) :
+        return self.stateButtons[buttons['R1']]
 
     def getEffectButton(self, effect):
         if effect == "batte":

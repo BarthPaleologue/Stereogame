@@ -238,6 +238,25 @@ if __name__ == "__main__":
                         player1.batte.strike()
                     else :
                         player2.batte.strike()
+                limite = 0
+                while gamepad[i].turnBatteLeft() :
+                    limite += 1
+                    if i == 0 :
+                        player1.batte.addRotationZ(1)
+                    if i == 1 :
+                        player2.batte.addRotationZ(1)
+                    if limite > 15 :
+                        break
+                limite = 0
+                while gamepad[i].turnBatteRight() :
+                    limite += 1
+                    if i == 0 :
+                        player1.batte.addRotationZ(-1)
+                    if i == 1 :
+                        player2.batte.addRotationZ(-1)
+                    if limite > 15 :
+                        break
+                limite = 0
         
         ''' keyboard.update()
         if keyboard.isBattePressed():
