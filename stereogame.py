@@ -107,6 +107,9 @@ if __name__ == "__main__":
     player1.setPosition(0, 0, -12)
     player2.setPosition(0, 0, 12)
 
+    end1 = Cube("end1", False, scene)
+    end1.setPosition(player1.batte.position[0], player1.batte.position[1], player1.batte.position[2])
+
     fbo_width = int(width/2)
     fbo_height = int(height/2)
 

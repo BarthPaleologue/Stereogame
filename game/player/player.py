@@ -90,14 +90,12 @@ class Player(Transform):
         self.leftEye.setPosition(x + self.eyeDistance / 2, y, z)
         self.batte.setPosition(x, y, z)
         if self.flip:
-            self.batte.translate(0, 0, -0.5)
             self.batte.beginY = -30
             self.batte.beginZ = 50
             self.batte.endZ = 50
             self.batte.setRotationZ(self.batte.beginZ)
             self.batte.setRotationY(self.batte.beginY)
         else:
-            self.batte.translate(0, 0, 0.5)
             self.batte.beginZ = 180 - 50
             self.batte.endZ = 180 - 50
             self.batte.beginY = 30
@@ -123,6 +121,6 @@ class Player(Transform):
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
                 if self.flip:
-                    ball.setVelocity(0, 0, -0.5)
+                    ball.setVelocity(-ball.velocity[0], -ball.velocity[1], -ball.velocity[2])
                 else:
-                    ball.setVelocity(0, 0, 0.5)
+                    ball.setVelocity(-ball.velocity[0], -ball.velocity[1], -ball.velocity[2])
