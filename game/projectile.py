@@ -88,7 +88,7 @@ class Projectile(Sphere):
                 self.setMaterial(ballMat)
                 #self.update()
             elif effect == 'teleport':
-                ballMat = TextureMaterial(Texture("./assets/space.png"))
+                ballMat = TextureMaterial(Texture("./assets/Galaxy512.jpg"))
                 self.setMaterial(ballMat)
                 self.setCollision('teleport')
                 #self.update()

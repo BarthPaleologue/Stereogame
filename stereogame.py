@@ -102,7 +102,7 @@ if __name__ == "__main__":
     player1.setPosition(0, 0, -13)
     player2.setPosition(0, 0, 13)
 
-    end1 = Cube("end1", False, scene)
+    #end1 = Cube("end1", False, scene)
 
     fbo_width = int(width/2)
     fbo_height = int(height/2)
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         player1.update(deltaTime)
         player2.update(deltaTime)
 
-        end1.setPosition(player2.batte.end1[0], player2.batte.end1[1], player2.batte.end1[2])
+        #end1.setPosition(player2.batte.end1[0], player2.batte.end1[1], player2.batte.end1[2])
 
         for sphere in ballManager.balls:
             sphere.update()
@@ -235,13 +235,16 @@ if __name__ == "__main__":
                     if keys[pygame.K_UP]:
                         player2.batte.strike()
                     if keys[pygame.K_LEFT]:
-                        player2.batte.addRotationZ(30)
-                    if keys[pygame.K_RIGHT]:
                         player2.batte.addRotationZ(-30)
+                    if keys[pygame.K_RIGHT]:
+                        player2.batte.addRotationZ(30)
+
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):
                     model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
+
+
             # pour tester si le programme detecte les appuie sur les boutons
             #if event.type == pygame.JOYBUTTONDOWN:
         for i in range (nb_joystick) :
