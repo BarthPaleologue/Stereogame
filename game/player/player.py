@@ -15,7 +15,7 @@ class Player(Transform):
         Transform.__init__(self)
         self.batte = Bat("./assets/baseball/batB.obj", scene)
 
-        self.eyeDistance = 0.69
+        self.eyeDistance = 0.0069
 
         self.leftEye = Eye()  ### Initialiser l'oeil gauche ici
         self.leftEye.setPosition(-self.eyeDistance / 2, 0, 0)
@@ -156,7 +156,7 @@ class Player(Transform):
 
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
-                zInfluence = 2
+                zInfluence = 1.2
 
                 velocity = np.array([-ball.velocity.x, -ball.velocity.y, -ball.velocity.z * zInfluence])
                 velocityNorm = math.sqrt(velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2)
