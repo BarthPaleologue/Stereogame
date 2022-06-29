@@ -65,12 +65,6 @@ if __name__ == "__main__":
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
-    yellow_cube = Cube('yellow_cube', True, scene)
-    yellow_cube.setRotationY(45)
-    
-    cubeMat = TextureMaterial(Texture("./assets/tennis.png"))
-    yellow_cube.setMaterial(cubeMat)
-
     blackTex = Texture("./assets/black.jpg")
     numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
     
@@ -120,8 +114,6 @@ if __name__ == "__main__":
     ######### DECLARATION DES VARIABLES DE LA BOUCLE
 
     getTicksLastFrame = 0.0
-    x,z = 0.0, 0.0
-    circleRadius = 2.5
 
     ######### GAME LOOP
     
@@ -135,14 +127,6 @@ if __name__ == "__main__":
 
         player1.update(deltaTime)
         player2.update(deltaTime)
-        
-        yellow_cube.addRotationY(deltaTime * 70.0).addRotationX(deltaTime * 80.0)
-
-        rotationSpeed = 1
-        x = math.cos(time * rotationSpeed) * circleRadius
-        z = math.sin(time * rotationSpeed) * circleRadius
-
-        yellow_cube.setPosition(x, 0, z)
 
         end1.setPosition(player1.batte.end1[0], player1.batte.end1[1], player1.batte.end1[2])
 
@@ -227,10 +211,6 @@ if __name__ == "__main__":
         ####### GESTION DES ENTREES CLAVIER
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_z]:
-            circleRadius += 0.05
-        if keys[pygame.K_s]:
-            circleRadius -= 0.05
         if keys[pygame.K_q]:
             player1.setEyeDistance(player1.eyeDistance + 0.001)
             player2.setEyeDistance(player2.eyeDistance + 0.001)

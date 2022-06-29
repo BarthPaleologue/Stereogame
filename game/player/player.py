@@ -136,4 +136,4 @@ class Player(Transform):
                 if self.flip:
                     ball.setVelocity(-ball.velocity[0], ball.velocity[1], -ball.velocity[2])
                 else:
-                    ball.setVelocity(-ball.velocity[0], ball.velocity[1], -ball.velocity[2])
+                    ball.setVelocity(-ball.velocity[0], ball.velocity[1], -1)
