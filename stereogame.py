@@ -237,36 +237,39 @@ if __name__ == "__main__":
                         player2.batte.addRotationZ(30)
                     if keys[pygame.K_RIGHT]:
                         player2.batte.addRotationZ(-30)
+
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):
                     model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
+
+
             # pour tester si le programme detecte les appuie sur les boutons
-            for i in range (nb_joystick) :
-                gamepad[i].update()
+            for i in range(nb_joystick):
                 if gamepad[i].isBattePressed():
                     if i == 0 :
                         player1.batte.strike()
                     else :
                         player2.batte.strike()
                 limite = 0
-                while gamepad[i].turnBatteLeft() :
+                if gamepad[i].turnBatteLeft():
+                    gamepad[i].update()
                     limite += 1
                     if i == 0 :
                         player1.batte.addRotationZ(1)
                     if i == 1 :
                         player2.batte.addRotationZ(1)
-                    if limite > 15 :
-                        break
+                    #if limite > 15 :
+                    #    break
                 limite = 0
-                while gamepad[i].turnBatteRight() :
+                if gamepad[i].turnBatteRight():
                     limite += 1
                     if i == 0 :
                         player1.batte.addRotationZ(-1)
                     if i == 1 :
                         player2.batte.addRotationZ(-1)
-                    if limite > 15 :
-                        break
+                    #if limite > 15 :
+                    #    break
                 limite = 0
         
         ''' keyboard.update()
