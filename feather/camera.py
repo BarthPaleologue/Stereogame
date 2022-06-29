@@ -3,13 +3,14 @@ from pygame.math import Vector3
 from feather.transform import Transform
 from feather.algebra import rotate, lookat
 from feather.projections import perspective
+from feather.vector3 import Vec3
 
 class Camera(Transform):
     def __init__(self, fov, aspectRatio):
         Transform.__init__(self)
         self.projection = perspective(fov, aspectRatio, 0.1, 100)
         self.target = Vector3(0, 0, 0)
-        self.position = np.array([0.0, 0.0, -1.0])
+        self.position = Vec3(0.0, 0.0, -1.0)
         self.view_matrix = self.computeViewMatrix()
 
     def computeViewMatrix(self):

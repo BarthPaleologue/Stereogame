@@ -1,13 +1,16 @@
 from feather.shapes.land import Land
+from feather.vector3 import Vec3
 import numpy as np
 
 
 class Battlefield(Land):
     
-    def __init__(self, name, size_x, size_y, size_z, scene = None):
+    def __init__(self, name, size_x, size_y, size_z, player1, player2, scene = None):
         self.size_x = size_x
         self.size_y = size_y
         self.size_z = size_z
+        self.player1 = player1
+        self.player2 = player2
         Land.__init__(self, name, False, True, True, True, scene)
         self.setScaling(size_x, size_y, size_z)
 
@@ -25,7 +28,7 @@ class Battlefield(Land):
     def isCollision(self, r, center): # cette fonction prend en paramètres un poins dans l'espace
                             # et renvoie True s'il y a collision entre ce point et la
                             #  battlefield
-        x,y,z = center[0], center[1], center[2]
+        x,y,z = center.x, center.y, center.z
 
         if x+r >= self.size_x or x-r <= -self.size_x:
             return True
@@ -37,7 +40,7 @@ class Battlefield(Land):
         return False
 
     def whereCollision(self, r, center):
-        x,y,z = center[0], center[1], center[2]
+        x,y,z = center.x, center.y, center.z
         if x+r >= self.size_x:
             return "right"
         elif x-r <= -self.size_x:
@@ -55,19 +58,19 @@ class Battlefield(Land):
 
     def normalVector(self, face):
         if face == "right":
-            return np.array([-1,0,0])
+            return Vec3(-1,0,0)
         elif face == "left":
-            return np.array([1,0,0])
+            return Vec3(1,0,0)
         elif face == "top":
-            return np.array([0,-1,0])
+            return Vec3(0,-1,0)
         elif face == "bottom":
-            return np.array([0,1,0])
+            return Vec3(0,1,0)
         elif face == "front":
-            return np.array([0,0,-1])
+            return Vec3(0,0,-1)
         elif face == "back":
-            return np.array([0,0,1])
+            return Vec3(0,0,1)
         else:
-            return np.array([0,0,0])
+            return Vec3(0,0,0)
         
     
     

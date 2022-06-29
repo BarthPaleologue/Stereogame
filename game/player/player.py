@@ -53,12 +53,12 @@ class Player(Transform):
 
         self.rightEye.setPosition(-self.eyeDistance / 2, 0, 0)
         self.rightEye.setRotationX(angle)
-        self.rightEye.setRotationXAround(angle, self.position[0], self.position[1], self.position[2])
+        self.rightEye.setRotationXAround(angle, self.position.x, self.position.y, self.position.z)
         self.rightEye.computeViewMatrix()
 
         self.leftEye.setPosition(self.eyeDistance / 2, 0, 0)
         self.leftEye.setRotationX(angle)
-        self.leftEye.setRotationXAround(angle, self.position[0], self.position[1], self.position[2])
+        self.leftEye.setRotationXAround(angle, self.position.x, self.position.y, self.position.z)
         self.leftEye.computeViewMatrix()
 
         super().setRotationX(angle)
@@ -66,12 +66,12 @@ class Player(Transform):
     def setRotationY(self, angle):
         self.rightEye.setPosition(-self.eyeDistance / 2, 0, 0)
         self.rightEye.setRotationY(angle)
-        self.rightEye.setRotationYAround(angle, self.position[0], self.position[1], self.position[2])
+        self.rightEye.setRotationYAround(angle, self.position.x, self.position.y, self.position.z)
         self.rightEye.computeViewMatrix()
 
         self.leftEye.setPosition(self.eyeDistance / 2, 0, 0)
         self.leftEye.setRotationY(angle)
-        self.leftEye.setRotationYAround(angle, self.position[0], self.position[1], self.position[2])
+        self.leftEye.setRotationYAround(angle, self.position.x, self.position.y, self.position.z)
         self.leftEye.computeViewMatrix()
 
         super().setRotationY(angle)
@@ -79,12 +79,12 @@ class Player(Transform):
     def setRotationZ(self, angle):
         self.rightEye.setPosition(-self.eyeDistance / 2, 0, 0)
         self.rightEye.setRotationZ(angle)
-        self.rightEye.setRotationZAround(angle, self.position[0], self.position[1], self.position[2])
+        self.rightEye.setRotationZAround(angle, self.position.x, self.position.y, self.position.z)
         self.rightEye.computeViewMatrix()
 
         self.leftEye.setPosition(self.eyeDistance / 2, 0, 0)
         self.leftEye.setRotationZ(angle)
-        self.leftEye.setRotationZAround(angle, self.position[0], self.position[1], self.position[2])
+        self.leftEye.setRotationZAround(angle, self.position.x, self.position.y, self.position.z)
         self.leftEye.computeViewMatrix()
 
         super().setRotationZ(angle)
@@ -116,8 +116,8 @@ class Player(Transform):
 
     def setEyeDistance(self, eyeDistance):
         self.eyeDistance = eyeDistance
-        self.rightEye.setPosition(self.position[0] - self.eyeDistance / 2, self.position[1], self.position[2])
-        self.leftEye.setPosition(self.position[0] + self.eyeDistance / 2, self.position[1], self.position[2])
+        self.rightEye.setPosition(self.position.x - self.eyeDistance / 2, self.position.y, self.position.z)
+        self.leftEye.setPosition(self.position.x + self.eyeDistance / 2, self.position.y, self.position.z)
 
     def invertEyes(self):
         self.rightEye, self.leftEye = self.leftEye, self.rightEye
@@ -132,33 +132,33 @@ class Player(Transform):
             np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2], 1.0]))
         relativePosition1 = np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2]])
 
-        flipedRotationMatrix = rotate(self.batte.rotation[0], 1.0, 0.0, 0.0)
-        flipedRotationMatrix = flipedRotationMatrix.dot(rotate(self.batte.rotation[1], 0.0 , 1.0, 0.0))
-        flipedRotationMatrix = flipedRotationMatrix.dot(rotate(-self.batte.rotation[2], 0.0, 0.0, 1.0))
+        flipedRotationMatrix = rotate(self.batte.rotation.x, 1.0, 0.0, 0.0)
+        flipedRotationMatrix = flipedRotationMatrix.dot(rotate(self.batte.rotation.y, 0.0 , 1.0, 0.0))
+        flipedRotationMatrix = flipedRotationMatrix.dot(rotate(-self.batte.rotation.z, 0.0, 0.0, 1.0))
 
         relativePosition2 = flipedRotationMatrix.dot(
             np.array([relativePosition2[0], relativePosition2[1], relativePosition2[2], 1.0]))
         relativePosition2 = np.array([relativePosition2[0], relativePosition2[1], relativePosition2[2]])
 
         if not self.flip:
-            self.batte.end1 = relativePosition1 + self.getPosition()
+            self.batte.end1 = relativePosition1 + np.array([self.position.x, self.position.y, self.position.z])
         else:
-            self.batte.end1 = relativePosition2 + self.getPosition()
+            self.batte.end1 = relativePosition2 + np.array([self.position.x, self.position.y, self.position.z])
 
         if not self.flip:
             self.batte.end1[2] -= 4.5
             self.batte.end2 = np.array(
-                [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] - 4.5])
+                [self.getPosition().x, self.getPosition().y, self.getPosition().z - 4.5])
         else:
             self.batte.end1[2] += 4.5
             self.batte.end2 = np.array(
-                [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] + 4.5])
+                [self.getPosition().x, self.getPosition().y, self.getPosition().z + 4.5])
 
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
                 zInfluence = 2
 
-                velocity = np.array([-ball.velocity[0], -ball.velocity[1], -ball.velocity[2] * zInfluence])
+                velocity = np.array([-ball.velocity.x, -ball.velocity.y, -ball.velocity.z * zInfluence])
                 velocityNorm = math.sqrt(velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2)
 
                 velocity /= velocityNorm

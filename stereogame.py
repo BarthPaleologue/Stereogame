@@ -40,24 +40,51 @@ if __name__ == "__main__":
     scene = Scene()
 
     DOES_INTERLACE = True
+
+    ####### BALL MANAGER
+    ballManager = BallManager([])
+
+    ######### DECLARATION DES JOUEURS
+
+    keyboard = Keyboard()
+    nb_joystick = pygame.joystick.get_count()
+    pygame.joystick.init()
+    if nb_joystick > 0 :
+        joystick = []
+        gamepad = []
+        for i in range (nb_joystick) :
+            joystick += [pygame.joystick.Joystick(i)]
+            gamepad += [GamePad(i)]
+        player1 = Player(False, gamepad[0], scene, ballManager)
+        if nb_joystick == 2:
+            player2 = Player(True, gamepad[1], scene, ballManager)
+        else:
+            player2 = Player(False, None, scene, ballManager)
+    else:
+        player1 = Player(False, None, scene, ballManager)
+        player2 = Player(True, None, scene, ballManager)
+
+    player1.setPosition(0, 0, -12)
+    player2.setPosition(0, 0, 12)
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 22, scene)
+    battlefield = Battlefield("battly", 10, 6, 22, player1, player2, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
     sphereTex = Texture("./assets/normaltex.jpeg")
 
-    ballManager = BallManager([])
+    
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(5):
+    for i in range(1):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         ballManager.addBall(sphere)
+        sphere.setCurrentPlayer(player1)
     
     rect = Rectangle('rect', True, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
@@ -79,28 +106,7 @@ if __name__ == "__main__":
     ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
     ident_matrix = np.identity(4, dtype=np.float32)
 
-    ######### DECLARATION DES JOUEURS
-
-    keyboard = Keyboard()
-    nb_joystick = pygame.joystick.get_count()
-    pygame.joystick.init()
-    if nb_joystick > 0:
-        joystick = []
-        gamepad = []
-        for i in range(nb_joystick):
-            joystick += [pygame.joystick.Joystick(i)]
-            gamepad += [GamePad(i)]
-        player1 = Player(False, gamepad[0], scene, ballManager)
-        if nb_joystick == 2:
-            player2 = Player(True, gamepad[1], scene, ballManager)
-        else:
-            player2 = Player(False, None, scene, ballManager)
-    else:
-        player1 = Player(False, None, scene, ballManager)
-        player2 = Player(True, None, scene, ballManager)
-
-    player1.setPosition(0, 0, -13)
-    player2.setPosition(0, 0, 13)
+   
 
     #end1 = Cube("end1", False, scene)
 

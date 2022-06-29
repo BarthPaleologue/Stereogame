@@ -6,27 +6,30 @@ import pygame
 from random import random
 
 from feather.texture import Texture
+from feather.vector3 import Vec3
 
 class Projectile(Sphere):
         def __init__(self, name, flip,  radius, battlefield, collision, ballmanager, scene):
             Sphere.__init__(self, name, flip, scene)
             self.collision = collision  # if it is equal to reflect, then it will reflect
                                         # and if it is equal to teleport than we will apply the function teleport
-            self.position = np.array([0.0, 0.0, 0.0])
-            self.velocity = np.array([0.0, 0.0, 0.0])
-            self.acceleration = np.array([0.0, 0.0, 0.0])
+            self.position = Vec3(0.0, 0.0, 0.0)
+            self.velocity = Vec3(0.0, 0.0, 0.0)
+            self.acceleration = Vec3(0.0, 0.0, 0.0)
             self.radius = radius
             self.battlefield = battlefield
             self.ballmanager = ballmanager
             self.setScaling(radius, radius, radius)
-
             self.currentPlayer = None
+
+        def setCurrentPlayer(self,player):
+            self.currentPlayer = player
 
 
         def update(self):
             r = self.getRadius()
             position = self.getPosition()
-            x,y,z = position[0], position[1], position[2]
+            x,y,z = position.x, position.y, position.z
             sizex,sizey,sizez = self.battlefield.getSizex(), self.battlefield.getSizey(), self.battlefield.getSizez()
             if self.battlefield.isCollision(r, position):
                 where = self.battlefield.whereCollision(r, position)
@@ -35,7 +38,7 @@ class Projectile(Sphere):
                     oldVelocity = self.getVelocity()
                     newVelocity = reflection(oldVelocity, normVect)
 
-                    self.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
+                    self.setVelocity(newVelocity.x, newVelocity.y, newVelocity.z)
                 if self.collision == 'teleport':
                     
                     if where == 'right':
@@ -50,18 +53,18 @@ class Projectile(Sphere):
                     self.explode()
 
 
-            self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
-            newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
+            self.translate(self.velocity.x, self.velocity.y, self.velocity.z)
+            newVelocity = Vec3(self.velocity.x+self.acceleration.x, self.velocity.y+self.acceleration.y, self.velocity.z+self.acceleration.z)
             self.velocity = newVelocity
             
         def setVelocity(self, x, y, z):
-           self.velocity = np.array([x, y, z])
+           self.velocity = Vec3(x, y, z)
 
         def getVelocity(self):
             return self.velocity
 
         def setAcceleration(self, x, y, z):
-            self.acceleration = np.array([x, y, z])
+            self.acceleration = Vec3(x, y, z)
 
         def getAcceleration(self):
             return self.acceleration
@@ -70,7 +73,7 @@ class Projectile(Sphere):
             return self.radius
 
         def getEnds(self):
-            futurePosition = np.array([self.position[0]+self.velocity[0], self.position[1]+self.velocity[1], self.position[2]+self.velocity[2]])
+            futurePosition = np.array([self.position.x+self.velocity.x, self.position.y+self.velocity.y, self.position.z+self.velocity.z])
             ends = np.add(self.vertices, np.full((len(self.vertices), 3), futurePosition))
             return ends
 
@@ -79,7 +82,7 @@ class Projectile(Sphere):
         
         def showTrajectory(self):
             traj = Rectangle('traj', False, self.scene)
-            traj.setPosition(self.position[0], self.position[1], self.position[2])
+            traj.setPosition(self.position.x, self.position.y, self.position.z)
             traj.setScaling(0.5, 0.005, 1)
 
         def applyEffect(self, effect):
@@ -99,7 +102,7 @@ class Projectile(Sphere):
                 #self.update()
             elif effect == 'x3':
                 position = self.getPosition()
-                x,y,z = position[0], position[1], position[2]
+                x,y,z = position.x, position.y, position.z
                 proj1 = Projectile("sphery", False, 1, self.battlefield, 'reflect',self.ballmanager, self.scene)
                 proj2 = Projectile("sphery", False, 1, self.battlefield, 'reflect',self.ballmanager, self.scene)
                 ballMat = TextureMaterial(Texture("./assets/basketball.jpeg"))
@@ -114,6 +117,12 @@ class Projectile(Sphere):
             elif effect == 'superbat':
                 if self.currentPlayer != None:
                     self.currentPlayer.batte.isSuperBat = True
+            elif effect == 'inverseur':
+                if self.currentPlayer != None:
+                    if self.currentPlayer == self.battlefield.player1:
+                        self.battlefield.player2.invertEyes()
+                    else:
+                        self.battlefield.player1.invertEyes()
 
         def explode(self):
             crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
