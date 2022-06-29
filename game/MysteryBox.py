@@ -14,21 +14,20 @@ class MysteryBox(Cube):
         self.setMaterial(boxMat)
         self.setPosition(random.uniform(-self.battlex,self.battlex),random.uniform(-self.battley,self.battley),random.uniform(-self.battlez,self.battlez))
 
-
-    def isCollision(self,ball):
+    def isCollision(self, ball):
         ballposition = ball.getPosition()
-        x,y,z = ballposition[0], ballposition[1], ballposition[2]
+        x,y,z = ballposition.x, ballposition.y, ballposition.z
         position = self.getPosition()
-        bx, by, bz = position[0],position[1],position[2]
+        bx, by, bz = position.x,position.y,position.z
         if abs(bx-x)<= 1.5 and abs(by-y)<= 1.5 and abs(bz-z)<= 1.5:
             return True
         return False
     
     def onHit(self,ball):
         x,y,z = self.battlex, self.battley, self.battlez
-        self.setPosition(random.uniform(-x+1,x-1),random.uniform(-y + 1,y-1),random.uniform(-z+3,z-3))
-        #effect = random.randint(1,4)
+        self.setPosition(random.uniform(-x+1, x-1), random.uniform(-y + 2, y-2), random.uniform(-3, 3))
         effect = 6
+        #effect = random.randint(1,4)
         ball.applyEffect(allEffects[effect])
 
 

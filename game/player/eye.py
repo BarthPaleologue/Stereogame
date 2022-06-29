@@ -1,6 +1,5 @@
 from OpenGL.GL import *
 import numpy as np
-from pygame.math import Vector3
 import pygame
 
 #local imports

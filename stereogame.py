@@ -69,7 +69,7 @@ if __name__ == "__main__":
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 18, player1, player2, scene)
+    battlefield = Battlefield("battly", 10, 6, 22, player1, player2, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
@@ -77,8 +77,8 @@ if __name__ == "__main__":
 
     
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(1):
-        sphere = Projectile("sphery", False, 1, battlefield, 'reflect',ballManager, scene)
+    for i in range(5):
+        sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
         sphereMat = TextureMaterial(sphereTex)
@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
    
 
-    end1 = Cube("end1", False, scene)
+    #end1 = Cube("end1", False, scene)
 
     fbo_width = int(width/2)
     fbo_height = int(height/2)
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         player1.update(deltaTime)
         player2.update(deltaTime)
 
-        end1.setPosition(player2.batte.end2[0], player2.batte.end2[1], player2.batte.end2[2])
+        #end1.setPosition(player2.batte.end1[0], player2.batte.end1[1], player2.batte.end1[2])
 
         for sphere in ballManager.balls:
             sphere.update()
@@ -217,52 +217,60 @@ if __name__ == "__main__":
         ####### GESTION DES ENTREES CLAVIER
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_q]:
+        if keys[pygame.K_x]:
             player1.setEyeDistance(player1.eyeDistance + 0.001)
             player2.setEyeDistance(player2.eyeDistance + 0.001)
-        if keys[pygame.K_d]:
+        if keys[pygame.K_c]:
             player1.setEyeDistance(player1.eyeDistance - 0.001)
             player2.setEyeDistance(player2.eyeDistance - 0.001)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
+                keys = pygame.key.get_pressed()
                 if player1.getGamepad() == None :
-                    player1.batte.strike()
+                    if keys[pygame.K_z]:
+                        player1.batte.strike()
+                    if keys[pygame.K_q]:
+                        player1.batte.addRotationZ(30)
+                    if keys[pygame.K_d]:
+                        player1.batte.addRotationZ(-30)
                 if player2.getGamepad() == None :
-                    player2.batte.strike()
+                    if keys[pygame.K_UP]:
+                        player2.batte.strike()
+                    if keys[pygame.K_LEFT]:
+                        player2.batte.addRotationZ(-30)
+                    if keys[pygame.K_RIGHT]:
+                        player2.batte.addRotationZ(30)
+
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):
                     model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
+
+
             # pour tester si le programme detecte les appuie sur les boutons
-            for i in range (nb_joystick) :
-                gamepad[i].update()
-                if gamepad[i].isBattePressed():
-                    if i == 0 :
-                        player1.batte.strike()
-                    else :
-                        player2.batte.strike()
-                limite = 0
-                while gamepad[i].turnBatteLeft() :
-                    limite += 1
-                    if i == 0 :
-                        player1.batte.addRotationZ(1)
-                    if i == 1 :
-                        player2.batte.addRotationZ(1)
-                    if limite > 15 :
-                        break
-                limite = 0
-                while gamepad[i].turnBatteRight() :
-                    limite += 1
-                    if i == 0 :
-                        player1.batte.addRotationZ(-1)
-                    if i == 1 :
-                        player2.batte.addRotationZ(-1)
-                    if limite > 15 :
-                        break
-                limite = 0
+            #if event.type == pygame.JOYBUTTONDOWN:
+        for i in range (nb_joystick) :
+            gamepad[i].update()
+            if gamepad[i].isBattePressed():
+                if i == 0 :
+                    player1.batte.strike()
+                else :
+                    player2.batte.strike()
+            if gamepad[i].turnBatteLeft() :
+
+                if i == 0 :
+                    player1.batte.addRotationZ(1)
+                if i == 1 :
+                    player2.batte.addRotationZ(1)
+            if gamepad[i].turnBatteRight() :
+                if i == 0 :
+                    player1.batte.addRotationZ(-1)
+                if i == 1 :
+                    player2.batte.addRotationZ(-1)
         
         ''' keyboard.update()
         if keyboard.isBattePressed():

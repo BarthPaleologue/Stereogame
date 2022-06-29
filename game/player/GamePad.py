@@ -23,13 +23,13 @@ class GamePad(Input):
             self.stateButtons[i] = pygame.joystick.Joystick(self.id).get_button(i)
         
     def isBattePressed(self):
-        return self.stateButtons[buttons['SQUARE']] and (not self.stateBefore[buttons['SQUARE']])
+        return self.stateButtons[buttons['ROUND']]
     
     def turnBatteLeft(self) :
-        return self.stateButtons[buttons['L1']]
+        return self.stateButtons[buttons['L1']] or self.stateButtons[buttons['L2']]
 
     def turnBatteRight(self) :
-        return self.stateButtons[buttons['R1']]
+        return self.stateButtons[buttons['R1']] or self.stateButtons[buttons['R2']]
 
     def getEffectButton(self, effect):
         if effect == "batte":
