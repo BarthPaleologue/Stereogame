@@ -108,8 +108,9 @@ if __name__ == "__main__":
 
     pygame.joystick.init()
     if pygame.joystick.get_count() > 0 :
-        joystick = pygame.joystick.Joystick(0)
-        gamepad = GamePad(0)
+        joystick = []
+        joystick += [pygame.joystick.Joystick(pygame.joystick.get_count())]
+        gamepad = GamePad(pygame.joystick.get_count())
     
     player1 = Player(False, None, scene)
     player1.setPosition(0, 0, -12)
