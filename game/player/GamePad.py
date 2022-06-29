@@ -23,7 +23,7 @@ class GamePad(Input):
             self.stateButtons[i] = pygame.joystick.Joystick(self.id).get_button(i)
         
     def isBattePressed(self):
-        return self.stateButtons[buttons['SQUARE']] and (not self.stateBefore[buttons['SQUARE']])
+        return self.stateButtons[buttons['SQUARE']] 
     
     def turnBatteLeft(self) :
         return self.stateButtons[buttons['L1']]
