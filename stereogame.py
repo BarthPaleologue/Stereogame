@@ -251,18 +251,15 @@ if __name__ == "__main__":
                 if any(event.buttons):
                     model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
             # pour tester si le programme detecte les appuie sur les boutons
-            if event.type == pygame.JOYBUTTONDOWN:
-                if nb_joystick > 0 :
-                    for i in range (nb_joystick) :
-                        gamepad[i].update()
-                        if gamepad[i].isBattePressed():
-                            print(i)
-                if player1.getGamepad() != None and player1.getGamepad().isBattePressed() == 0 :
-                    player1.batte.strike()
-                if player2.getGamepad() != None and player2.getGamepad().isBattePressed() == 0 :
-                    player2.batte.strike()
-        '''
-        keyboard.update()
+            for i in range (nb_joystick) :
+                gamepad[i].update()
+                if gamepad[i].isBattePressed():
+                    if i == 0 :
+                        player1.batte.strike()
+                    else :
+                        player2.batte.strike()
+        
+        ''' keyboard.update()
         if keyboard.isBattePressed():
             print("batty")
         if nb_joystick > 0 :
