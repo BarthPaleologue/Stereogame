@@ -16,9 +16,9 @@ class MysteryBox(Cube):
 
     def isCollision(self, ball):
         ballposition = ball.getPosition()
-        x,y,z = ballposition[0], ballposition[1], ballposition[2]
+        x,y,z = ballposition.x, ballposition.y, ballposition.z
         position = self.getPosition()
-        bx, by, bz = position[0],position[1],position[2]
+        bx, by, bz = position.x,position.y,position.z
         if abs(bx-x)<= 1.5 and abs(by-y)<= 1.5 and abs(bz-z)<= 1.5:
             return True
         return False

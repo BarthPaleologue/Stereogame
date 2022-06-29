@@ -7,13 +7,14 @@ from feather.shapes.shape import Shape
 from feather.loaders import RowOBJ
 from feather.materials import TextureMaterial
 from feather import Texture
+from feather.vector3 import Vec3
 
 class Bat(RowOBJ):
 
     def __init__(self, filename, scene=None):
         RowOBJ.__init__(self, filename, False, scene)
-        self.position = np.array([0.0, 0.0, 0.0])
-        self.velocity = np.array([0.0, 0.0, 0.0])
+        self.position = Vec3(0.0, 0.0, 0.0)
+        self.velocity = Vec3(0.0, 0.0, 0.0)
         self.ends = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
         self.radius = 1.5
         self.counter = 0
@@ -55,7 +56,7 @@ class Bat(RowOBJ):
 
         
     def setVelocity(self, x, y, z):
-        self.velocity = np.array([x, y, z])
+        self.velocity = Vec3(x, y, z)
 
     def getVelocity(self):
         return self.velocity

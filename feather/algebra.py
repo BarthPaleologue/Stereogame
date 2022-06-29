@@ -3,8 +3,13 @@ import math
 import numpy as np
 import pygame
 
+from feather.vector3 import Vec3
+
 
 # creates a rotation matrix of angle (in degrees) around axis vec3(x,y,z)
+from pygame.math import Vector3
+
+
 def rotate(angle, x, y, z):
     s = math.sin(math.radians(angle))
     c = math.cos(math.radians(angle))
@@ -43,7 +48,9 @@ def scale(x, y, z):
     ])
 
 
-def reflection(vec, normal):
+def reflection(vector, n):
+    vec = np.array([vector.x, vector.y, vector.z])
+    normal = np.array([n.x, n.y, n.z])
     for i in range(3):
         vec[i] = -vec[i]
     ps = (vec[0] * normal[0] + vec[1] * normal[1] + vec[2] * normal[2])
@@ -51,12 +58,14 @@ def reflection(vec, normal):
     res = [0, 0, 0]
     for i in range(3):
         res[i] = 2 * ps * normal[i] - vec[i]
-    return res
+    return Vec3(res[0], res[1], res[2])
 
 
 # creates a lookat view matrix looking at center from eye with up-vector equal to Y axis
 def lookat(eye, center):
-    zaxis = center - eye
+    vec3eye = Vector3(eye.x, eye.y, eye.z)
+
+    zaxis = center - vec3eye
     zaxis = zaxis.normalize()
     up = pygame.math.Vector3(0, 1, 0)
 
@@ -65,9 +74,9 @@ def lookat(eye, center):
     zaxis = -zaxis
 
     return np.array([
-        [xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(eye)],
-        [yaxis.x, yaxis.y, yaxis.z, -yaxis.dot(eye)],
-        [zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(eye)],
+        [xaxis.x, xaxis.y, xaxis.z, -xaxis.dot(vec3eye)],
+        [yaxis.x, yaxis.y, yaxis.z, -yaxis.dot(vec3eye)],
+        [zaxis.x, zaxis.y, zaxis.z, -zaxis.dot(vec3eye)],
         [0, 0, 0, 1]
     ]).transpose().dot(scale(1, -1, 1))
 
