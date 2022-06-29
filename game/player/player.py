@@ -8,6 +8,7 @@ from game.player.eye import Eye
 from pygame.math import Vector3
 from game.bat import Bat
 import numpy as np
+from random import random
 
 
 class Player(Transform):
@@ -15,7 +16,7 @@ class Player(Transform):
         Transform.__init__(self)
         self.batte = Bat("./assets/baseball/batB.obj", scene)
 
-        self.eyeDistance = 0.69
+        self.eyeDistance = 0.0069
 
         self.leftEye = Eye()  ### Initialiser l'oeil gauche ici
         self.leftEye.setPosition(-self.eyeDistance / 2, 0, 0)
@@ -156,7 +157,7 @@ class Player(Transform):
 
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
-                zInfluence = 2
+                zInfluence = 1.2
 
                 velocity = np.array([-ball.velocity.x, -ball.velocity.y, -ball.velocity.z * zInfluence])
                 velocityNorm = math.sqrt(velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2)
@@ -165,8 +166,8 @@ class Player(Transform):
                 velocity *= 0.2
 
                 if self.flip:
-                    ball.setVelocity(-velocity[0], -velocity[1], -abs(velocity[2]) * zInfluence)
+                    ball.setVelocity(-velocity[0] + (random() - 0.5) / 10, -velocity[1] + (random() - 0.5) / 10, -abs(velocity[2]) * zInfluence)
                 else:
-                    ball.setVelocity(-velocity[0], -velocity[1], abs(velocity[2]) * zInfluence)
+                    ball.setVelocity(-velocity[0] + (random() - 0.5) / 10, -velocity[1] + (random() - 0.5) / 10, abs(velocity[2]) * zInfluence)
 
                 ball.currentPlayer = self
