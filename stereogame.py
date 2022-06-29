@@ -2,6 +2,8 @@ from random import random
 from OpenGL.GL import *
 import numpy as np
 from game.projectile import Projectile
+
+from game.BallManager import BallManager
 from game.MysteryBox import MysteryBox
 from game.Bomb import Bomb
 from game.player.GamePad import GamePad
@@ -33,7 +35,7 @@ if __name__ == "__main__":
     #infoObject = pygame.display.Info()
     #width, height = infoObject.current_w, infoObject.current_h
     pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
-  #  pygame.display.toggle_fullscreen()
+    pygame.display.toggle_fullscreen()
 
     scene = Scene()
 
@@ -41,36 +43,21 @@ if __name__ == "__main__":
     
     ######## DECLARATION DES SHAPES
 
-    bat = RowOBJ("./assets/baseball/batB.obj", False, scene)
-    bat.setPosition(0, 0, 0)
-    batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
-    batMat2 = ColorMaterial(0.5, 0.5, 0.5)
-    bat.setMaterial(batMat)
-
-    battlefield = Battlefield("battly", 10, 6, 20, scene)
-    #battleMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
+    battlefield = Battlefield("battly", 10, 6, 18, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
     sphereTex = Texture("./assets/space.png")
 
-    ## Mystery box
-    mysteryBox = MysteryBox("boxy",battlefield, scene)
-    spheres = []
-    for i in range(8):
-        sphere = Projectile("sphery", False, 1, battlefield,'reflect',scene)
+    ballManager = BallManager([])
+    mysteryBox = MysteryBox("boxy", battlefield, scene)
+    for i in range(5):
+        sphere = Projectile("sphery", False, 1, battlefield, 'reflect', scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
-        spheres.append(sphere)
-
-    #skull = OBJ("./assets/skull.obj", False, scene)
-    #for(i, shape) in enumerate(skull.shapes):
-    #	shape.setScaling(0.05, 0.05, 0.05)
-    #	shape.setRotationX(90)
-
-    #gun = OBJsanstex("./assets/awp.obj", False, scene)
+        ballManager.addBall(sphere)
     
     rect = Rectangle('rect', True, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
@@ -101,15 +88,25 @@ if __name__ == "__main__":
     ######### DECLARATION DES JOUEURS
 
     keyboard = Keyboard()
-
+    nb_joystick = pygame.joystick.get_count()
     pygame.joystick.init()
-    if pygame.joystick.get_count() > 0 :
-        joystick = pygame.joystick.Joystick(0)
-        gamepad = GamePad(0)
-    
-    player1 = Player(False, None, scene)
+    if nb_joystick > 0 :
+        joystick = []
+        gamepad = []
+        for i in range (nb_joystick) :
+            joystick += [pygame.joystick.Joystick(i)]
+            gamepad += [GamePad(i)]
+        player1 = Player(False, gamepad[0], scene, ballManager)
+        if nb_joystick == 2 :
+            player2 = Player(True, gamepad[1], scene, ballManager)
+        else :
+            player2 = Player(False, None, scene, ballManager)
+    else :
+        player1 = Player(False, None, scene, ballManager)
+        player2 = Player(True, None, scene, ballManager)
+
+
     player1.setPosition(0, 0, -12)
-    player2 = Player(True, None, scene)
     player2.setPosition(0, 0, 12)
 
     fbo_width = int(width/2)
@@ -135,7 +132,8 @@ if __name__ == "__main__":
 
         ###### UPDATE ETAT DES SHAPES
 
-        player1.batte.update(deltaTime)
+        player1.update(deltaTime)
+        player2.update(deltaTime)
         
         yellow_cube.addRotationY(deltaTime * 70.0).addRotationX(deltaTime * 80.0)
 
@@ -145,7 +143,7 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        for sphere in spheres:
+        for sphere in ballManager.balls:
             sphere.update()
             sphere.setRotationY(time * 50.0)
             sphere.setRotationX(time * 60.0)
@@ -241,8 +239,10 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
-                player1.batte.strike()
-                player2.batte.strike()
+                if player1.getGamepad() == None :
+                    player1.batte.strike()
+                if player2.getGamepad() == None :
+                    player2.batte.strike()
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):
@@ -250,12 +250,17 @@ if __name__ == "__main__":
             # pour tester si le programme detecte les appuie sur les boutons
             if event.type == pygame.JOYBUTTONDOWN:
                 print("Joystick button pressed.")
+                if player1.getGamepad() != None :
+                    player1.batte.strike()
+                if player2.getGamepad() != None :
+                    player2.batte.strike()
         
         keyboard.update()
         if keyboard.isBattePressed():
             print("batty")
-        if pygame.joystick.get_count() > 0 :
-            gamepad.update()
-            if gamepad.isBattePressed():
-                print("joybatty")
+        if nb_joystick > 0 :
+            for i in range (nb_joystick) :
+                gamepad[i].update()
+                if gamepad[i].isBattePressed():
+                    print("joybatty")
         

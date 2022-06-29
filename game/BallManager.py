@@ -1,7 +1,7 @@
 class BallManager:
-    def __init__(self,balls):
+    def __init__(self, balls):
         
-        self.balls=list(balls) # liste des projectiles qui se trouvent dans la scène
+        self.balls = list(balls) # liste des projectiles qui se trouvent dans la scène
 
     def getBalls(self):
         return self.balls

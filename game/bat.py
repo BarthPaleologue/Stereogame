@@ -15,7 +15,7 @@ class Bat(RowOBJ):
         self.position = np.array([0.0, 0.0, 0.0])
         self.velocity = np.array([0.0, 0.0, 0.0])
         self.ends = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
-        self.radius = 0
+        self.radius = 0.5
         self.counter = 0
         self.isStriking = False
         self.beginZ = 50
@@ -34,9 +34,8 @@ class Bat(RowOBJ):
     def strike(self):
             self.isStriking = True
 
-    def update(self, deltaTime):
-        if self.isStriking:
-            #print(self.state)
+    def update(self, deltaTime) :
+        if self.isStriking :
             self.state = self.counter/self.animationDuration
             self.setRotation(0, self.state*self.endY + (1-self.state)*self.beginY, self.state*self.endZ + (1-self.state)*self.beginZ)
 
@@ -70,4 +69,10 @@ class Bat(RowOBJ):
     
     def getEnds(self):
         return self.ends
+
+    def getEndPoint1(self):
+        return np.array([9.5 + self.position[0], self.position[1], self.position[2]])
+
+    def getEndPoint2(self):
+        return np.array([-9.5 + self.position[0], self.position[1], self.position[2]])
 
