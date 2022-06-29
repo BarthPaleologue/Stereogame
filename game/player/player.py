@@ -8,6 +8,7 @@ from game.player.eye import Eye
 from pygame.math import Vector3
 from game.bat import Bat
 import numpy as np
+from random import random
 
 
 class Player(Transform):
@@ -165,8 +166,8 @@ class Player(Transform):
                 velocity *= 0.2
 
                 if self.flip:
-                    ball.setVelocity(-velocity[0], -velocity[1], -abs(velocity[2]) * zInfluence)
+                    ball.setVelocity(-velocity[0] + (random() - 0.5) / 10, -velocity[1] + (random() - 0.5) / 10, -abs(velocity[2]) * zInfluence)
                 else:
-                    ball.setVelocity(-velocity[0], -velocity[1], abs(velocity[2]) * zInfluence)
+                    ball.setVelocity(-velocity[0] + (random() - 0.5) / 10, -velocity[1] + (random() - 0.5) / 10, abs(velocity[2]) * zInfluence)
 
                 ball.currentPlayer = self
