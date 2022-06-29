@@ -222,10 +222,21 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
+                keys = pygame.key.get_pressed()
                 if player1.getGamepad() == None :
-                    player1.batte.strike()
+                    if keys[pygame.K_z]:
+                        player1.batte.strike()
+                    if keys[pygame.K_q]:
+                        player1.batte.addRotationZ(30)
+                    if keys[pygame.K_d]:
+                        player1.batte.addRotationZ(-30)
                 if player2.getGamepad() == None :
-                    player2.batte.strike()
+                    if keys[pygame.K_UP]:
+                        player2.batte.strike()
+                    if keys[pygame.K_LEFT]:
+                        player2.batte.addRotationZ(30)
+                    if keys[pygame.K_RIGHT]:
+                        player2.batte.addRotationZ(-30)
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):
