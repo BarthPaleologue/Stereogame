@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(5):
+    for i in range(10):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
