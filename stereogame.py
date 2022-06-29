@@ -105,7 +105,6 @@ if __name__ == "__main__":
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
 
-
     player1.setPosition(0, 0, -12)
     player2.setPosition(0, 0, 12)
 
@@ -253,12 +252,16 @@ if __name__ == "__main__":
                     model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
             # pour tester si le programme detecte les appuie sur les boutons
             if event.type == pygame.JOYBUTTONDOWN:
-                print("Joystick button pressed.")
-                if player1.getGamepad() != None :
+                if nb_joystick > 0 :
+                    for i in range (nb_joystick) :
+                        gamepad[i].update()
+                        if gamepad[i].isBattePressed():
+                            print(i)
+                if player1.getGamepad() != None and player1.getGamepad().isBattePressed() == 0 :
                     player1.batte.strike()
-                if player2.getGamepad() != None :
+                if player2.getGamepad() != None and player2.getGamepad().isBattePressed() == 0 :
                     player2.batte.strike()
-        
+        '''
         keyboard.update()
         if keyboard.isBattePressed():
             print("batty")
@@ -266,5 +269,4 @@ if __name__ == "__main__":
             for i in range (nb_joystick) :
                 gamepad[i].update()
                 if gamepad[i].isBattePressed():
-                    print("joybatty")
-        
+                    print("joybatty")'''
