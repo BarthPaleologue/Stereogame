@@ -4,6 +4,7 @@ from game.player.GamePad import GamePad
 from game.player.eye import Eye
 from pygame.math import Vector3
 from game.bat import Bat
+import numpy as np
 
 
 class Player(Transform):
@@ -118,6 +119,18 @@ class Player(Transform):
 
     def update(self, deltaTime: float):
         self.batte.update(deltaTime)
+
+        relativePosition = np.array([-1, -6, 0])
+        relativePosition = self.batte.getRotationMatrix().dot(
+            np.array([relativePosition[0], relativePosition[1], relativePosition[2], 1.0]))
+        relativePosition = np.array([relativePosition[0], relativePosition[1], relativePosition[2]])
+        newPosition = relativePosition + self.getPosition()
+
+        self.batte.end1 = newPosition
+        self.batte.end2 = np.array(
+            [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] - 4.5])
+
+
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
                 if self.flip:

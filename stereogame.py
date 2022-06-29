@@ -145,15 +145,7 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        relativePosition = np.array([-1, -6, 0])
-        relativePosition = player1.batte.getRotationMatrix().dot(np.array([relativePosition[0], relativePosition[1], relativePosition[2], 1.0]))
-        relativePosition = np.array([relativePosition[0], relativePosition[1], relativePosition[2]])
-        newPosition = relativePosition + player1.getPosition()
-
-        player1.batte.end1 = newPosition
-        player1.batte.end2 = np.array([player1.getPosition()[0], player1.getPosition()[1], player1.getPosition()[2] - 4.5])
-
-        end1.setPosition(newPosition[0], newPosition[1], newPosition[2] - 4.5)
+        end1.setPosition(player1.batte.end1[0], player1.batte.end1[1], player1.batte.end1[2] - 4.5)
 
         for sphere in ballManager.balls:
             sphere.update()
