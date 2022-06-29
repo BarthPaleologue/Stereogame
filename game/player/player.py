@@ -156,7 +156,7 @@ class Player(Transform):
 
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
-                zInfluence = 2
+                zInfluence = 1.2
 
                 velocity = np.array([-ball.velocity.x, -ball.velocity.y, -ball.velocity.z * zInfluence])
                 velocityNorm = math.sqrt(velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2)
