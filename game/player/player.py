@@ -32,8 +32,8 @@ class Player(Transform):
         self.state = 0
 
         self.ballManager = ballManager
-   
-    def getGamepad(self) :
+
+    def getGamepad(self):
         return self.gamepad
 
     def setinvincible(self, invincible):
@@ -121,6 +121,9 @@ class Player(Transform):
         self.batte.update(deltaTime)
 
         relativePosition1 = np.array([-1, -6, 0])
+        if self.flip:
+            relativePosition1 = np.array([1, 6, 0])
+
         relativePosition1 = self.batte.getRotationMatrix().dot(
             np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2], 1.0]))
         relativePosition = np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2]])
@@ -130,10 +133,13 @@ class Player(Transform):
         self.batte.end2 = np.array(
             [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] - 4.5])
 
-
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
                 if self.flip:
-                    ball.setVelocity(-ball.velocity[0], ball.velocity[1], -ball.velocity[2])
+                    if ball.velocity[2] > 0:
+                        ball.setVelocity(-ball.velocity[0], ball.velocity[1], 1)
+                        ball.currentPlayer = self
                 else:
-                    ball.setVelocity(-ball.velocity[0], ball.velocity[1], -1)
+                    if ball.velocity[2] < 0:
+                        ball.setVelocity(-ball.velocity[0], ball.velocity[1], -1)
+                        ball.currentPlayer = self
