@@ -29,20 +29,22 @@ class Projectile(Sphere):
             x,y,z = position[0], position[1], position[2]
             sizex,sizey,sizez = self.battlefield.getSizex(), self.battlefield.getSizey(), self.battlefield.getSizez()
             if self.battlefield.isCollision(r, position):
+                where = self.battlefield.whereCollision(r, position)
                 if self.collision == 'reflect':
-                    normVect = self.battlefield.normalVector(self.battlefield.whereCollision(self.getRadius(), self.getPosition()))
+                    normVect = self.battlefield.normalVector(where)
                     oldVelocity = self.getVelocity()
                     newVelocity = reflection(oldVelocity, normVect)
 
                     self.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
                 if self.collision == 'teleport':
-                    if self.battlefield.whereCollision(r, position) == 'right':
+                    
+                    if where == 'right':
                         self.setPosition(x-2*sizex+2*r + 0.1, y, z)
-                    elif self.battlefield.whereCollision(r, position) == 'left':
+                    elif where == 'left':
                         self.setPosition(x+2*sizex-2*r-0.1, y, z)
-                    elif self.battlefield.whereCollision(r, position) == 'top':
+                    elif where == 'top':
                         self.setPosition(x, y - 2*sizey + 2*r - 0.1, z)
-                    elif self.battlefield.whereCollision(r, position) == 'bottom':
+                    elif where == 'bottom':
                         self.setPosition(x, y + 2*sizey - 2*r + 0.1, z)
                 if self.collision == 'bomb':
                     self.explode()
@@ -84,17 +86,17 @@ class Projectile(Sphere):
             if effect == 'disparition':
                 ballMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
                 self.setMaterial(ballMat)
-                self.update()
+                #self.update()
             elif effect == 'teleport':
                 ballMat = TextureMaterial(Texture("./assets/space.png"))
                 self.setMaterial(ballMat)
                 self.setCollision('teleport')
-                self.update()
+                #self.update()
             elif effect == 'bomb':
                 self.setCollision('bomb')
                 bombMat = TextureMaterial(Texture("./assets/explosion.png"))
                 self.setMaterial(bombMat)
-                self.update()
+                #self.update()
             elif effect == 'x3':
                 position = self.getPosition()
                 x,y,z = position[0], position[1], position[2]
@@ -113,9 +115,6 @@ class Projectile(Sphere):
                 if self.currentPlayer != None:
                     self.currentPlayer.batte.isSuperBat = True
 
-                
-
-        
         def explode(self):
             crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
             pygame.mixer.Sound.play(crash_sound)

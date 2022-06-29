@@ -54,7 +54,7 @@ if __name__ == "__main__":
     for i in range(5):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
-        sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
+        sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         ballManager.addBall(sphere)
@@ -238,6 +238,25 @@ if __name__ == "__main__":
                         player1.batte.strike()
                     else :
                         player2.batte.strike()
+                limite = 0
+                while gamepad[i].turnBatteLeft() :
+                    limite += 1
+                    if i == 0 :
+                        player1.batte.addRotationZ(1)
+                    if i == 1 :
+                        player2.batte.addRotationZ(1)
+                    if limite > 15 :
+                        break
+                limite = 0
+                while gamepad[i].turnBatteRight() :
+                    limite += 1
+                    if i == 0 :
+                        player1.batte.addRotationZ(-1)
+                    if i == 1 :
+                        player2.batte.addRotationZ(-1)
+                    if limite > 15 :
+                        break
+                limite = 0
         
         ''' keyboard.update()
         if keyboard.isBattePressed():
