@@ -29,7 +29,6 @@ class Bat(RowOBJ):
 
     def update(self, deltaTime) :
         if self.isStriking :
-            print(self.state)
             self.state = self.counter/self.animationDuration
             self.setRotation(0, self.state*self.endY + (1-self.state)*self.beginY, self.state*self.endZ + (1-self.state)*self.beginZ)
 
