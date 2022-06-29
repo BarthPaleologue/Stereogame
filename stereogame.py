@@ -47,11 +47,11 @@ if __name__ == "__main__":
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
-    sphereTex = Texture("./assets/space.png")
+    sphereTex = Texture("./assets/normaltex.jpeg")
 
     ballManager = BallManager([])
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(8):
+    for i in range(30):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect',ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
