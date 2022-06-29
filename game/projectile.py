@@ -2,12 +2,12 @@ from feather.materials.textureMaterial import TextureMaterial
 from feather.shapes import Sphere, Rectangle
 from feather.algebra import reflection
 import numpy as np
+import pygame
 
 from feather.texture import Texture
 
 class Projectile(Sphere):
-        def __init__(self, name, flip,  radius, battlefield, collision, scene):
-
+        def __init__(self, name, flip,  radius, battlefield, collision, ballmanager, scene):
             Sphere.__init__(self, name, flip, scene)
             self.collision = collision  # if it is equal to reflect, then it will reflect
                                         # and if it is equal to teleport than we will apply the function teleport
@@ -16,7 +16,7 @@ class Projectile(Sphere):
             self.acceleration = np.array([0.0, 0.0, 0.0])
             self.radius = radius
             self.battlefield = battlefield
-
+            self.ballmanager = ballmanager
             self.setScaling(radius, radius, radius)
 
 
@@ -41,6 +41,9 @@ class Projectile(Sphere):
                         self.setPosition(x, y - 2*sizey + 2*r - 0.1, z)
                     elif self.battlefield.whereCollision(r, position) == 'bottom':
                         self.setPosition(x, y + 2*sizey - 2*r + 0.1, z)
+                if self.collision == 'bomb':
+                    self.explode()
+
 
             self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
             newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
@@ -78,14 +81,17 @@ class Projectile(Sphere):
             if effect == 'disparition':
                 ballMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
                 self.setMaterial(ballMat)
+                self.update()
             elif effect == 'teleport':
                 self.setCollision('teleport')
-            #elif effect == 'bomb':
-                #self = Bomb (self)
-                
-
-
-
+                self.update()
+            elif effect == 'bomb':
+                self.setCollision('bomb')
+                bombMat = TextureMaterial(Texture("./assets/explosion.png"))
+                self.setMaterial(bombMat)
+                self.update()
         
-
-
+        def explode(self):
+            crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
+            pygame.mixer.Sound.play(crash_sound)
+            self.ballmanager.removeBall(self)

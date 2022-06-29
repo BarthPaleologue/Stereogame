@@ -4,6 +4,7 @@ from game.player.GamePad import GamePad
 from game.player.eye import Eye
 from pygame.math import Vector3
 from game.bat import Bat
+import numpy as np
 
 
 class Player(Transform):
@@ -90,13 +91,17 @@ class Player(Transform):
         self.leftEye.setPosition(x + self.eyeDistance / 2, y, z)
         self.batte.setPosition(x, y, z)
         if self.flip:
-            self.batte.translate(0, 0, -0.5)
-            self.batte.setRotationZ(50.0)
-            self.batte.setRotationY(-30.0)
+            self.batte.beginY = -30
+            self.batte.beginZ = 50
+            self.batte.endZ = 50
+            self.batte.setRotationZ(self.batte.beginZ)
+            self.batte.setRotationY(self.batte.beginY)
         else:
-            self.batte.translate(0, 0, 0.5)
-            self.batte.setRotationZ(50.0)
-            self.batte.setRotationY(30.0)
+            self.batte.beginZ = 180 - 50
+            self.batte.endZ = 180 - 50
+            self.batte.beginY = 30
+            self.batte.setRotationZ(self.batte.beginZ)
+            self.batte.setRotationY(self.batte.beginY)
 
         return super().setPosition(x, y, z)
 
@@ -114,10 +119,21 @@ class Player(Transform):
 
     def update(self, deltaTime: float):
         self.batte.update(deltaTime)
+
+        relativePosition = np.array([-1, -6, 0])
+        relativePosition = self.batte.getRotationMatrix().dot(
+            np.array([relativePosition[0], relativePosition[1], relativePosition[2], 1.0]))
+        relativePosition = np.array([relativePosition[0], relativePosition[1], relativePosition[2]])
+        newPosition = relativePosition + self.getPosition()
+
+        self.batte.end1 = newPosition
+        self.batte.end2 = np.array(
+            [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] - 4.5])
+
+
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
-                print("!!!!")
                 if self.flip:
-                    ball.setVelocity(0, 0, 0.5)
+                    ball.setVelocity(-ball.velocity[0], ball.velocity[1], -ball.velocity[2])
                 else:
-                    ball.setVelocity(0, 0, -0.5)
+                    ball.setVelocity(-ball.velocity[0], ball.velocity[1], -ball.velocity[2])

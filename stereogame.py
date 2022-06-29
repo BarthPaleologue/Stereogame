@@ -1,9 +1,11 @@
 from random import random
 from OpenGL.GL import *
 import numpy as np
+from game.projectile import Projectile
 
 from game.BallManager import BallManager
 from game.MysteryBox import MysteryBox
+from game.Bomb import Bomb
 from game.player.GamePad import GamePad
 from game.player.Keyboard import Keyboard
 import pygame
@@ -41,7 +43,7 @@ if __name__ == "__main__":
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 20, scene)
+    battlefield = Battlefield("battly", 10, 6, 18, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
@@ -49,8 +51,8 @@ if __name__ == "__main__":
 
     ballManager = BallManager([])
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(5):
-        sphere = Projectile("sphery", False, 1, battlefield, 'reflect', scene)
+    for i in range(8):
+        sphere = Projectile("sphery", False, 1, battlefield, 'reflect',ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
         sphereMat = TextureMaterial(sphereTex)
@@ -106,6 +108,8 @@ if __name__ == "__main__":
     player1.setPosition(0, 0, -12)
     player2.setPosition(0, 0, 12)
 
+    end1 = Cube("end1", False, scene)
+
     fbo_width = int(width/2)
     fbo_height = int(height/2)
 
@@ -139,6 +143,8 @@ if __name__ == "__main__":
         z = math.sin(time * rotationSpeed) * circleRadius
 
         yellow_cube.setPosition(x, 0, z)
+
+        end1.setPosition(player1.batte.end1[0], player1.batte.end1[1], player1.batte.end1[2] - 4.5)
 
         for sphere in ballManager.balls:
             sphere.update()
