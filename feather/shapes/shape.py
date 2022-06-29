@@ -135,9 +135,6 @@ class Shape(Transform):
 
     def setScene(self,scene):
         self.scene = scene
-<<<<<<< HEAD
-=======
         
->>>>>>> 2045174208b53c24fd7bdc1ca4cab3ab784e7485
     def destroy(self):
         self.scene.removeShape(self)

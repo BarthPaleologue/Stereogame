@@ -15,18 +15,19 @@ class MysteryBox(Cube):
         self.setPosition(random.uniform(-self.battlex,self.battlex),random.uniform(-self.battley,self.battley),random.uniform(-self.battlez,self.battlez))
 
     def isCollision(self,ball):
-        ballposition = ball.getPosition
+        ballposition = ball.getPosition()
         x,y,z = ballposition[0], ballposition[1], ballposition[2]
-        position = self.getPosition
+        position = self.getPosition()
         bx, by, bz = position[0],position[1],position[2]
         if abs(bx-x)<= 1/2 and abs(by-y)<= 1/2 and abs(bz-z)<= 1/2:
+            print("touchMysteryBox")
             return True
         return False
     
     def onHit(self,ball):
         x,y,z = self.battlex, self.battley, self.battlez
         self.setPosition(random.uniform(-x,x),random.uniform(-y,y),random.uniform(-z,z))
-        effect = random.randint(1,2)
+        effect = random.randint(1,3)
         ball.applyEffect(effect)
 
 

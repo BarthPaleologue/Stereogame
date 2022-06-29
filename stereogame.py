@@ -2,6 +2,7 @@ from random import random
 from OpenGL.GL import *
 from feather.materials.shaderMaterial import ShaderMaterial
 import numpy as np
+from game import projectile
 from game.MysteryBox import MysteryBox
 from game.main import Bomb
 from game.player.GamePad import GamePad
@@ -40,7 +41,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
     
     ######## DECLARATION DES SHAPES
 
@@ -61,7 +62,7 @@ if __name__ == "__main__":
     mysteryBox = MysteryBox("boxy",battlefield, scene)
     spheres = []
     for i in range(5):
-        sphere = Ball("sphery", False, 1, battlefield,'teleport',scene)
+        sphere = Projectile("sphery", False, 1, battlefield,'reflect',scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
         sphereMat = TextureMaterial(sphereTex)
@@ -149,18 +150,14 @@ if __name__ == "__main__":
         yellow_cube.setPosition(x, 0, z)
 
         for sphere in spheres:
-            if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
-                normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
-                oldVelocity = sphere.getVelocity()
-                newVelocity = reflection(oldVelocity, normVect)
-
-                sphere.setVelocity(newVelocity[0], newVelocity[1], newVelocity[2])
-
-        
             sphere.update()
             sphere.setRotationY(time * 50.0)
             sphere.setRotationX(time * 60.0)
             sphere.setRotationZ(time * 40.0)
+            if mysteryBox.isCollision(sphere):
+                mysteryBox.onHit(sphere)
+
+            
         """for bomb in spheres:
             if battlefield.isCollision(bomb.getRadius(), bomb.getPosition()):
                 bomb.explode()
