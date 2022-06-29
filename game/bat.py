@@ -15,7 +15,7 @@ class Bat(RowOBJ):
         self.position = np.array([0.0, 0.0, 0.0])
         self.velocity = np.array([0.0, 0.0, 0.0])
         self.ends = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
-        self.radius = 0.5
+        self.radius = 0.7
         self.counter = 0
         self.isStriking = False
         self.beginZ = 50
@@ -25,6 +25,9 @@ class Bat(RowOBJ):
         self.state = 0
         self.animationDuration = 0.2
         self.batReturn = False
+
+        self.end1 = np.array([-1, -6, 0])
+        self.end2  = np.array([0, 0, 0])
 
         batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
         self.setMaterial(batMat)
@@ -71,8 +74,8 @@ class Bat(RowOBJ):
         return self.ends
 
     def getEndPoint1(self):
-        return np.array([9.5 + self.position[0], self.position[1], self.position[2]])
+        return self.end1
 
     def getEndPoint2(self):
-        return np.array([-9.5 + self.position[0], self.position[1], self.position[2]])
+        return self.end2
 

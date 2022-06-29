@@ -121,6 +121,6 @@ class Player(Transform):
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
                 if self.flip:
-                    ball.setVelocity(-ball.velocity[0], -ball.velocity[1], -ball.velocity[2])
+                    ball.setVelocity(-ball.velocity[0], ball.velocity[1], -ball.velocity[2])
                 else:
-                    ball.setVelocity(-ball.velocity[0], -ball.velocity[1], -ball.velocity[2])
+                    ball.setVelocity(-ball.velocity[0], ball.velocity[1], -ball.velocity[2])
