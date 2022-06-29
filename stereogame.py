@@ -1,6 +1,5 @@
 from random import random
 from OpenGL.GL import *
-from feather.materials.shaderMaterial import ShaderMaterial
 import numpy as np
 from game.projectile import Projectile
 from game.MysteryBox import MysteryBox
@@ -12,16 +11,13 @@ import pygame
 #local imports
 from feather import Texture, Scene, Screen
 from feather.shapes import Rectangle, Cube
-from feather.materials import ColorMaterial, TextureMaterial
+from feather.materials import ColorMaterial, TextureMaterial, ShaderMaterial
 from feather.projections import *
 from feather.algebra import *
 from feather.camera import *
 from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
-from game import Player, Battlefield
-from game.projectile import  Projectile
-from game.bat import Bat
-from game.Bomb import Bomb
+from game import Player, Battlefield, Projectile
 
 def drawEyeToFrameBuffer(eye, scene, testMat, testTexture):
     eye.frameBuffer.bind()
@@ -52,16 +48,16 @@ if __name__ == "__main__":
     bat.setMaterial(batMat)
 
     battlefield = Battlefield("battly", 10, 6, 20, scene)
-    battleMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
-        
-    battlefield.setMaterial(battleMat)
+    #battleMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
+    battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
+    battlefield.setMaterial(battleMat2)
 
     sphereTex = Texture("./assets/space.png")
 
     ## Mystery box
     mysteryBox = MysteryBox("boxy",battlefield, scene)
     spheres = []
-    for i in range(5):
+    for i in range(8):
         sphere = Projectile("sphery", False, 1, battlefield,'reflect',scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)

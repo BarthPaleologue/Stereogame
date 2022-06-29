@@ -1,16 +1,13 @@
 from os import path
 from game.projectile import Projectile
-from feather.texture import *
-from feather.materials import *
+from feather.texture import Texture
+from feather.materials import TextureMaterial
 import pygame
-r = 1
-
-
 
 class Bomb(Projectile):
 
-    def __init__(self, name, flip, radius, battlefield, collision, scene):
-        Projectile.__init__(self, name, flip, radius, battlefield, collision, scene)
+    def __init__(self, name, flip, radius, battlefield, scene):
+        Projectile.__init__(self, name, flip, radius, battlefield, 'bomb', scene)
         self.scene = scene
         bombMat = TextureMaterial(Texture("./assets/explosion.png"))
         self.setMaterial(bombMat)
@@ -20,10 +17,10 @@ class Bomb(Projectile):
         crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
         pygame.mixer.Sound.play(crash_sound)
         pygame.mixer.music.stop()
-        self.destroy()
+        
 
     
-    def update(self):
+    def updateBomb(self):
         r = self.getRadius()
         position = self.getPosition()
         if self.battlefield.isCollision(r,position):
