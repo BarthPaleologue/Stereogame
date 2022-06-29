@@ -211,12 +211,13 @@ if __name__ == "__main__":
         ####### GESTION DES ENTREES CLAVIER
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_q]:
+        if keys[pygame.K_x]:
             player1.setEyeDistance(player1.eyeDistance + 0.001)
             player2.setEyeDistance(player2.eyeDistance + 0.001)
-        if keys[pygame.K_d]:
+        if keys[pygame.K_c]:
             player1.setEyeDistance(player1.eyeDistance - 0.001)
             player2.setEyeDistance(player2.eyeDistance - 0.001)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -242,32 +243,25 @@ if __name__ == "__main__":
                 if any(event.buttons):
                     model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
             # pour tester si le programme detecte les appuie sur les boutons
-            for i in range (nb_joystick) :
-                gamepad[i].update()
-                if gamepad[i].isBattePressed():
-                    if i == 0 :
-                        player1.batte.strike()
-                    else :
-                        player2.batte.strike()
-                limite = 0
-                while gamepad[i].turnBatteLeft() :
-                    limite += 1
-                    if i == 0 :
-                        player1.batte.addRotationZ(1)
-                    if i == 1 :
-                        player2.batte.addRotationZ(1)
-                    if limite > 15 :
-                        break
-                limite = 0
-                while gamepad[i].turnBatteRight() :
-                    limite += 1
-                    if i == 0 :
-                        player1.batte.addRotationZ(-1)
-                    if i == 1 :
-                        player2.batte.addRotationZ(-1)
-                    if limite > 15 :
-                        break
-                limite = 0
+            #if event.type == pygame.JOYBUTTONDOWN:
+        for i in range (nb_joystick) :
+            gamepad[i].update()
+            if gamepad[i].isBattePressed():
+                if i == 0 :
+                    player1.batte.strike()
+                else :
+                    player2.batte.strike()
+            if gamepad[i].turnBatteLeft() :
+
+                if i == 0 :
+                    player1.batte.addRotationZ(1)
+                if i == 1 :
+                    player2.batte.addRotationZ(1)
+            if gamepad[i].turnBatteRight() :
+                if i == 0 :
+                    player1.batte.addRotationZ(-1)
+                if i == 1 :
+                    player2.batte.addRotationZ(-1)
         
         ''' keyboard.update()
         if keyboard.isBattePressed():
