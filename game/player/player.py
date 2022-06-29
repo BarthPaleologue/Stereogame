@@ -87,12 +87,18 @@ class Player(Transform):
         self.batte.setPosition(x, y, z)
         if self.flip:
             self.batte.translate(0, 0, -0.5)
-            self.batte.setRotationZ(50.0)
-            self.batte.setRotationY(-30.0)
+            self.batte.beginY = -30
+            self.batte.beginZ = 50
+            self.batte.endZ = 50
+            self.batte.setRotationZ(self.batte.beginZ)
+            self.batte.setRotationY(self.batte.beginY)
         else:
             self.batte.translate(0, 0, 0.5)
-            self.batte.setRotationZ(50.0)
-            self.batte.setRotationY(30.0)
+            self.batte.beginZ = 180 - 50
+            self.batte.endZ = 180 - 50
+            self.batte.beginY = 30
+            self.batte.setRotationZ(self.batte.beginZ)
+            self.batte.setRotationY(self.batte.beginY)
 
         return super().setPosition(x, y, z)
 
@@ -114,6 +120,6 @@ class Player(Transform):
             if sphereToCylinder(ball, self.batte):
                 print("!!!!")
                 if self.flip:
-                    ball.setVelocity(0, 0, 0.5)
-                else:
                     ball.setVelocity(0, 0, -0.5)
+                else:
+                    ball.setVelocity(0, 0, 0.5)

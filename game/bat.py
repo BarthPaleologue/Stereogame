@@ -15,7 +15,7 @@ class Bat(RowOBJ):
         self.position = np.array([0.0, 0.0, 0.0])
         self.velocity = np.array([0.0, 0.0, 0.0])
         self.ends = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
-        self.radius = 2
+        self.radius = 0.5
         self.counter = 0
         self.isStriking = False
         self.beginZ = 50
@@ -71,8 +71,8 @@ class Bat(RowOBJ):
         return self.ends
 
     def getEndPoint1(self):
-        return np.array([9.5, 0, 0])
+        return np.array([9.5 + self.position[0], self.position[1], self.position[2]])
 
     def getEndPoint2(self):
-        return np.array([-9.5, 0, 0])
+        return np.array([-9.5 + self.position[0], self.position[1], self.position[2]])
 

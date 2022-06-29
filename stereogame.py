@@ -41,7 +41,7 @@ if __name__ == "__main__":
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 20, scene)
+    battlefield = Battlefield("battly", 10, 6, 18, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
