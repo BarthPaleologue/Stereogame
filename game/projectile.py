@@ -19,8 +19,10 @@ class Projectile(Sphere):
             self.battlefield = battlefield
             self.ballmanager = ballmanager
             self.setScaling(radius, radius, radius)
-
             self.currentPlayer = None
+
+        def setCurrentPlayer(self,player):
+            self.currentPlayer = player
 
 
         def update(self):
@@ -114,6 +116,12 @@ class Projectile(Sphere):
             elif effect == 'superbat':
                 if self.currentPlayer != None:
                     self.currentPlayer.batte.isSuperBat = True
+            elif effect == 'inverseur':
+                if self.currentPlayer != None:
+                    if self.currentPlayer == self.battlefield.player1:
+                        self.battlefield.player2.invertEyes()
+                    else:
+                        self.battlefield.player1.invertEyes()
 
         def explode(self):
             crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")

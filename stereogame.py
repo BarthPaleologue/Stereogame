@@ -39,45 +39,10 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
-    
-    ######## DECLARATION DES SHAPES
+    DOES_INTERLACE = True
 
-    battlefield = Battlefield("battly", 10, 6, 18, scene)
-    battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
-    battlefield.setMaterial(battleMat2)
-
-    sphereTex = Texture("./assets/normaltex.jpeg")
-
+    ####### BALL MANAGER
     ballManager = BallManager([])
-    mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(1):
-        sphere = Projectile("sphery", False, 1, battlefield, 'reflect',ballManager, scene)
-        sphere.setPosition(-2, 0, 0)
-        sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
-        sphereMat = TextureMaterial(sphereTex)
-        sphere.setMaterial(sphereMat)
-        ballManager.addBall(sphere)
-    
-    rect = Rectangle('rect', True, scene)
-    rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
-
-    rectMat = TextureMaterial(Texture("./assets/black.jpg"))
-    rect.setMaterial(rectMat)
-
-    blackTex = Texture("./assets/black.jpg")
-    numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
-    
-    ######### DECLARATION DE L'ECRAN
-
-    screen = Screen('screen')
-
-    ######### MATRICES UTILES
-
-    perspective_mx = perspective(45, width / height, 0.1, 100)
-    model_matrix = np.identity(4, dtype=np.float32)
-    ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
-    ident_matrix = np.identity(4, dtype=np.float32)
 
     ######### DECLARATION DES JOUEURS
 
@@ -101,6 +66,47 @@ if __name__ == "__main__":
 
     player1.setPosition(0, 0, -12)
     player2.setPosition(0, 0, 12)
+    
+    ######## DECLARATION DES SHAPES
+
+    battlefield = Battlefield("battly", 10, 6, 18, player1, player2, scene)
+    battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
+    battlefield.setMaterial(battleMat2)
+
+    sphereTex = Texture("./assets/normaltex.jpeg")
+
+    
+    mysteryBox = MysteryBox("boxy", battlefield, scene)
+    for i in range(1):
+        sphere = Projectile("sphery", False, 1, battlefield, 'reflect',ballManager, scene)
+        sphere.setPosition(-2, 0, 0)
+        sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
+        sphereMat = TextureMaterial(sphereTex)
+        sphere.setMaterial(sphereMat)
+        ballManager.addBall(sphere)
+        sphere.setCurrentPlayer(player1)
+    
+    rect = Rectangle('rect', True, scene)
+    rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
+
+    rectMat = TextureMaterial(Texture("./assets/black.jpg"))
+    rect.setMaterial(rectMat)
+
+    blackTex = Texture("./assets/black.jpg")
+    numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
+    
+    ######### DECLARATION DE L'ECRAN
+
+    screen = Screen('screen')
+
+    ######### MATRICES UTILES
+
+    perspective_mx = perspective(45, width / height, 0.1, 100)
+    model_matrix = np.identity(4, dtype=np.float32)
+    ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
+    ident_matrix = np.identity(4, dtype=np.float32)
+
+   
 
     end1 = Cube("end1", False, scene)
 

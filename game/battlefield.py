@@ -4,10 +4,12 @@ import numpy as np
 
 class Battlefield(Land):
     
-    def __init__(self, name, size_x, size_y, size_z, scene = None):
+    def __init__(self, name, size_x, size_y, size_z, player1, player2, scene = None):
         self.size_x = size_x
         self.size_y = size_y
         self.size_z = size_z
+        self.player1 = player1
+        self.player2 = player2
         Land.__init__(self, name, False, True, True, True, scene)
         self.setScaling(size_x, size_y, size_z)
 
