@@ -122,7 +122,6 @@ class Player(Transform):
         self.batte.update(deltaTime)
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
-                print("!!!!")
                 if self.flip:
                     ball.setVelocity(0, 0, -0.5)
                 else:
