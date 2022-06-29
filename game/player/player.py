@@ -1,5 +1,6 @@
 from feather.transform import Transform
 from feather.collisions.sphereToCylinder import sphereToCylinder
+from game.player.GamePad import GamePad
 from game.player.eye import Eye
 from pygame.math import Vector3
 from game.bat import Bat
@@ -30,6 +31,9 @@ class Player(Transform):
         self.state = 0
 
         self.ballManager = ballManager
+   
+    def getGamepad(self) :
+        return self.gamepad
 
     def setinvincible(self, invincible):
         self.invincible = invincible
