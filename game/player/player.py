@@ -121,8 +121,10 @@ class Player(Transform):
         self.batte.update(deltaTime)
 
         relativePosition1 = np.array([-1, -6, 0])
+        relativePosition2 = np.array([1, 6, 0])
         if self.flip:
             relativePosition1 = np.array([1, 6, 0])
+            relativePosition2 = np.array([-1, -6, 0])
 
         relativePosition1 = self.batte.getRotationMatrix().dot(
             np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2], 1.0]))
