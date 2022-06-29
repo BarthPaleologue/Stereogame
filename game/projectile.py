@@ -19,8 +19,9 @@ class Projectile(Sphere):
             self.battlefield = battlefield
             self.ballmanager = ballmanager
             self.setScaling(radius, radius, radius)
-            self.scene  = scene
+
             self.currentPlayer = None
+
 
         def update(self):
             r = self.getRadius()
