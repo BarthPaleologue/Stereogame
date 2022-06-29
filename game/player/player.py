@@ -128,12 +128,23 @@ class Player(Transform):
 
         relativePosition1 = self.batte.getRotationMatrix().dot(
             np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2], 1.0]))
-        relativePosition = np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2]])
+        relativePosition1 = np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2]])
 
-        self.batte.end1 = relativePosition + self.getPosition()
-        self.batte.end1[2] -= 4.5
-        self.batte.end2 = np.array(
-            [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] - 4.5])
+        relativePosition2 = self.batte.getRotationMatrix().dot(
+            np.array([relativePosition2[0], relativePosition2[1], relativePosition2[2], 1.0]))
+        relativePosition2 = np.array([relativePosition2[0], relativePosition2[1], relativePosition2[2]])
+
+
+        self.batte.end1 = relativePosition1 + self.getPosition()
+
+        if not self.flip:
+            self.batte.end1[2] -= 4.5
+            self.batte.end2 = np.array(
+                [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] - 4.5])
+        else:
+            self.batte.end1[2] += 4.5
+            self.batte.end2 = np.array(
+                [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] + 4.5])
 
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):

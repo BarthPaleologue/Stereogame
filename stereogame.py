@@ -43,7 +43,7 @@ if __name__ == "__main__":
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 18, scene)
+    battlefield = Battlefield("battly", 10, 6, 22, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
@@ -51,8 +51,8 @@ if __name__ == "__main__":
 
     ballManager = BallManager([])
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(30):
-        sphere = Projectile("sphery", False, 1, battlefield, 'reflect',ballManager, scene)
+    for i in range(5):
+        sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
         sphereMat = TextureMaterial(sphereTex)
@@ -84,10 +84,10 @@ if __name__ == "__main__":
     keyboard = Keyboard()
     nb_joystick = pygame.joystick.get_count()
     pygame.joystick.init()
-    if nb_joystick > 0 :
+    if nb_joystick > 0:
         joystick = []
         gamepad = []
-        for i in range (nb_joystick) :
+        for i in range(nb_joystick):
             joystick += [pygame.joystick.Joystick(i)]
             gamepad += [GamePad(i)]
         player1 = Player(False, gamepad[0], scene, ballManager)
@@ -99,8 +99,8 @@ if __name__ == "__main__":
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
 
-    player1.setPosition(0, 0, -12)
-    player2.setPosition(0, 0, 12)
+    player1.setPosition(0, 0, -13)
+    player2.setPosition(0, 0, 13)
 
     end1 = Cube("end1", False, scene)
 
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         player1.update(deltaTime)
         player2.update(deltaTime)
 
-        end1.setPosition(player2.batte.end2[0], player2.batte.end2[1], player2.batte.end2[2])
+        end1.setPosition(player2.batte.end1[0], player2.batte.end1[1], player2.batte.end1[2])
 
         for sphere in ballManager.balls:
             sphere.update()
