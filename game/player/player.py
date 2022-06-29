@@ -92,14 +92,16 @@ class Player(Transform):
         self.batte.setPosition(x, y, z)
         if self.flip:
             self.batte.beginY = -30
+            self.batte.endY = 40
             self.batte.beginZ = 50
             self.batte.endZ = 50
             self.batte.setRotationZ(self.batte.beginZ)
             self.batte.setRotationY(self.batte.beginY)
         else:
+            self.batte.beginY = 30
+            self.batte.endY = -40
             self.batte.beginZ = 180 - 50
             self.batte.endZ = 180 - 50
-            self.batte.beginY = 30
             self.batte.setRotationZ(self.batte.beginZ)
             self.batte.setRotationY(self.batte.beginY)
 
