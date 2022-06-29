@@ -25,9 +25,10 @@ class Bat(RowOBJ):
         self.state = 0
         self.animationDuration = 0.2
         self.batReturn = False
+        self.isSuperBat = False
 
         self.end1 = np.array([-1, -6, 0])
-        self.end2  = np.array([0, 0, 0])
+        self.end2 = np.array([0, 0, 0])
 
         batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
         self.setMaterial(batMat)

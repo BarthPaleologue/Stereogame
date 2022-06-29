@@ -47,7 +47,7 @@ if __name__ == "__main__":
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
-    sphereTex = Texture("./assets/space.png")
+    sphereTex = Texture("./assets/normaltex.jpeg")
 
     ballManager = BallManager([])
     mysteryBox = MysteryBox("boxy", battlefield, scene)
@@ -91,11 +91,11 @@ if __name__ == "__main__":
             joystick += [pygame.joystick.Joystick(i)]
             gamepad += [GamePad(i)]
         player1 = Player(False, gamepad[0], scene, ballManager)
-        if nb_joystick == 2 :
+        if nb_joystick == 2:
             player2 = Player(True, gamepad[1], scene, ballManager)
-        else :
+        else:
             player2 = Player(False, None, scene, ballManager)
-    else :
+    else:
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
 
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         player1.update(deltaTime)
         player2.update(deltaTime)
 
-        end1.setPosition(player1.batte.end1[0], player1.batte.end1[1], player1.batte.end1[2])
+        end1.setPosition(player2.batte.end2[0], player2.batte.end2[1], player2.batte.end2[2])
 
         for sphere in ballManager.balls:
             sphere.update()

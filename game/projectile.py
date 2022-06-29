@@ -3,6 +3,7 @@ from feather.shapes import Sphere, Rectangle
 from feather.algebra import reflection
 import numpy as np
 import pygame
+from random import random
 
 from feather.texture import Texture
 
@@ -18,6 +19,8 @@ class Projectile(Sphere):
             self.battlefield = battlefield
             self.ballmanager = ballmanager
             self.setScaling(radius, radius, radius)
+
+            self.currentPlayer = None
 
 
         def update(self):
@@ -83,6 +86,8 @@ class Projectile(Sphere):
                 self.setMaterial(ballMat)
                 self.update()
             elif effect == 'teleport':
+                ballMat = TextureMaterial(Texture("./assets/space.png"))
+                self.setMaterial(ballMat)
                 self.setCollision('teleport')
                 self.update()
             elif effect == 'bomb':
@@ -90,6 +95,26 @@ class Projectile(Sphere):
                 bombMat = TextureMaterial(Texture("./assets/explosion.png"))
                 self.setMaterial(bombMat)
                 self.update()
+            elif effect == 'x3':
+                position = self.getPosition()
+                x,y,z = position[0], position[1], position[2]
+                proj1 = Projectile("sphery", False, 1, self.battlefield, 'reflect',self.ballmanager, self.scene)
+                proj2 = Projectile("sphery", False, 1, self.battlefield, 'reflect',self.ballmanager, self.scene)
+                ballMat = TextureMaterial(Texture("./assets/basketball.jpeg"))
+                proj1.setMaterial(ballMat)
+                proj2.setMaterial(ballMat)
+                proj1.setPosition(x,y,z)
+                proj2.setPosition(x,y,z)
+                proj1.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
+                proj2.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
+                proj1.ballmanager.addBall(proj1)
+                proj2.ballmanager.addBall(proj2)
+            elif effect == 'superbat':
+                if self.currentPlayer != None:
+                    self.currentPlayer.batte.isSuperBat = True
+
+                
+
         
         def explode(self):
             crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
