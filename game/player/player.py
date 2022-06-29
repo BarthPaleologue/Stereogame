@@ -120,13 +120,13 @@ class Player(Transform):
     def update(self, deltaTime: float):
         self.batte.update(deltaTime)
 
-        relativePosition = np.array([-1, -6, 0])
-        relativePosition = self.batte.getRotationMatrix().dot(
-            np.array([relativePosition[0], relativePosition[1], relativePosition[2], 1.0]))
-        relativePosition = np.array([relativePosition[0], relativePosition[1], relativePosition[2]])
-        newPosition = relativePosition + self.getPosition()
+        relativePosition1 = np.array([-1, -6, 0])
+        relativePosition1 = self.batte.getRotationMatrix().dot(
+            np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2], 1.0]))
+        relativePosition = np.array([relativePosition1[0], relativePosition1[1], relativePosition1[2]])
 
-        self.batte.end1 = newPosition
+        self.batte.end1 = relativePosition + self.getPosition()
+        self.batte.end1[2] -= 4.5
         self.batte.end2 = np.array(
             [self.getPosition()[0], self.getPosition()[1], self.getPosition()[2] - 4.5])
 

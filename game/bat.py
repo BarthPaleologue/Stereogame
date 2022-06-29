@@ -15,7 +15,7 @@ class Bat(RowOBJ):
         self.position = np.array([0.0, 0.0, 0.0])
         self.velocity = np.array([0.0, 0.0, 0.0])
         self.ends = np.array([[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
-        self.radius = 0.7
+        self.radius = 1.5
         self.counter = 0
         self.isStriking = False
         self.beginZ = 50

@@ -145,7 +145,7 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        end1.setPosition(player1.batte.end1[0], player1.batte.end1[1], player1.batte.end1[2] - 4.5)
+        end1.setPosition(player1.batte.end1[0], player1.batte.end1[1], player1.batte.end1[2])
 
         for sphere in ballManager.balls:
             sphere.update()
