@@ -87,6 +87,8 @@ class Projectile(Sphere):
                 self.update()
             elif effect == 'bomb':
                 self.setCollision('bomb')
+                bombMat = TextureMaterial(Texture("./assets/explosion.png"))
+                self.setMaterial(bombMat)
                 self.update()
         
         def explode(self):

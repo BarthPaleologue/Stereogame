@@ -26,7 +26,7 @@ class MysteryBox(Cube):
     
     def onHit(self,ball):
         x,y,z = self.battlex, self.battley, self.battlez
-        self.setPosition(random.uniform(-x+1/2,x-1/2),random.uniform(-y + 1/2,y-1/2),random.uniform(-z+1/2,z-1/2))
+        self.setPosition(random.uniform(-x+1,x-1),random.uniform(-y + 1,y-1),random.uniform(-z+1,z-1))
         #effect = random.randint(1,3)
         effect = 'bomb'
         ball.applyEffect(effect)
