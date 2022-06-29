@@ -1,8 +1,7 @@
 from os import path
 from game.projectile import Projectile
-from feather.texture import *
-from feather.materials import *
-from feather.shapes.rectangle import Rectangle
+from feather.texture import Texture
+from feather.materials import TextureMaterial
 import pygame
 r = 1
 
