@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
     
     ######## DECLARATION DES SHAPES
 
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     mysteryBox = MysteryBox("boxy",battlefield, scene)
     spheres = []
     for i in range(5):
-        sphere = Ball("sphery", False, 1, battlefield,'teleport',scene)
+        sphere = Projectile("sphery", False, 1, battlefield,'teleport',scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
         sphereMat = TextureMaterial(sphereTex)
