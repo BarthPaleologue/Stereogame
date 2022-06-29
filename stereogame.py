@@ -2,9 +2,9 @@ from random import random
 from OpenGL.GL import *
 from feather.materials.shaderMaterial import ShaderMaterial
 import numpy as np
-from game import projectile
+from game.projectile import Projectile
 from game.MysteryBox import MysteryBox
-from game.main import Bomb
+from game.Bomb import Bomb
 from game.player.GamePad import GamePad
 from game.player.Keyboard import Keyboard
 import pygame

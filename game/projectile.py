@@ -4,7 +4,7 @@ from feather.algebra import reflection
 import numpy as np
 
 from feather.texture import Texture
-from game.Bomb import Bomb
+
 
 class Projectile(Sphere):
         def __init__(self, name, flip,  radius, battlefield, collision, scene):
@@ -42,6 +42,7 @@ class Projectile(Sphere):
                         self.setPosition(x, y - 2*sizey + 2*r - 0.1, z)
                     elif self.battlefield.whereCollision(r, position) == 'bottom':
                         self.setPosition(x, y + 2*sizey - 2*r + 0.1, z)
+
 
             self.translate(self.velocity[0], self.velocity[1], self.velocity[2])
             newVelocity = np.array([self.velocity[0]+self.acceleration[0], self.velocity[1]+self.acceleration[1], self.velocity[2]+self.acceleration[2]])  
@@ -83,7 +84,7 @@ class Projectile(Sphere):
                 self.setCollision('teleport')
             elif effect == 'bomb':
                 self = Bomb (self)
-                
+
 
 
 

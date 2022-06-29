@@ -2,7 +2,6 @@ from os import path
 from game.projectile import Projectile
 from feather.texture import *
 from feather.materials import *
-from feather.shapes.rectangle import Rectangle
 import pygame
 r = 1
 
@@ -16,12 +15,21 @@ class Bomb(Projectile):
         bombMat = TextureMaterial(Texture("./assets/explosion.png"))
         self.setMaterial(bombMat)
 
+
     def explode(self):
         crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
         pygame.mixer.Sound.play(crash_sound)
         pygame.mixer.music.stop()
         self.destroy()
-        
+
+    
+    def update(self):
+        r = self.getRadius()
+        position = self.getPosition()
+        if self.battlefield.isCollision(r,position):
+            self.explode()
+
+
         """explosion_anim = {}
         explosion_anim['lg'] = []
         explosion_anim['sm'] = []
