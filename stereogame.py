@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     ballManager = BallManager([])
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(5):
+    for i in range(1):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect', scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
