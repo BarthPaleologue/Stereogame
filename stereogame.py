@@ -86,15 +86,25 @@ if __name__ == "__main__":
     ######### DECLARATION DES JOUEURS
 
     keyboard = Keyboard()
-
+    nb_joystick = pygame.joystick.get_count()
     pygame.joystick.init()
-    if pygame.joystick.get_count() > 0 :
-        joystick = pygame.joystick.Joystick(0)
-        gamepad = GamePad(0)
-    
-    player1 = Player(False, None, scene, ballManager)
+    if nb_joystick > 0 :
+        joystick = []
+        gamepad = []
+        for i in range (nb_joystick) :
+            joystick += [pygame.joystick.Joystick(i)]
+            gamepad += [GamePad(i)]
+        player1 = Player(False, gamepad[0], scene, ballManager)
+        if nb_joystick == 2 :
+            player2 = Player(True, gamepad[1], scene, ballManager)
+        else :
+            player2 = Player(False, None, scene, ballManager)
+    else :
+        player1 = Player(False, None, scene, ballManager)
+        player2 = Player(True, None, scene, ballManager)
+
+
     player1.setPosition(0, 0, -12)
-    player2 = Player(True, None, scene, ballManager)
     player2.setPosition(0, 0, 12)
 
     fbo_width = int(width/2)
@@ -227,8 +237,10 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
-                player1.batte.strike()
-                player2.batte.strike()
+                if player1.getGamepad() == None :
+                    player1.batte.strike()
+                if player2.getGamepad() == None :
+                    player2.batte.strike()
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):
@@ -236,12 +248,17 @@ if __name__ == "__main__":
             # pour tester si le programme detecte les appuie sur les boutons
             if event.type == pygame.JOYBUTTONDOWN:
                 print("Joystick button pressed.")
+                if player1.getGamepad() != None :
+                    player1.batte.strike()
+                if player2.getGamepad() != None :
+                    player2.batte.strike()
         
         keyboard.update()
         if keyboard.isBattePressed():
             print("batty")
-        if pygame.joystick.get_count() > 0 :
-            gamepad.update()
-            if gamepad.isBattePressed():
-                print("joybatty")
+        if nb_joystick > 0 :
+            for i in range (nb_joystick) :
+                gamepad[i].update()
+                if gamepad[i].isBattePressed():
+                    print("joybatty")
         
