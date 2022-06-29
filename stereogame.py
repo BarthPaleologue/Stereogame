@@ -2,6 +2,7 @@ from random import random
 from OpenGL.GL import *
 from feather.materials.shaderMaterial import ShaderMaterial
 import numpy as np
+from game.MysteryBox import MysteryBox
 from game.main import Bomb
 from game.player.GamePad import GamePad
 from game.player.Keyboard import Keyboard
@@ -44,7 +45,6 @@ if __name__ == "__main__":
     
     ######## DECLARATION DES SHAPES
 
-    # object 10485_Baseball_bat_v1_max8
     bat = RowOBJ("./assets/baseball/batB.obj", False, scene)
     bat.setPosition(0, 0, 0)
     batMat = TextureMaterial(Texture("./assets/baseball/wood.jpg"))
@@ -52,37 +52,27 @@ if __name__ == "__main__":
     bat.setMaterial(batMat)
 
     battlefield = Battlefield("battly", 10, 6, 20, scene)
-    battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
-    #battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
-    #battleMat2.updateFunction = lambda battleMat2:
-    #battleMat2.setUniform("u_time", pygame.time.get_ticks() / 1000.0)
+    battleMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
         
     battlefield.setMaterial(battleMat)
 
     sphereTex = Texture("./assets/space.png")
 
+    ## Mystery box
+    mysteryBox = MysteryBox("boxy",battlefield, scene)
     spheres = []
-    for i in range(10):
-        sphere = Ball("sphery", False, 1, battlefield, scene)
+    for i in range(5):
+        sphere = Ball("sphery", False, 1, battlefield,'teleport',scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 10.0, (random() - 0.5) / 10.0, (random() - 0.5) / 10.0)
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         spheres.append(sphere)
 
-    bat = RowOBJ("./assets/baseball/batB.obj",False,scene)
-    #bat.setScaling(0.5,0.5,0.5)
-    bat.setPosition(0,0,0)
-    batMat = TextureMaterial(Texture("./assets/Baseball/wood.jpg"))
-    bat.setMaterial(batMat)
     #skull = OBJ("./assets/skull.obj", False, scene)
     #for(i, shape) in enumerate(skull.shapes):
     #	shape.setScaling(0.05, 0.05, 0.05)
     #	shape.setRotationX(90)
-
-    battlefield = Battlefield("battly", 14, 6, 20, scene)
-    #battleMat = TextureMaterial(Texture("./assets/textBattle.jpeg"))
-    #battlefield.setMaterial(battleMat)
 
     #gun = OBJsanstex("./assets/awp.obj", False, scene)
     
@@ -161,7 +151,7 @@ if __name__ == "__main__":
 
         yellow_cube.setPosition(x, 0, z)
 
-        """for sphere in spheres:
+        for sphere in spheres:
             if battlefield.isCollision(sphere.getRadius(), sphere.getPosition()):
                 normVect = battlefield.normalVector(battlefield.whereCollision(sphere.getRadius(), sphere.getPosition()))
                 oldVelocity = sphere.getVelocity()
@@ -173,14 +163,14 @@ if __name__ == "__main__":
             sphere.update()
             sphere.setRotationY(time * 50.0)
             sphere.setRotationX(time * 60.0)
-            sphere.setRotationZ(time * 40.0)"""
-        for bomb in spheres:
+            sphere.setRotationZ(time * 40.0)
+        """for bomb in spheres:
             if battlefield.isCollision(bomb.getRadius(), bomb.getPosition()):
                 bomb.explode()
             bomb.update()
             bomb.setRotationY(time * 50.0)
             bomb.setRotationX(time * 60.0)
-            bomb.setRotationZ(time * 40.0)
+            bomb.setRotationZ(time * 40.0)"""
             
 
 
