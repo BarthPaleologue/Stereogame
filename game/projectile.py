@@ -4,7 +4,6 @@ from feather.algebra import reflection
 import numpy as np
 
 from feather.texture import Texture
-from game.Bomb import Bomb
 
 class Projectile(Sphere):
         def __init__(self, name, flip,  radius, battlefield, collision, scene):
@@ -81,8 +80,8 @@ class Projectile(Sphere):
                 self.setMaterial(ballMat)
             elif effect == 'teleport':
                 self.setCollision('teleport')
-            elif effect == 'bomb':
-                self = Bomb (self)
+            #elif effect == 'bomb':
+                #self = Bomb (self)
                 
 
 
