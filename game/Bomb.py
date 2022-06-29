@@ -1,5 +1,5 @@
 from os import path
-from game.ball import Ball
+from game.projectile import Projectile
 from feather.texture import *
 from feather.materials import *
 from feather.shapes.rectangle import Rectangle
@@ -8,10 +8,10 @@ r = 1
 
 
 
-class Bomb(Ball):
+class Bomb(Projectile):
 
     def __init__(self, name, flip, radius, scene):
-        Ball.__init__(self,name, flip, radius, scene)
+        Projectile.__init__(self, name, flip, radius, scene)
         self.scene = scene
 
     def explode(self):

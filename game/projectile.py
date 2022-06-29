@@ -5,7 +5,7 @@ import numpy as np
 
 from feather.texture import Texture
 
-class Ball(Sphere):
+class Projectile(Sphere):
         def __init__(self, name, flip,  radius, battlefield, collision, scene):
 
             Sphere.__init__(self, name, flip, scene)
