@@ -66,12 +66,12 @@ if __name__ == "__main__":
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
 
-    player1.setPosition(0, 0, -17)
-    player2.setPosition(0, 0, 17)
+    player1.setPosition(0, 0, -21.2)
+    player2.setPosition(0, 0, 21.2)
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 22, player1, player2, scene)
+    battlefield = Battlefield("battly", 10, 6, 30, player1, player2, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
@@ -170,6 +170,11 @@ if __name__ == "__main__":
                 sphereMat = TextureMaterial(sphereTex)
                 sphere.setMaterial(sphereMat)
 
+                player1.batte.isSuperBat = False
+                player2.batte.isSuperBat = False
+
+                battlefield.areViewsSwitched = False
+
                 service = False
 
             for sphere in ballManager.balls:
@@ -191,14 +196,22 @@ if __name__ == "__main__":
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
-        ### PLAYER 1
-        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[1])
-        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[2])
+        if not battlefield.areViewsSwitched:
+            ### PLAYER 1
+            drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[1])
+            drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[2])
 
-        ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[5])
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[6])
-        
+            ### PLAYER 2
+            drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[5])
+            drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[6])
+        else:
+            ### PLAYER 1
+            drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[5])
+            drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[6])
+
+            ### PLAYER 2
+            drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[1])
+            drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[2])
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
@@ -257,6 +270,8 @@ if __name__ == "__main__":
         if keys[pygame.K_c]:
             player1.setEyeDistance(player1.eyeDistance - 0.001)
             player2.setEyeDistance(player2.eyeDistance - 0.001)
+        if keys[pygame.K_v]:
+            battlefield.areViewsSwitched = not battlefield.areViewsSwitched
 
 
         for event in pygame.event.get():

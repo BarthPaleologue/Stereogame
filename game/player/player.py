@@ -151,7 +151,7 @@ class Player(Transform):
         if self.batte.isSuperBat:
             relativePosition1 *= 1.5
             relativePosition2 *= 1.5
-            self.batte.setScaling(1, 1, 1)
+            self.batte.setScaling(0.8, 0.8, 0.8)
         else:
             self.batte.setScaling(0.7, 0.7, 0.7)
 
