@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -154,12 +154,8 @@ if __name__ == "__main__":
                 service = True
 
             if sphere.position.z <= player1.position.z - 7:
-                score2 += 1
-                ballManager.removeBall(sphere)
                 service = True
             elif sphere.position.z >= player2.position.z + 7:
-                score1 += 1
-                ballManager.removeBall(sphere)
                 service = True
 
             if service == True:
@@ -196,22 +192,13 @@ if __name__ == "__main__":
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
-        if not battlefield.areViewsSwitched:
-            ### PLAYER 1
-            drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[1])
-            drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[2])
+        ### PLAYER 1
+        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[1])
+        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[2])
 
-            ### PLAYER 2
-            drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[5])
-            drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[6])
-        else:
-            ### PLAYER 1
-            drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[5])
-            drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[6])
-
-            ### PLAYER 2
-            drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[1])
-            drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[2])
+        ### PLAYER 2
+        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[5])
+        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[6])
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
@@ -231,18 +218,22 @@ if __name__ == "__main__":
 
         if DOES_INTERLACE:
 
-            interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 1)
-            interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 2)
-            #interlacer.setTextureFromImage(blackTex, 0)
-            #interlacer.setTextureFromImage(blackTex, 1)
+            if not battlefield.areViewsSwitched:
+                interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 1)
+                interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 2)
+
+                interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 5)
+                interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 6)
+
+            else:
+                interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 1)
+                interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 2)
+
+                interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 5)
+                interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 6)
 
             interlacer.setTextureFromImage(blackTex, 3)
             interlacer.setTextureFromImage(blackTex, 4)
-            
-            interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 5)
-            interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 6)
-            #interlacer.setTextureFromImage(blackTex, 4)
-            #interlacer.setTextureFromImage(blackTex, 5)
 
             interlacer.setTextureFromImage(blackTex, 7)
             interlacer.setTextureFromImage(blackTex, 0)

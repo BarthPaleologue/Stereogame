@@ -35,6 +35,6 @@ class MysteryBox(Cube):
     def onHit(self,ball):
         x,y,z = self.battlex, self.battley, self.battlez
         self.setPosition(random.uniform(-x+2, x-2), random.uniform(-y + 2, y-2), random.uniform(-3, 3))
-        effect = 8#random.randint(1,8)
+        effect = random.randint(1,8)
         ball.applyEffect(allEffects[effect])
 
