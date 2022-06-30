@@ -56,8 +56,10 @@ if __name__ == "__main__":
         joystick = []
         gamepad = []
         for i in range (nb_joystick) :
-            joystick += [pygame.joystick.Joystick(i)]
-            gamepad += [GamePad(i)]
+            #joystick += [pygame.joystick.Joystick(i)]
+            #gamepad += [GamePad(i)]
+            joystick.append(pygame.joystick.Joystick(i))
+            gamepad.append(GamePad(i))
         player1 = Player(False, gamepad[0], scene, ballManager)
         if nb_joystick == 2:
             player2 = Player(True, gamepad[1], scene, ballManager)
@@ -134,7 +136,7 @@ if __name__ == "__main__":
         deltaTime = time - getTicksLastFrame
         getTicksLastFrame = time
 
-        ###### UPDATE ETAT DES SHAPES
+        ###### UPDATE ETAT DES BATTES
 
         player1.update(deltaTime)
         player2.update(deltaTime)
@@ -145,30 +147,30 @@ if __name__ == "__main__":
         ###### SCORE UPDATE
 
         score1Texture = TextTexture(f"{score1}", (0, 0, 0), (255, 255, 255))
-        if score1 == 10:
+        if player1.score == 10:
             print("Player 1 wins")
             score1Texture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))
             score2Texture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))
             #score1, score2 = 0, 0
         
         score2Texture = TextTexture(f"{score2}", (0, 0, 0), (255, 255, 255))
-        if score2 == 10:
+        if player2.score == 10:
             print("Player 2 wins")
             score1Texture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))
             score2Texture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))
             #score1, score2 = 0, 0
 
-        if score1 < 10 and score2 < 10:
+        if player1.score < 10 and player2.score < 10:
             if len(ballManager.balls) == 0:
                 service = True
 
-
-            if sphere.position.z <= player1.position.z - 7:
+            #sphere.update(deltaTime)
+            """if sphere.position.z <= player1.position.z - 7:
                 score2 += 1
                 service = True
-            elif sphere.position.z >= player2.position.z + 7:
+            if sphere.position.z >= player2.position.z + 7:
                 score1 += 1
-                service = True
+                service = True"""
 
             if service == True:
                 # faut pouvoir en relancer une ici, donc faudrait créer un service

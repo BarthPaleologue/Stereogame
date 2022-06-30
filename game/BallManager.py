@@ -14,5 +14,5 @@ class BallManager:
             self.balls.remove(ball)
         finally:
             ball.destroy()
-
+        
           

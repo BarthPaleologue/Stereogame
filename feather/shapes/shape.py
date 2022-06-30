@@ -27,7 +27,7 @@ class Shape(Transform):
 
         self.scene = scene
 
-        if self.scene is not None:
+        if self.scene != None:
             self.scene.addShape(self)
 
 

@@ -19,10 +19,12 @@ class Projectile(Sphere):
             self.acceleration = Vec3(0.0, 0.0, 0.0)
             self.radius = radius
             self.battlefield = battlefield
+            ballmanager.addBall(self)
             self.ballmanager = ballmanager
-            self.ballmanager.addBall(self)
+            
             self.setScaling(radius, radius, radius)
             self.currentPlayer = None
+            self.scene.addShape(self)
 
         def setCurrentPlayer(self,player):
             self.currentPlayer = player
@@ -40,6 +42,10 @@ class Projectile(Sphere):
             position = self.getPosition()
             x,y,z = position.x, position.y, position.z
             sizex,sizey,sizez = self.battlefield.getSizex(), self.battlefield.getSizey(), self.battlefield.getSizez()
+            
+
+            ## maintenant s'il y a collision avec les murs
+
             if self.battlefield.isCollision(r, position):
                 where = self.battlefield.whereCollision(r, position)
 
@@ -47,19 +53,21 @@ class Projectile(Sphere):
 
                 if self.collision == 'reflect':
                     if where == 'front':
+                        self.ballmanager.removeBall(self)
                         if player1.position.z > 0: # player 1 wins
                             player1.score+=1
-                            self.ballmanager.removeBall(self)
+                            
                         if player1.position.z < 0: # player 2 wins
                             player2.score+=1
-                            self.ballmanager.removeBall(self)
+                            
                     elif where == 'back':
+                        self.ballmanager.removeBall(self)
                         if player1.position.z < 0: # player 1 wins
                             player1.score+=1
-                            self.ballmanager.removeBall(self)
+                            
                         if player1.position.z > 0: # player 2 wins
                             player2.score+=1
-                            self.ballmanager.removeBall(self)
+                            
             
                     else:
                         normVect = self.battlefield.normalVector(where)
@@ -72,17 +80,21 @@ class Projectile(Sphere):
 
                 if self.collision == 'teleport':
                     if where == 'front':
+                        self.ballmanager.removeBall(self)
                         if player1.position.z > 0: # player 1 wins
                             player1.score+=1
-                            self.ballmanager.removeBall(self)
-                        if player1.position.z < 0: # player 2 wins
+                            
+                        elif player1.position.z < 0: # player 2 wins
                             player2.score+=1
-                            self.ballmanager.removeBall(self)
+                            
                     elif where == 'back':
+                        self.ballmanager.removeBall(self)
                         if player1.position.z < 0: # player 1 wins
                             player1.score+=1
+                            
                         if player1.position.z > 0: # player 2 wins
                             player2.score+=1
+                            
                     
                     elif where == 'right':
                         self.setPosition(x-2*sizex+2*r + 0.1, y, z)
@@ -110,18 +122,23 @@ class Projectile(Sphere):
                         if player1.position.z > 0: # player 1 wins
                             player1.score+=1
             
-                    if sphereToCylinder(self, player1.batte):
-                        self.explode()
-                        player2.score+=1
-                    if sphereToCylinder(self,player1.batte):
-                        self.explode()
-                        player2.score1+=1
+                    
                     else:
                         normVect = self.battlefield.normalVector(where)
                         oldVelocity = self.getVelocity()
                         newVelocity = reflection(oldVelocity, normVect)
 
                         self.setVelocity(newVelocity.x, newVelocity.y, newVelocity.z)
+            
+            # si collision avec une batte et que c'est une bombe
+            
+            if self.collision == 'bomb': 
+                if sphereToCylinder(self, player1.batte):
+                        self.explode()
+                        player2.score+=1
+                if sphereToCylinder(self,player2.batte):
+                    self.explode()
+                    player2.score+=1
 
             ## superbat effect
             if player1.batte.isSuperBat:
