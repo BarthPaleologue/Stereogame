@@ -13,6 +13,8 @@ class Battlefield(Land):
         self.player2 = player2
         Land.__init__(self, name, False, True, True, True, scene)
         self.setScaling(size_x, size_y, size_z)
+        self.areViewsSwitched = False
+
 
     def getSizex(self):
         return self.size_x

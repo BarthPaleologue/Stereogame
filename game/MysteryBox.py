@@ -25,13 +25,16 @@ class MysteryBox(Cube):
         x,y,z = ballposition.x, ballposition.y, ballposition.z
         position = self.getPosition()
         bx, by, bz = position.x,position.y,position.z
-        if abs(bx-x)<= 1.5 and abs(by-y)<= 1.5 and abs(bz-z)<= 1.5:
+
+        collisionRadius = 1.5
+
+        if abs(bx-x)<= collisionRadius and abs(by-y)<= collisionRadius and abs(bz-z)<= collisionRadius:
             return True
         return False
     
     def onHit(self,ball):
         x,y,z = self.battlex, self.battley, self.battlez
         self.setPosition(random.uniform(-x+2, x-2), random.uniform(-y + 2, y-2), random.uniform(-3, 3))
-        effect = random.randint(1,7)
+        effect = 8#random.randint(1,8)
         ball.applyEffect(allEffects[effect])
 

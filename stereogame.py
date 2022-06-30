@@ -67,27 +67,27 @@ if __name__ == "__main__":
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
 
-    player1.setPosition(0, 0, -12)
-    player2.setPosition(0, 0, 12)
+    player1.setPosition(0, 0, -21.2)
+    player2.setPosition(0, 0, 21.2)
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 22, player1, player2, scene)
+    battlefield = Battlefield("battly", 10, 6, 30, player1, player2, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
     sphereTex = Texture("./assets/normaltex.jpeg")
 
-
-
-    mysteryBox = MysteryBox("boxy", battlefield, scene)
+    mysteryBoxes = []
+    for i in range(3):
+        mysteryBox = MysteryBox("boxy", battlefield, scene)
+        mysteryBoxes.append(mysteryBox)
 
     sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
-    sphere.setPosition(-2, 0, 0)
-    sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 2.0)
+    sphere.setPosition(0, 1, 0)
+    sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
     sphereMat = TextureMaterial(sphereTex)
     sphere.setMaterial(sphereMat)
-    sphere.setCurrentPlayer(player1)
     
     rect = Rectangle('rect', False, scene)
     rect.setPosition(-8, 2, -3).setScaling(0.5, 1, 1)
@@ -109,8 +109,6 @@ if __name__ == "__main__":
     ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
     ident_matrix = np.identity(4, dtype=np.float32)
 
-  
-
     #end1 = Cube("end1", False, scene)
 
     fbo_width = int(width/2)
@@ -127,6 +125,7 @@ if __name__ == "__main__":
     ######### GAME LOOP
     
     running = True
+    service = True
     
     score1 = 0
     score2 = 0
@@ -160,11 +159,11 @@ if __name__ == "__main__":
             score1, score2 = 0, 0
         service = False
 
-        if sphere.position.z <= player1.batte.position.z:
+        if sphere.position.z <= player1.position.z - 7:
             score2 += 1
             ballManager.removeBall(sphere)
             service = True
-        elif sphere.position.z >= player2.batte.position.z:
+        elif sphere.position.z >= player2.position.z + 7:
             score1 += 1
             ballManager.removeBall(sphere)
             service = True
@@ -173,18 +172,33 @@ if __name__ == "__main__":
             # faut pouvoir en relancer une ici, donc faudrait créer un service
             sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
             sphere.setPosition(0, 1, 0)
-            sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 2.0)
+            sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
             sphereMat = TextureMaterial(sphereTex)
             sphere.setMaterial(sphereMat)
 
-        for sphere in ballManager.balls:
-            sphere.update(deltaTime)
-            sphere.setRotationY(time * 50.0)
-            sphere.setRotationX(time * 60.0)
-            sphere.setRotationZ(time * 40.0)
-            if mysteryBox.isCollision(sphere):
-                mysteryBox.onHit(sphere)
+            player1.batte.isSuperBat = False
+            player2.batte.isSuperBat = False
 
+            battlefield.areViewsSwitched = False
+
+            service = False
+
+            for sphere in ballManager.balls:
+                sphere.update(deltaTime)
+                sphere.setRotationY(time * 50.0)
+                sphere.setRotationX(time * 60.0)
+                sphere.setRotationZ(time * 40.0)
+                for mysteryBox in mysteryBoxes:
+                    if mysteryBox.isCollision(sphere):
+                        mysteryBox.onHit(sphere)
+
+        else:
+            for ball in ballManager.balls:
+                ballManager.removeBall(ball)
+
+            #### wait until you want to restart the game
+
+        glEnable(GL_BLEND)
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
@@ -254,6 +268,8 @@ if __name__ == "__main__":
         if keys[pygame.K_c]:
             player1.setEyeDistance(player1.eyeDistance - 0.001)
             player2.setEyeDistance(player2.eyeDistance - 0.001)
+        if keys[pygame.K_v]:
+            battlefield.areViewsSwitched = not battlefield.areViewsSwitched
 
 
         for event in pygame.event.get():
