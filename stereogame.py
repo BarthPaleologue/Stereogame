@@ -23,11 +23,12 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield, Projectile
 
-def drawEyeToFrameBuffer(eye, scene, testMat, testTexture):
+def drawEyeToFrameBuffer(eye, scene, testMat, testTexture, scoreTexture):
     eye.frameBuffer.bind()
     glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
-    testMat.texture = testTexture
+    #testMat.texture = testTexture
+    testMat.texture = scoreTexture
 
     scene.render(eye.getProjectionMatrix(), model_matrix, eye.computeViewMatrix())
 
@@ -89,7 +90,7 @@ if __name__ == "__main__":
     sphere.setCurrentPlayer(player1)
     
     rect = Rectangle('rect', False, scene)
-    rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
+    rect.setPosition(-8, 2, -3).setScaling(0.5, 1, 1)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
@@ -144,12 +145,19 @@ if __name__ == "__main__":
 
         ###### SCORE UPDATE
 
+        score1Texture = TextTexture(f"{score1}", (0, 0, 0), (255, 255, 255))
         if score1 == 10 :
             print("Player 1 wins")
+            score1Texture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))
+            score2Texture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))
+            score1, score2 = 0, 0
         
+        score2Texture = TextTexture(f"{score2}", (0, 0, 0), (255, 255, 255))
         if score2 == 10 :
             print("Player 2 wins")
-
+            score1Texture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))
+            score2Texture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))
+            score1, score2 = 0, 0
         service = False
 
         if sphere.position.z <= player1.batte.position.z:
@@ -181,12 +189,12 @@ if __name__ == "__main__":
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         ### PLAYER 1
-        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[1])
-        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[2])
+        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[1], score1Texture)
+        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[2], score1Texture)
 
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[5])
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[6])
+        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[5], score2Texture)
+        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[6], score2Texture)
         
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
