@@ -37,11 +37,11 @@ if __name__ == "__main__":
     #infoObject = pygame.display.Info()
     #width, height = infoObject.current_w, infoObject.current_h
     pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
-   ###### pygame.display.toggle_fullscreen()
+    pygame.display.toggle_fullscreen()
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -89,7 +89,7 @@ if __name__ == "__main__":
         ballManager.addBall(sphere)
         sphere.setCurrentPlayer(player1)
     
-    rect = Rectangle('rect', True, scene)
+    rect = Rectangle('rect', False, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))

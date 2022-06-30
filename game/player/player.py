@@ -16,7 +16,7 @@ class Player(Transform):
         Transform.__init__(self)
         self.batte = Bat("./assets/baseball/batB.obj", scene)
 
-        self.eyeDistance = 0.0089
+        self.eyeDistance = 0.01
 
         self.leftEye = Eye()  ### Initialiser l'oeil gauche ici
         self.leftEye.setPosition(-self.eyeDistance / 2, 0, 0)
@@ -24,8 +24,12 @@ class Player(Transform):
         self.rightEye = Eye()  ### Initialiser l'oeil droit ici
         self.rightEye.setPosition(self.eyeDistance / 2, 0, 0)
 
-        if (flip):
-            self.rightEye, self.leftEye = self.leftEye, self.rightEye
+        if not flip:
+            self.leftEye.setPosition(-self.eyeDistance / 2, 0, 0)
+            self.rightEye.setPosition(self.eyeDistance / 2, 0, 0)
+        else:
+            self.leftEye.setPosition(self.eyeDistance / 2, 0, 0)
+            self.rightEye.setPosition(-self.eyeDistance / 2, 0, 0)
 
         self.flip = flip
 
@@ -34,6 +38,8 @@ class Player(Transform):
         self.gamepad = gamepad
         self.invincible = False
         self.state = 0
+
+        self.score = 0
 
         self.ballManager = ballManager
 
