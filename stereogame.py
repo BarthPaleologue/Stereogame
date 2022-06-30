@@ -229,6 +229,8 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
             #if event.type == pygame.KEYDOWN:
+            if event.type == pygame.JOYBALLMOTION :
+                print('ok')
         keys = pygame.key.get_pressed()
         if player1.getGamepad() == None :
             if keys[pygame.K_z]:
@@ -262,16 +264,16 @@ if __name__ == "__main__":
             if gamepad[i].turnBatteLeft() :
 
                 if i == 0 :
-                    player1.batte.addRotationZ(1)
+                    player1.batte.addRotationZ(1.5)
                 if i == 1 :
-                    player2.batte.addRotationZ(1)
+                    player2.batte.addRotationZ(1.5)
             if gamepad[i].turnBatteRight() :
                 if i == 0 :
-                    player1.batte.addRotationZ(-1)
+                    player1.batte.addRotationZ(-1.5)
                 if i == 1 :
-                    player2.batte.addRotationZ(-1)
-            if gamepad[i].translateLeft() :
-                print(gamepad[i].translateLeft())
+                    player2.batte.addRotationZ(-1.5)
+        player1.batte.translate(-joystick[0].get_axis(0)*0.1, 0, 0)
+        player2.batte.translate(-joystick[1].get_axis(0)*0.1, 0, 0)
         
         ''' keyboard.update()
         if keyboard.isBattePressed():
