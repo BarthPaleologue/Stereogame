@@ -1,6 +1,8 @@
 from random import random
 from OpenGL.GL import *
 import numpy as np
+
+from feather.textTexture import TextTexture
 from game.projectile import Projectile
 
 from game.BallManager import BallManager
@@ -93,7 +95,7 @@ if __name__ == "__main__":
     rect.setMaterial(rectMat)
 
     blackTex = Texture("./assets/black.jpg")
-    numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
+    numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
     
     ######### DECLARATION DE L'ECRAN
 

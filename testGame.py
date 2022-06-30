@@ -1,6 +1,8 @@
 from random import random
 from OpenGL.GL import *
 import numpy as np
+
+from feather.textTexture import TextTexture
 from game.projectile import Projectile
 
 from game.BallManager import BallManager
@@ -35,7 +37,7 @@ if __name__ == "__main__":
     #infoObject = pygame.display.Info()
     #width, height = infoObject.current_w, infoObject.current_h
     pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
-   ###### pygame.display.toggle_fullscreen()
+    pygame.display.toggle_fullscreen()
 
     scene = Scene()
 
@@ -82,19 +84,19 @@ if __name__ == "__main__":
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
-        sphereMat = TextureMaterial(sphereTex)
+        sphereMat = TextureMaterial(TextTexture("O", (0, 0, 0), (255, 255, 255)))
         sphere.setMaterial(sphereMat)
         ballManager.addBall(sphere)
         sphere.setCurrentPlayer(player1)
     
-    rect = Rectangle('rect', True, scene)
+    rect = Rectangle('rect', False, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
     blackTex = Texture("./assets/black.jpg")
-    numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
+    numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
     
     ######### DECLARATION DE L'ECRAN
 
