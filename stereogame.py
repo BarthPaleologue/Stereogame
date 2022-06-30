@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -284,18 +284,20 @@ if __name__ == "__main__":
                 else :
                     player2.batte.strike()
             if gamepad[i].turnBatteLeft() :
-
-                if i == 0 :
-                    player1.batte.addRotationZ(1.5)
-                if i == 1 :
-                    player2.batte.addRotationZ(1.5)
+                if (i == 0) and (player1.batte.position.x < 5) :
+                    player1.batte.translate(0.1, 0, 0)
+                if (i == 1) and (player2.batte.position.x < 5) :
+                    player2.batte.translate(0.1, 0, 0)
             if gamepad[i].turnBatteRight() :
+                if (i == 0) and (player1.batte.position.x > -5) :
+                    player1.batte.translate(-0.1, 0, 0)
+                if (i == 1) and (player2.batte.position.x > -5) :
+                    player2.batte.translate(-0.1, 0, 0)
+            if joystick[i].get_axis(0) != 0 :
                 if i == 0 :
-                    player1.batte.addRotationZ(-1.5)
+                    player1.batte.addRotationZ(-joystick[0].get_axis(0) * 1.5)
                 if i == 1 :
-                    player2.batte.addRotationZ(-1.5)
-        player1.batte.translate(-joystick[0].get_axis(0)*0.1, 0, 0)
-        player2.batte.translate(-joystick[1].get_axis(0)*0.1, 0, 0)
+                    player2.batte.addRotationZ(-joystick[1].get_axis(0) * 1.5)
         
         ''' keyboard.update()
         if keyboard.isBattePressed():
