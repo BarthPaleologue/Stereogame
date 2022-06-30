@@ -66,8 +66,8 @@ if __name__ == "__main__":
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
 
-    player1.setPosition(0, 0, -18)
-    player2.setPosition(0, 0, 18)
+    player1.setPosition(0, 0, -17)
+    player2.setPosition(0, 0, 17)
     
     ######## DECLARATION DES SHAPES
 
@@ -77,7 +77,10 @@ if __name__ == "__main__":
 
     sphereTex = Texture("./assets/normaltex.jpeg")
 
-    mysteryBox = MysteryBox("boxy", battlefield, scene)
+    mysteryBoxes = []
+    for i in range(3):
+        mysteryBox = MysteryBox("boxy", battlefield, scene)
+        mysteryBoxes.append(mysteryBox)
 
     sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
     sphere.setPosition(0, 1, 0)
@@ -147,6 +150,9 @@ if __name__ == "__main__":
             print("Player 2 wins")
 
         if score1 < 10 and score2 < 10:
+            if len(ballManager.balls) == 0:
+                service = True
+
             if sphere.position.z <= player1.position.z - 7:
                 score2 += 1
                 ballManager.removeBall(sphere)
@@ -171,8 +177,9 @@ if __name__ == "__main__":
                 sphere.setRotationY(time * 50.0)
                 sphere.setRotationX(time * 60.0)
                 sphere.setRotationZ(time * 40.0)
-                if mysteryBox.isCollision(sphere):
-                    mysteryBox.onHit(sphere)
+                for mysteryBox in mysteryBoxes:
+                    if mysteryBox.isCollision(sphere):
+                        mysteryBox.onHit(sphere)
 
         else:
             for ball in ballManager.balls:
