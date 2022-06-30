@@ -35,23 +35,24 @@ if __name__ == "__main__":
     #infoObject = pygame.display.Info()
     #width, height = infoObject.current_w, infoObject.current_h
     pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
-  #  pygame.display.toggle_fullscreen()
+   ###### pygame.display.toggle_fullscreen()
 
     scene = Scene()
 
     DOES_INTERLACE = False
 
+    ####### BALL MANAGER
     ballManager = BallManager([])
 
-    ##### Déclaration des joueurs
+    ######### DECLARATION DES JOUEURS
 
     keyboard = Keyboard()
     nb_joystick = pygame.joystick.get_count()
     pygame.joystick.init()
-    if nb_joystick > 0:
+    if nb_joystick > 0 :
         joystick = []
         gamepad = []
-        for i in range(nb_joystick):
+        for i in range (nb_joystick) :
             joystick += [pygame.joystick.Joystick(i)]
             gamepad += [GamePad(i)]
         player1 = Player(False, gamepad[0], scene, ballManager)
@@ -62,36 +63,35 @@ if __name__ == "__main__":
     else:
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
+
+    player1.setPosition(0, 0, -12)
+    player2.setPosition(0, 0, 12)
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 18, player1, player2, scene)
+    battlefield = Battlefield("battly", 10, 6, 22, player1, player2, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
-    sphereTex = Texture("./assets/space.png")
+    sphereTex = Texture("./assets/normaltex.jpeg")
+
 
 
     mysteryBox = MysteryBox("boxy", battlefield, scene)
     for i in range(1):
-        sphere = Projectile("sphery", False, 1, battlefield, 'reflect',ballManager, scene)
+        sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
-        sphere.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
+        sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
         sphereMat = TextureMaterial(sphereTex)
         sphere.setMaterial(sphereMat)
         ballManager.addBall(sphere)
+        sphere.setCurrentPlayer(player1)
     
     rect = Rectangle('rect', True, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
-
-    yellow_cube = Cube('yellow_cube', True, scene)
-    yellow_cube.setRotationY(45)
-    
-    cubeMat = TextureMaterial(Texture("./assets/tennis.png"))
-    yellow_cube.setMaterial(cubeMat)
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
@@ -107,13 +107,9 @@ if __name__ == "__main__":
     ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
     ident_matrix = np.identity(4, dtype=np.float32)
 
-    ######### DECLARATION DES JOUEURS
+  
 
-    player1.setPosition(0, 0, -12)
-    player2.setPosition(0, 0, 12)
-
-    end1 = Cube("end1", False, scene)
-    end1.setPosition(0, 0, -15)
+    #end1 = Cube("end1", False, scene)
 
     fbo_width = int(width/2)
     fbo_height = int(height/2)
@@ -125,13 +121,11 @@ if __name__ == "__main__":
     ######### DECLARATION DES VARIABLES DE LA BOUCLE
 
     getTicksLastFrame = 0.0
-    x,z = 0.0, 0.0
-    circleRadius = 2.5
 
     ######### GAME LOOP
     
     running = True
-    service = True
+    
     score1 = 0
     score2 = 0
     while running:
@@ -143,35 +137,42 @@ if __name__ == "__main__":
 
         player1.update(deltaTime)
         player2.update(deltaTime)
+
+        #end1.setPosition(player2.batte.end1[0], player2.batte.end1[1], player2.batte.end1[2])
+
+
+        ###### SCORE UPDATE
+
+        if score1 == 10 :
+            print("Player 1 wins")
         
-        yellow_cube.addRotationY(deltaTime * 70.0).addRotationX(deltaTime * 80.0)
+        if score2 == 10 :
+            print("Player 2 wins")
 
-        rotationSpeed = 1
-        x = math.cos(time * rotationSpeed) * circleRadius
-        z = math.sin(time * rotationSpeed) * circleRadius
+        service = False
 
-        yellow_cube.setPosition(x, 0, z)
+        if sphere.position.z <= player1.batte.position.z:
+            score2 += 1
+          # Il faut pouvoir supprimer la balle ici
+          #  ballManager.removeBall(sphere)
+            service = True
+
+        if sphere.position.z >= player2.batte.position.z:
+            score1 += 1
+        #    ballManager.removeBall(sphere)
+            service = True
+
+        if service == True :
+        # faut pouvoir en relancer une ici, donc faudrait créer un service
+            ballManager.addBall(sphere)
 
         for sphere in ballManager.balls:
-            sphere.update()
+        #    sphere.update()
             sphere.setRotationY(time * 50.0)
             sphere.setRotationX(time * 60.0)
             sphere.setRotationZ(time * 40.0)
             if mysteryBox.isCollision(sphere):
                 mysteryBox.onHit(sphere)
-
-
-        if sphere.getPosition()[2] <= player1.batte.getPosition()[2]:
-            score2 += 1
-            ballManager.removeBall(sphere)
-            ballManager.addBall(sphere)
-            service = True
-        if not service and sphere.getPosition()[2] >= player2.batte.getPosition()[2]:
-            score1 += 1
-            ballManager.removeBall(sphere)
-            ballManager.addBall(sphere)
-            service = True
-
 
             
         """for bomb in spheres:
@@ -246,59 +247,65 @@ if __name__ == "__main__":
         ####### GESTION DES ENTREES CLAVIER
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_z]:
-            circleRadius += 0.05
-        if keys[pygame.K_s]:
-            circleRadius -= 0.05
-        if keys[pygame.K_q]:
+        if keys[pygame.K_x]:
             player1.setEyeDistance(player1.eyeDistance + 0.001)
             player2.setEyeDistance(player2.eyeDistance + 0.001)
-        if keys[pygame.K_d]:
+        if keys[pygame.K_c]:
             player1.setEyeDistance(player1.eyeDistance - 0.001)
             player2.setEyeDistance(player2.eyeDistance - 0.001)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    player1.batte.strike()
-
-
-                    
-                if event.key == pygame.K_z:
-                    player2.batte.strike()
-
-                    
-
-
-                print(score1, score2)
+            #if event.type == pygame.KEYDOWN:
+        keys = pygame.key.get_pressed()
+        if player1.getGamepad() == None :
+            if keys[pygame.K_z]:
+                player1.batte.strike()
+            if keys[pygame.K_q]:
+                player1.batte.addRotationZ(1)
+            if keys[pygame.K_d]:
+                player1.batte.addRotationZ(-1)
+        if player2.getGamepad() == None :
+            if keys[pygame.K_UP]:
+                player2.batte.strike()
+            if keys[pygame.K_LEFT]:
+                player2.batte.addRotationZ(-1)
+            if keys[pygame.K_RIGHT]:
+                player2.batte.addRotationZ(1)
 
             if event.type == pygame.MOUSEMOTION:
                 x, y = event.rel
                 if any(event.buttons):
                     model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
-            # pour tester si le programme detecte les appuie sur les boutons
-            if event.type == pygame.JOYBUTTONDOWN:
-                print("Joystick button pressed.")
-                if player1.getGamepad() != None :
-                    player1.batte.strike()
-                if player2.getGamepad() != None :
-                    player2.batte.strike()
-        
-        if score1==10 :
-            print("Player 1 winner")
 
-        if score2==10 :
-            print("Player 2 winner")
+
+            # pour tester si le programme detecte les appuie sur les boutons
+        for i in range (nb_joystick) :
+            gamepad[i].update()
+            if gamepad[i].isBattePressed():
+                if i == 0 :
+                    player1.batte.strike()
+                else :
+                    player2.batte.strike()
+            if gamepad[i].turnBatteLeft() :
+
+                if i == 0 :
+                    player1.batte.addRotationZ(1)
+                if i == 1 :
+                    player2.batte.addRotationZ(1)
+            if gamepad[i].turnBatteRight() :
+                if i == 0 :
+                    player1.batte.addRotationZ(-1)
+                if i == 1 :
+                    player2.batte.addRotationZ(-1)
         
-        
-        keyboard.update()
+        ''' keyboard.update()
         if keyboard.isBattePressed():
             print("batty")
         if nb_joystick > 0 :
             for i in range (nb_joystick) :
                 gamepad[i].update()
                 if gamepad[i].isBattePressed():
-                    print("joybatty")
-        
+                    print("joybatty")'''
