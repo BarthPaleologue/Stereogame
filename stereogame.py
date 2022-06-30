@@ -80,14 +80,13 @@ if __name__ == "__main__":
 
 
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(1):
-        sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
-        sphere.setPosition(-2, 0, 0)
-        sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
-        sphereMat = TextureMaterial(sphereTex)
-        sphere.setMaterial(sphereMat)
-        ballManager.addBall(sphere)
-        sphere.setCurrentPlayer(player1)
+
+    sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
+    sphere.setPosition(-2, 0, 0)
+    sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 2.0)
+    sphereMat = TextureMaterial(sphereTex)
+    sphere.setMaterial(sphereMat)
+    sphere.setCurrentPlayer(player1)
     
     rect = Rectangle('rect', False, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
@@ -155,21 +154,22 @@ if __name__ == "__main__":
 
         if sphere.position.z <= player1.batte.position.z:
             score2 += 1
-          # Il faut pouvoir supprimer la balle ici
-          #  ballManager.removeBall(sphere)
+            ballManager.removeBall(sphere)
             service = True
-
-        if sphere.position.z >= player2.batte.position.z:
+        elif sphere.position.z >= player2.batte.position.z:
             score1 += 1
-        #    ballManager.removeBall(sphere)
+            ballManager.removeBall(sphere)
             service = True
 
-        if service == True :
-        # faut pouvoir en relancer une ici, donc faudrait créer un service
-            ballManager.addBall(sphere)
+        if service == True:
+            # faut pouvoir en relancer une ici, donc faudrait créer un service
+            sphere.setPosition(-2, 0, 0)
+            sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 2.0)
+            sphereMat = TextureMaterial(sphereTex)
+            sphere.setMaterial(sphereMat)
 
         for sphere in ballManager.balls:
-        #    sphere.update()
+            sphere.update(deltaTime)
             sphere.setRotationY(time * 50.0)
             sphere.setRotationX(time * 60.0)
             sphere.setRotationZ(time * 40.0)
