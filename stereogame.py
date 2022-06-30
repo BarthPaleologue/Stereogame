@@ -159,6 +159,9 @@ if __name__ == "__main__":
             #score1, score2 = 0, 0
 
         if score1 < 10 and score2 < 10:
+            if len(ballManager.balls) == 0:
+                service = True
+
 
             if sphere.position.z <= player1.position.z - 7:
                 score2 += 1
@@ -167,12 +170,20 @@ if __name__ == "__main__":
                 score1 += 1
                 service = True
 
-            player1.batte.isSuperBat = False
-            player2.batte.isSuperBat = False
+            if service == True:
+                # faut pouvoir en relancer une ici, donc faudrait créer un service
+                sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
+                sphere.setPosition(0, 1, 0)
+                sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
+                sphereMat = TextureMaterial(sphereTex)
+                sphere.setMaterial(sphereMat)
 
-            battlefield.areViewsSwitched = False
+                player1.batte.isSuperBat = False
+                player2.batte.isSuperBat = False
 
-            service = False
+                battlefield.areViewsSwitched = False
+
+                service = False
 
             for sphere in ballManager.balls:
                 sphere.update(deltaTime)
@@ -182,9 +193,10 @@ if __name__ == "__main__":
                 for mysteryBox in mysteryBoxes:
                     if mysteryBox.isCollision(sphere):
                         mysteryBox.onHit(sphere)
-            else:
-                for ball in ballManager.balls:
-                    ballManager.removeBall(ball)
+
+        else:
+            for ball in ballManager.balls:
+                ballManager.removeBall(ball)
 
             #### wait until you want to restart the game
 
