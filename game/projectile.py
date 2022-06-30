@@ -48,13 +48,17 @@ class Projectile(Sphere):
                     if where == 'front':
                         if player1.position.z > 0: # player 1 wins
                             player1.score+=1
+                            self.ballmanager.removeBall(self)
                         if player1.position.z < 0: # player 2 wins
                             player2.score+=1
+                            self.ballmanager.removeBall(self)
                     elif where == 'back':
                         if player1.position.z < 0: # player 1 wins
                             player1.score+=1
+                            self.ballmanager.removeBall(self)
                         if player1.position.z > 0: # player 2 wins
                             player2.score+=1
+                            self.ballmanager.removeBall(self)
             
                     else:
                         normVect = self.battlefield.normalVector(where)
@@ -69,8 +73,10 @@ class Projectile(Sphere):
                     if where == 'front':
                         if player1.position.z > 0: # player 1 wins
                             player1.score+=1
+                            self.ballmanager.removeBall(self)
                         if player1.position.z < 0: # player 2 wins
                             player2.score+=1
+                            self.ballmanager.removeBall(self)
                     elif where == 'back':
                         if player1.position.z < 0: # player 1 wins
                             player1.score+=1
