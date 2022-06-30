@@ -31,6 +31,7 @@ class Projectile(Sphere):
         def update(self, deltaTime):
             player1 = self.battlefield.player1
             player2 = self.battlefield.player2
+            comptSwitch = 0
             comptSuper1 = 0
             comptSuper2 = 0
             comptEye1 = 0
@@ -48,13 +49,17 @@ class Projectile(Sphere):
                     if where == 'front':
                         if player1.position.z > 0: # player 1 wins
                             player1.score+=1
+                            self.ballmanager.removeBall(self)
                         if player1.position.z < 0: # player 2 wins
                             player2.score+=1
+                            self.ballmanager.removeBall(self)
                     elif where == 'back':
                         if player1.position.z < 0: # player 1 wins
                             player1.score+=1
+                            self.ballmanager.removeBall(self)
                         if player1.position.z > 0: # player 2 wins
                             player2.score+=1
+                            self.ballmanager.removeBall(self)
             
                     else:
                         normVect = self.battlefield.normalVector(where)
@@ -69,8 +74,10 @@ class Projectile(Sphere):
                     if where == 'front':
                         if player1.position.z > 0: # player 1 wins
                             player1.score+=1
+                            self.ballmanager.removeBall(self)
                         if player1.position.z < 0: # player 2 wins
                             player2.score+=1
+                            self.ballmanager.removeBall(self)
                     elif where == 'back':
                         if player1.position.z < 0: # player 1 wins
                             player1.score+=1
@@ -129,7 +136,7 @@ class Projectile(Sphere):
                     player2.batte.isSuperBat = False
                     comptSuper2 = 0
 
-            ### increasing eye distance effect
+            #### increasing eye distance effect
 
             if player1.eyeDistance > player1.defaultEyeDistance:
                 # we applied the effect of increasing the eye distance
@@ -144,7 +151,7 @@ class Projectile(Sphere):
                     player2.eyeDistance = player2.defaultEyeDistance
                     comptEye2 = 0
             
-            ## decreasing eye distance effect
+            #### decreasing eye distance effect
 
             if player1.eyeDistance < player1.defaultEyeDistance:
                 # we applied the effect of increasing the eye distance
@@ -152,6 +159,7 @@ class Projectile(Sphere):
                 if comptEye1 >=3:
                     player1.eyeDistance = player1.defaultEyeDistance
                     comptEye1 = 0
+
             if player2.eyeDistance < player2.defaultEyeDistance:
                 # we applied the effect of increasing the eye distance
                 comptEye2 += deltaTime
@@ -159,6 +167,12 @@ class Projectile(Sphere):
                     player2.eyeDistance = player2.defaultEyeDistance
                     comptEye2 = 0
 
+            #### switch views effect
+
+            if self.battlefield.areViewsSwitched:
+                comptSwitch += deltaTime
+                if comptSwitch >= 3:
+                    self.battlefield.areViewsSwitched = False
 
 
             self.translate(self.velocity.x, self.velocity.y, self.velocity.z)
@@ -243,6 +257,8 @@ class Projectile(Sphere):
                         self.battlefield.player2.decreaseEyeDistance(0.1)
                     else:
                         self.battlefield.player1.decreaseEyeDistance(0.1)
+            elif effect == 'switchViews':
+                self.battlefield.areViewsSwitched = True
 
         def explode(self):
             crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
