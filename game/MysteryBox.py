@@ -2,7 +2,9 @@ from feather.materials.textureMaterial import TextureMaterial
 from feather.shapes.cube import Cube
 from feather.texture import Texture
 import random
-allEffects = {1:'disparition',2:'teleport',3:'bomb',4:'x3',5:'superbat', 6:'inverseur'}
+
+allEffects = {1:'disparition',2:'teleport',3:'bomb',4:'x3',5:'superbat', 6:'increaseEyeDistance', 7:'decreaseEyeDistance', 8:'switchViews'}
+
 class MysteryBox(Cube):
     
 
@@ -29,14 +31,7 @@ class MysteryBox(Cube):
     
     def onHit(self,ball):
         x,y,z = self.battlex, self.battley, self.battlez
-        self.setPosition(random.uniform(-x+1, x-1), random.uniform(-y + 2, y-2), random.uniform(-3, 3))
-        #effect = 6
-        effect = random.randint(1,4)
+        self.setPosition(random.uniform(-x+2, x-2), random.uniform(-y + 2, y-2), random.uniform(-3, 3))
+        effect = random.randint(1,7)
         ball.applyEffect(allEffects[effect])
-
-
-
-
-
-
 

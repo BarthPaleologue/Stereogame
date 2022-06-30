@@ -26,7 +26,7 @@ class Projectile(Sphere):
             self.currentPlayer = player
 
 
-        def update(self):
+        def update(self, deltaTime):
             r = self.getRadius()
             position = self.getPosition()
             x,y,z = position.x, position.y, position.z
@@ -117,12 +117,18 @@ class Projectile(Sphere):
             elif effect == 'superbat':
                 if self.currentPlayer != None:
                     self.currentPlayer.batte.isSuperBat = True
-            elif effect == 'inverseur':
+            elif effect == 'increaseEyeDistance':
                 if self.currentPlayer != None:
                     if self.currentPlayer == self.battlefield.player1:
-                        self.battlefield.player2.invertEyes()
+                        self.battlefield.player2.increaseEyeDistance(0.1)
                     else:
-                        self.battlefield.player1.invertEyes()
+                        self.battlefield.player1.increaseEyeDistance(0.1)
+            elif effect == 'deceaseEyeDistance':
+                if self.currentPlayer != None:
+                    if self.currentPlayer == self.battlefield.player1:
+                        self.battlefield.player2.increaseEyeDistance(0.1)
+                    else:
+                        self.battlefield.player1.increaseEyeDistance(0.1)
 
         def explode(self):
             crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
