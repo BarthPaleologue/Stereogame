@@ -87,8 +87,8 @@ class Projectile(Sphere):
 
         def applyEffect(self, effect):
             if effect == 'disparition':
-                ballMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
-                self.setMaterial(ballMat)
+                #ballMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
+                self.setMaterial(self.battlefield.material)
                 #self.update()
             elif effect == 'teleport':
                 ballMat = TextureMaterial(Texture("./assets/Galaxy512.jpg"))

@@ -16,7 +16,7 @@ class Player(Transform):
         Transform.__init__(self)
         self.batte = Bat("./assets/baseball/batB.obj", scene)
 
-        self.eyeDistance = 0.0069
+        self.eyeDistance = 0.0089
 
         self.leftEye = Eye()  ### Initialiser l'oeil gauche ici
         self.leftEye.setPosition(-self.eyeDistance / 2, 0, 0)
@@ -111,14 +111,26 @@ class Player(Transform):
 
         return super().setPosition(x, y, z)
 
+    def increaseEyeDistance(self, amount: float):
+        self.eyeDistance += amount
+        self.setEyeDistance(self.eyeDistance)
+
+    def decreaseEyeDistance(self, amount: float):
+        self.eyeDistance -= amount
+        self.setEyeDistance(self.eyeDistance)
+
     def setEyesTarget(self, x, y, z):
         self.rightEye.setTarget(Vector3(x, y, z))
         self.leftEye.setTarget(Vector3(x, y, z))
 
     def setEyeDistance(self, eyeDistance):
         self.eyeDistance = eyeDistance
-        self.rightEye.setPosition(self.position.x - self.eyeDistance / 2, self.position.y, self.position.z)
-        self.leftEye.setPosition(self.position.x + self.eyeDistance / 2, self.position.y, self.position.z)
+        if not self.flip:
+            self.rightEye.setPosition(self.position.x - self.eyeDistance / 2, self.position.y, self.position.z)
+            self.leftEye.setPosition(self.position.x + self.eyeDistance / 2, self.position.y, self.position.z)
+        else:
+            self.rightEye.setPosition(self.position.x + self.eyeDistance / 2, self.position.y, self.position.z)
+            self.leftEye.setPosition(self.position.x - self.eyeDistance / 2, self.position.y, self.position.z)
 
     def invertEyes(self):
         self.rightEye, self.leftEye = self.leftEye, self.rightEye
