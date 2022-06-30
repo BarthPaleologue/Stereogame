@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -145,32 +145,26 @@ if __name__ == "__main__":
         ###### SCORE UPDATE
 
         score1Texture = TextTexture(f"{score1}", (0, 0, 0), (255, 255, 255))
-        if score1 == 10 :
+        if score1 == 10:
             print("Player 1 wins")
             score1Texture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))
             score2Texture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))
-            score1, score2 = 0, 0
+            #score1, score2 = 0, 0
         
         score2Texture = TextTexture(f"{score2}", (0, 0, 0), (255, 255, 255))
-        if score2 == 10 :
+        if score2 == 10:
             print("Player 2 wins")
             score1Texture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))
             score2Texture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))
-            score1, score2 = 0, 0
-        service = False
+            #score1, score2 = 0, 0
 
-        if sphere.position.z <= player1.position.z - 7:
-            score2 += 1
-            ballManager.removeBall(sphere)
-            service = True
-        elif sphere.position.z >= player2.position.z + 7:
-            score1 += 1
-            ballManager.removeBall(sphere)
-            service = True
+        if score1 < 10 and score2 < 10:
 
             if sphere.position.z <= player1.position.z - 7:
+                score2 += 1
                 service = True
             elif sphere.position.z >= player2.position.z + 7:
+                score1 += 1
                 service = True
 
             player1.batte.isSuperBat = False
@@ -188,10 +182,9 @@ if __name__ == "__main__":
                 for mysteryBox in mysteryBoxes:
                     if mysteryBox.isCollision(sphere):
                         mysteryBox.onHit(sphere)
-
-        else:
-            for ball in ballManager.balls:
-                ballManager.removeBall(ball)
+            else:
+                for ball in ballManager.balls:
+                    ballManager.removeBall(ball)
 
             #### wait until you want to restart the game
 
