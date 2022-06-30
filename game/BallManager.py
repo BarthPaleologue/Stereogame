@@ -6,11 +6,11 @@ class BallManager:
     def getBalls(self):
         return self.balls
         
-    def addBall(self,ball):
+    def addBall(self, ball):
         self.balls.append(ball) 
 
-    def removeBall(self,ball):
-        ball.destroy()
+    def removeBall(self, ball):
         self.balls.remove(ball)
+        ball.destroy()
 
           

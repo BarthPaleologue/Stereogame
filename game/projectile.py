@@ -20,6 +20,7 @@ class Projectile(Sphere):
             self.radius = radius
             self.battlefield = battlefield
             self.ballmanager = ballmanager
+            self.ballmanager.addBall(self)
             self.setScaling(radius, radius, radius)
             self.currentPlayer = None
 
