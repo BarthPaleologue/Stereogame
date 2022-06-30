@@ -66,8 +66,8 @@ if __name__ == "__main__":
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
 
-    player1.setPosition(0, 0, -12)
-    player2.setPosition(0, 0, 12)
+    player1.setPosition(0, 0, -18)
+    player2.setPosition(0, 0, 18)
     
     ######## DECLARATION DES SHAPES
 
@@ -77,16 +77,13 @@ if __name__ == "__main__":
 
     sphereTex = Texture("./assets/normaltex.jpeg")
 
-
-
     mysteryBox = MysteryBox("boxy", battlefield, scene)
 
     sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
-    sphere.setPosition(-2, 0, 0)
-    sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 2.0)
+    sphere.setPosition(0, 1, 0)
+    sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
     sphereMat = TextureMaterial(sphereTex)
     sphere.setMaterial(sphereMat)
-    sphere.setCurrentPlayer(player1)
     
     rect = Rectangle('rect', False, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
@@ -108,8 +105,6 @@ if __name__ == "__main__":
     ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
     ident_matrix = np.identity(4, dtype=np.float32)
 
-  
-
     #end1 = Cube("end1", False, scene)
 
     fbo_width = int(width/2)
@@ -126,6 +121,7 @@ if __name__ == "__main__":
     ######### GAME LOOP
     
     running = True
+    service = True
     
     score1 = 0
     score2 = 0
@@ -144,39 +140,47 @@ if __name__ == "__main__":
 
         ###### SCORE UPDATE
 
-        if score1 == 10 :
+        if score1 >= 10:
             print("Player 1 wins")
         
-        if score2 == 10 :
+        if score2 >= 10:
             print("Player 2 wins")
 
-        service = False
+        if score1 < 10 and score2 < 10:
+            if sphere.position.z <= player1.position.z - 7:
+                score2 += 1
+                ballManager.removeBall(sphere)
+                service = True
+            elif sphere.position.z >= player2.position.z + 7:
+                score1 += 1
+                ballManager.removeBall(sphere)
+                service = True
 
-        if sphere.position.z <= player1.batte.position.z:
-            score2 += 1
-            ballManager.removeBall(sphere)
-            service = True
-        elif sphere.position.z >= player2.batte.position.z:
-            score1 += 1
-            ballManager.removeBall(sphere)
-            service = True
+            if service == True:
+                # faut pouvoir en relancer une ici, donc faudrait créer un service
+                sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
+                sphere.setPosition(0, 1, 0)
+                sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
+                sphereMat = TextureMaterial(sphereTex)
+                sphere.setMaterial(sphereMat)
 
-        if service == True:
-            # faut pouvoir en relancer une ici, donc faudrait créer un service
-            sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
-            sphere.setPosition(0, 1, 0)
-            sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 2.0)
-            sphereMat = TextureMaterial(sphereTex)
-            sphere.setMaterial(sphereMat)
+                service = False
 
-        for sphere in ballManager.balls:
-            sphere.update(deltaTime)
-            sphere.setRotationY(time * 50.0)
-            sphere.setRotationX(time * 60.0)
-            sphere.setRotationZ(time * 40.0)
-            if mysteryBox.isCollision(sphere):
-                mysteryBox.onHit(sphere)
+            for sphere in ballManager.balls:
+                sphere.update(deltaTime)
+                sphere.setRotationY(time * 50.0)
+                sphere.setRotationX(time * 60.0)
+                sphere.setRotationZ(time * 40.0)
+                if mysteryBox.isCollision(sphere):
+                    mysteryBox.onHit(sphere)
 
+        else:
+            for ball in ballManager.balls:
+                ballManager.removeBall(ball)
+
+            #### wait until you want to restart the game
+
+        glEnable(GL_BLEND)
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 

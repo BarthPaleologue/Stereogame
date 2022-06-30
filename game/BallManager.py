@@ -10,7 +10,9 @@ class BallManager:
         self.balls.append(ball) 
 
     def removeBall(self, ball):
-        self.balls.remove(ball)
-        ball.destroy()
+        try:
+            self.balls.remove(ball)
+        finally:
+            ball.destroy()
 
           

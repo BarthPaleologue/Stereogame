@@ -130,7 +130,7 @@ class Player(Transform):
         self.rightEye.setTarget(Vector3(x, y, z))
         self.leftEye.setTarget(Vector3(x, y, z))
 
-    def setEyeDistance(self, eyeDistance):
+    def setEyeDistance(self, eyeDistance: float):
         self.eyeDistance = eyeDistance
         if not self.flip:
             self.rightEye.setPosition(self.position.x - self.eyeDistance / 2, self.position.y, self.position.z)
@@ -145,8 +145,8 @@ class Player(Transform):
     def update(self, deltaTime: float):
         self.batte.update(deltaTime)
 
-        relativePosition1 = np.array([-1, -6, 0])
-        relativePosition2 = np.array([-6, -2, 0])
+        relativePosition1 = np.array([-1.0, -6.0, 0.0])
+        relativePosition2 = np.array([-6.0, -2.0, 0.0])
 
         if self.batte.isSuperBat:
             relativePosition1 *= 1.5
