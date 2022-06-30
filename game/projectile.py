@@ -109,6 +109,12 @@ class Projectile(Sphere):
                     if sphereToCylinder(self,player1.batte):
                         self.explode()
                         player2.score1+=1
+                    else:
+                        normVect = self.battlefield.normalVector(where)
+                        oldVelocity = self.getVelocity()
+                        newVelocity = reflection(oldVelocity, normVect)
+
+                        self.setVelocity(newVelocity.x, newVelocity.y, newVelocity.z)
 
             ## superbat effect
             if player1.batte.isSuperBat:
