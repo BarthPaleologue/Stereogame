@@ -25,7 +25,10 @@ class MysteryBox(Cube):
         x,y,z = ballposition.x, ballposition.y, ballposition.z
         position = self.getPosition()
         bx, by, bz = position.x,position.y,position.z
-        if abs(bx-x)<= 1.5 and abs(by-y)<= 1.5 and abs(bz-z)<= 1.5:
+
+        collisionRadius = 1.5
+
+        if abs(bx-x)<= collisionRadius and abs(by-y)<= collisionRadius and abs(bz-z)<= collisionRadius:
             return True
         return False
     
