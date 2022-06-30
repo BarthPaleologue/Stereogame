@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(1):
+    for i in range(10):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
@@ -228,6 +228,10 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.MOUSEMOTION:
+                x, y = event.rel
+                if any(event.buttons):
+                    model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
             #if event.type == pygame.KEYDOWN:
         keys = pygame.key.get_pressed()
         if player1.getGamepad() == None :
@@ -245,10 +249,7 @@ if __name__ == "__main__":
             if keys[pygame.K_RIGHT]:
                 player2.batte.addRotationZ(1)
 
-            if event.type == pygame.MOUSEMOTION:
-                x, y = event.rel
-                if any(event.buttons):
-                    model_matrix = model_matrix.dot(rotate(y, -1, 0, 0)).dot(rotate(x, 0, -1, 0))
+
 
 
             # pour tester si le programme detecte les appuie sur les boutons

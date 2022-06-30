@@ -12,7 +12,11 @@ class MysteryBox(Cube):
         self.battlex, self.battley, self.battlez = battlefield.getSizex(), battlefield.getSizey(), battlefield.getSizez()
         boxMat = TextureMaterial(Texture("./assets/question.jpeg"))
         self.setMaterial(boxMat)
-        self.setPosition(random.uniform(-self.battlex,self.battlex),random.uniform(-self.battley,self.battley),random.uniform(-self.battlez,self.battlez))
+        self.setPosition(
+            random.uniform(-self.battlex / 1.5, self.battlex / 1.5),
+            random.uniform(-self.battley / 1.5, self.battley / 1.5),
+            random.uniform(-self.battlez / 1.5, self.battlez / 1.5)
+        )
 
     def isCollision(self, ball):
         ballposition = ball.getPosition()

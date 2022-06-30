@@ -40,16 +40,38 @@ if __name__ == "__main__":
     scene = Scene()
 
     DOES_INTERLACE = False
+
+    ballManager = BallManager([])
+
+    ##### Déclaration des joueurs
+
+    keyboard = Keyboard()
+    nb_joystick = pygame.joystick.get_count()
+    pygame.joystick.init()
+    if nb_joystick > 0:
+        joystick = []
+        gamepad = []
+        for i in range(nb_joystick):
+            joystick += [pygame.joystick.Joystick(i)]
+            gamepad += [GamePad(i)]
+        player1 = Player(False, gamepad[0], scene, ballManager)
+        if nb_joystick == 2:
+            player2 = Player(True, gamepad[1], scene, ballManager)
+        else:
+            player2 = Player(False, None, scene, ballManager)
+    else:
+        player1 = Player(False, None, scene, ballManager)
+        player2 = Player(True, None, scene, ballManager)
     
     ######## DECLARATION DES SHAPES
 
-    battlefield = Battlefield("battly", 10, 6, 18, scene)
+    battlefield = Battlefield("battly", 10, 6, 18, player1, player2, scene)
     battleMat2 = ShaderMaterial("./game/battlefieldMat/vertex.glsl", "./game/battlefieldMat/fragment.glsl")
     battlefield.setMaterial(battleMat2)
 
     sphereTex = Texture("./assets/space.png")
 
-    ballManager = BallManager([])
+
     mysteryBox = MysteryBox("boxy", battlefield, scene)
     for i in range(1):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect',ballManager, scene)
@@ -86,25 +108,6 @@ if __name__ == "__main__":
     ident_matrix = np.identity(4, dtype=np.float32)
 
     ######### DECLARATION DES JOUEURS
-
-    keyboard = Keyboard()
-    nb_joystick = pygame.joystick.get_count()
-    pygame.joystick.init()
-    if nb_joystick > 0 :
-        joystick = []
-        gamepad = []
-        for i in range (nb_joystick) :
-            joystick += [pygame.joystick.Joystick(i)]
-            gamepad += [GamePad(i)]
-        player1 = Player(False, gamepad[0], scene, ballManager)
-        if nb_joystick == 2 :
-            player2 = Player(True, gamepad[1], scene, ballManager)
-        else :
-            player2 = Player(False, None, scene, ballManager)
-    else :
-        player1 = Player(False, None, scene, ballManager)
-        player2 = Player(True, None, scene, ballManager)
-
 
     player1.setPosition(0, 0, -12)
     player2.setPosition(0, 0, 12)
