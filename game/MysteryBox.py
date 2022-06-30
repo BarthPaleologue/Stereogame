@@ -1,7 +1,7 @@
 from feather.materials.textureMaterial import TextureMaterial
 from feather.shapes.cube import Cube
 from feather.texture import Texture
-from random import random
+import random
 
 allEffects = {1:'disparition',2:'teleport',3:'bomb',4:'x3',5:'superbat', 6:'increaseEyeDistance', 7:'decreaseEyeDistance', 8:'switchViews'}
 
