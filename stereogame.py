@@ -163,7 +163,8 @@ if __name__ == "__main__":
 
         if service == True:
             # faut pouvoir en relancer une ici, donc faudrait créer un service
-            sphere.setPosition(-2, 0, 0)
+            sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
+            sphere.setPosition(0, 1, 0)
             sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 2.0)
             sphereMat = TextureMaterial(sphereTex)
             sphere.setMaterial(sphereMat)
@@ -250,9 +251,6 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            #if event.type == pygame.KEYDOWN:
-            if event.type == pygame.JOYBALLMOTION :
-                print('ok')
         keys = pygame.key.get_pressed()
         if player1.getGamepad() == None :
             if keys[pygame.K_z]:
@@ -294,8 +292,8 @@ if __name__ == "__main__":
                     player1.batte.addRotationZ(-1.5)
                 if i == 1 :
                     player2.batte.addRotationZ(-1.5)
-        player1.batte.translate(-joystick[0].get_axis(0)*0.1, 0, 0)
-        player2.batte.translate(-joystick[1].get_axis(0)*0.1, 0, 0)
+        #player1.batte.translate(-joystick[0].get_axis(0)*0.1, 0, 0)
+        #player2.batte.translate(-joystick[1].get_axis(0)*0.1, 0, 0)
         
         ''' keyboard.update()
         if keyboard.isBattePressed():
