@@ -66,8 +66,8 @@ if __name__ == "__main__":
         player1 = Player(False, None, scene, ballManager)
         player2 = Player(True, None, scene, ballManager)
 
-    player1.setPosition(0, 0, -18)
-    player2.setPosition(0, 0, 18)
+    player1.setPosition(0, 0, -17)
+    player2.setPosition(0, 0, 17)
     
     ######## DECLARATION DES SHAPES
 
