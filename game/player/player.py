@@ -16,7 +16,8 @@ class Player(Transform):
         Transform.__init__(self)
         self.batte = Bat("./assets/baseball/batB.obj", scene)
 
-        self.eyeDistance = 0.06
+        self.defaultEyeDistance = 0.06
+        self.eyeDistance = self.defaultEyeDistance
 
         self.leftEye = Eye()  ### Initialiser l'oeil gauche ici
         self.leftEye.setPosition(-self.eyeDistance / 2, 0, 0)
