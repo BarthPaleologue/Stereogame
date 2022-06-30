@@ -1,6 +1,8 @@
 from random import random
 from OpenGL.GL import *
 import numpy as np
+
+from feather.textTexture import TextTexture
 from game.projectile import Projectile
 
 from game.BallManager import BallManager
@@ -39,7 +41,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -75,9 +77,10 @@ if __name__ == "__main__":
 
     sphereTex = Texture("./assets/normaltex.jpeg")
 
-    
+
+
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(5):
+    for i in range(1):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
@@ -86,14 +89,14 @@ if __name__ == "__main__":
         ballManager.addBall(sphere)
         sphere.setCurrentPlayer(player1)
     
-    rect = Rectangle('rect', True, scene)
+    rect = Rectangle('rect', False, scene)
     rect.setPosition(-5, 0, 0).setScaling(0.5, 0.5, 1)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
     blackTex = Texture("./assets/black.jpg")
-    numTextures = [Texture(f"./assets/numbers/{i}.png") for i in range(8)]
+    numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
     
     ######### DECLARATION DE L'ECRAN
 
@@ -106,7 +109,7 @@ if __name__ == "__main__":
     ortho_mx = ortho(-1, 1, 1, -1, -50, 50)
     ident_matrix = np.identity(4, dtype=np.float32)
 
-   
+  
 
     #end1 = Cube("end1", False, scene)
 
@@ -124,6 +127,9 @@ if __name__ == "__main__":
     ######### GAME LOOP
     
     running = True
+    
+    score1 = 0
+    score2 = 0
     while running:
         time = pygame.time.get_ticks() / 1000.0
         deltaTime = time - getTicksLastFrame
@@ -136,23 +142,39 @@ if __name__ == "__main__":
 
         #end1.setPosition(player2.batte.end1[0], player2.batte.end1[1], player2.batte.end1[2])
 
+
+        ###### SCORE UPDATE
+
+        if score1 == 10 :
+            print("Player 1 wins")
+        
+        if score2 == 10 :
+            print("Player 2 wins")
+
+        service = False
+
+        if sphere.position.z <= player1.batte.position.z:
+            score2 += 1
+          # Il faut pouvoir supprimer la balle ici
+          #  ballManager.removeBall(sphere)
+            service = True
+
+        if sphere.position.z >= player2.batte.position.z:
+            score1 += 1
+        #    ballManager.removeBall(sphere)
+            service = True
+
+        if service == True :
+        # faut pouvoir en relancer une ici, donc faudrait créer un service
+            ballManager.addBall(sphere)
+
         for sphere in ballManager.balls:
-            sphere.update()
+        #    sphere.update()
             sphere.setRotationY(time * 50.0)
             sphere.setRotationX(time * 60.0)
             sphere.setRotationZ(time * 40.0)
             if mysteryBox.isCollision(sphere):
                 mysteryBox.onHit(sphere)
-
-            
-        """for bomb in spheres:
-            if battlefield.isCollision(bomb.getRadius(), bomb.getPosition()):
-                bomb.explode()
-            bomb.update()
-            bomb.setRotationY(time * 50.0)
-            bomb.setRotationX(time * 60.0)
-            bomb.setRotationZ(time * 40.0)"""
-            
 
 
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER

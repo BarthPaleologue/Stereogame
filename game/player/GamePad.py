@@ -31,9 +31,6 @@ class GamePad(Input):
     def turnBatteRight(self) :
         return self.stateButtons[buttons['R1']] or self.stateButtons[buttons['R2']]
 
-    def translateLeft(self) :
-        return self.stateButtons[buttons['JOY1']]
-
     def getEffectButton(self, effect):
         if effect == "batte":
             return self.stateButtons[buttons['SQUARE']] and (not self.stateBefore[buttons['SQUARE']])
