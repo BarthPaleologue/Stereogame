@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -168,13 +168,10 @@ if __name__ == "__main__":
             ballManager.removeBall(sphere)
             service = True
 
-        if service == True:
-            # faut pouvoir en relancer une ici, donc faudrait créer un service
-            sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
-            sphere.setPosition(0, 1, 0)
-            sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
-            sphereMat = TextureMaterial(sphereTex)
-            sphere.setMaterial(sphereMat)
+            if sphere.position.z <= player1.position.z - 7:
+                service = True
+            elif sphere.position.z >= player2.position.z + 7:
+                service = True
 
             player1.batte.isSuperBat = False
             player2.batte.isSuperBat = False
@@ -209,7 +206,6 @@ if __name__ == "__main__":
         ### PLAYER 2
         drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[5], score2Texture)
         drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[6], score2Texture)
-        
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
@@ -229,18 +225,22 @@ if __name__ == "__main__":
 
         if DOES_INTERLACE:
 
-            interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 1)
-            interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 2)
-            #interlacer.setTextureFromImage(blackTex, 0)
-            #interlacer.setTextureFromImage(blackTex, 1)
+            if not battlefield.areViewsSwitched:
+                interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 1)
+                interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 2)
+
+                interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 5)
+                interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 6)
+
+            else:
+                interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 1)
+                interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 2)
+
+                interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 5)
+                interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 6)
 
             interlacer.setTextureFromImage(blackTex, 3)
             interlacer.setTextureFromImage(blackTex, 4)
-            
-            interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 5)
-            interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 6)
-            #interlacer.setTextureFromImage(blackTex, 4)
-            #interlacer.setTextureFromImage(blackTex, 5)
 
             interlacer.setTextureFromImage(blackTex, 7)
             interlacer.setTextureFromImage(blackTex, 0)
