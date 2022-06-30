@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     
     mysteryBox = MysteryBox("boxy", battlefield, scene)
-    for i in range(1):
+    for i in range(5):
         sphere = Projectile("sphery", False, 1, battlefield, 'reflect', ballManager, scene)
         sphere.setPosition(-2, 0, 0)
         sphere.setVelocity((random() - 0.5) / 5.0, (random() - 0.5) / 5.0, (random() - 0.5) / 5.0)
@@ -270,6 +270,8 @@ if __name__ == "__main__":
                     player1.batte.addRotationZ(-1)
                 if i == 1 :
                     player2.batte.addRotationZ(-1)
+            if gamepad[i].translateLeft() :
+                print(gamepad[i].translateLeft())
         
         ''' keyboard.update()
         if keyboard.isBattePressed():
