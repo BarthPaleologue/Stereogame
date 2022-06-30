@@ -2,6 +2,7 @@ from feather.materials.textureMaterial import TextureMaterial
 from feather.shapes import Sphere, Rectangle
 from feather.algebra import reflection
 import numpy as np
+from feather.collisions.sphereToCylinder import sphereToCylinder
 import pygame
 from random import random
 
@@ -27,21 +28,55 @@ class Projectile(Sphere):
 
 
         def update(self, deltaTime):
+            player1 = self.battlefield.player1
+            player2 = self.battlefield.player2
+            comptSuper1 = 0
+            comptSuper2 = 0
+            comptEye1 = 0
+            comptEye2 = 0
             r = self.getRadius()
             position = self.getPosition()
             x,y,z = position.x, position.y, position.z
             sizex,sizey,sizez = self.battlefield.getSizex(), self.battlefield.getSizey(), self.battlefield.getSizez()
             if self.battlefield.isCollision(r, position):
                 where = self.battlefield.whereCollision(r, position)
-                if self.collision == 'reflect':
-                    normVect = self.battlefield.normalVector(where)
-                    oldVelocity = self.getVelocity()
-                    newVelocity = reflection(oldVelocity, normVect)
 
-                    self.setVelocity(newVelocity.x, newVelocity.y, newVelocity.z)
+                ## scoring a goal with normal ball
+
+                if self.collision == 'reflect':
+                    if where == 'front':
+                        if player1.position.z > 0: # player 1 wins
+                            player1.score+=1
+                        if player1.position.z < 0: # player 2 wins
+                            player2.score+=1
+                    elif where == 'back':
+                        if player1.position.z < 0: # player 1 wins
+                            player1.score+=1
+                        if player1.position.z > 0: # player 2 wins
+                            player2.score+=1
+            
+                    else:
+                        normVect = self.battlefield.normalVector(where)
+                        oldVelocity = self.getVelocity()
+                        newVelocity = reflection(oldVelocity, normVect)
+
+                        self.setVelocity(newVelocity.x, newVelocity.y, newVelocity.z)
+
+                ### teleport effect
+
                 if self.collision == 'teleport':
+                    if where == 'front':
+                        if player1.position.z > 0: # player 1 wins
+                            player1.score+=1
+                        if player1.position.z < 0: # player 2 wins
+                            player2.score+=1
+                    elif where == 'back':
+                        if player1.position.z < 0: # player 1 wins
+                            player1.score+=1
+                        if player1.position.z > 0: # player 2 wins
+                            player2.score+=1
                     
-                    if where == 'right':
+                    elif where == 'right':
                         self.setPosition(x-2*sizex+2*r + 0.1, y, z)
                     elif where == 'left':
                         self.setPosition(x+2*sizex-2*r-0.1, y, z)
@@ -49,8 +84,74 @@ class Projectile(Sphere):
                         self.setPosition(x, y - 2*sizey + 2*r - 0.1, z)
                     elif where == 'bottom':
                         self.setPosition(x, y + 2*sizey - 2*r + 0.1, z)
+                
+                ## bomb explosion with front and back face
+
                 if self.collision == 'bomb':
-                    self.explode()
+                    if where == 'front':
+                        self.explode()
+                        if player1.position.z > 0: # player 2 wins
+                            player2.score+=1
+                        if player1.position.z < 0: # player 1 wins
+                            player1.score+=1
+                            
+                    if where == 'back':
+                        self.explode()
+                        if player1.position.z < 0: # player 2 wins
+                            player2.score+=1
+                        if player1.position.z > 0: # player 1 wins
+                            player1.score+=1
+            
+                    if sphereToCylinder(self, player1.batte):
+                        self.explode()
+                        player2.score+=1
+                    if sphereToCylinder(self,player1.batte):
+                        self.explode()
+                        player2.score1+=1
+
+            ## superbat effect
+            if player1.batte.isSuperBat:
+                comptSuper1 += deltaTime
+                if comptSuper1 >= 3:
+                    player1.batte.isSuperBat = False
+                    comptSuper1 = 0
+
+            if player2.batte.isSuperBat:
+                comptSuper2 += deltaTime
+                if comptSuper2 >= 3:
+                    player2.batte.isSuperBat = False
+                    comptSuper2 = 0
+
+            ### increasing eye distance effect
+
+            if player1.eyeDistance > player1.defaultEyeDistance:
+                # we applied the effect of increasing the eye distance
+                comptEye1 += deltaTime
+                if comptEye1 >=3:
+                    player1.eyeDistance = player1.defaultEyeDistance
+                    comptEye1 = 0
+            if player2.eyeDistance > player2.defaultEyeDistance:
+                # we applied the effect of increasing the eye distance
+                comptEye2 += deltaTime
+                if comptEye2 >=3:
+                    player2.eyeDistance = player2.defaultEyeDistance
+                    comptEye2 = 0
+            
+            ## decreasing eye distance effect
+
+            if player1.eyeDistance < player1.defaultEyeDistance:
+                # we applied the effect of increasing the eye distance
+                comptEye1 += deltaTime
+                if comptEye1 >=3:
+                    player1.eyeDistance = player1.defaultEyeDistance
+                    comptEye1 = 0
+            if player2.eyeDistance < player2.defaultEyeDistance:
+                # we applied the effect of increasing the eye distance
+                comptEye2 += deltaTime
+                if comptEye2 >=3:
+                    player2.eyeDistance = player2.defaultEyeDistance
+                    comptEye2 = 0
+
 
 
             self.translate(self.velocity.x, self.velocity.y, self.velocity.z)
@@ -90,16 +191,19 @@ class Projectile(Sphere):
                 #ballMat = TextureMaterial(Texture("./assets/texBattle.jpeg"))
                 self.setMaterial(self.battlefield.material)
                 #self.update()
+
             elif effect == 'teleport':
                 ballMat = TextureMaterial(Texture("./assets/Galaxy512.jpg"))
                 self.setMaterial(ballMat)
                 self.setCollision('teleport')
                 #self.update()
+
             elif effect == 'bomb':
                 self.setCollision('bomb')
                 bombMat = TextureMaterial(Texture("./assets/explosion.png"))
                 self.setMaterial(bombMat)
                 #self.update()
+
             elif effect == 'x3':
                 position = self.getPosition()
                 x,y,z = position.x, position.y, position.z
@@ -114,21 +218,24 @@ class Projectile(Sphere):
                 proj2.setVelocity((random() - 0.5) / 2.0, (random() - 0.5) / 2.0, (random() - 0.5) / 2.0)
                 proj1.ballmanager.addBall(proj1)
                 proj2.ballmanager.addBall(proj2)
+
             elif effect == 'superbat':
                 if self.currentPlayer != None:
                     self.currentPlayer.batte.isSuperBat = True
+
             elif effect == 'increaseEyeDistance':
                 if self.currentPlayer != None:
                     if self.currentPlayer == self.battlefield.player1:
                         self.battlefield.player2.increaseEyeDistance(0.1)
                     else:
                         self.battlefield.player1.increaseEyeDistance(0.1)
+
             elif effect == 'deceaseEyeDistance':
                 if self.currentPlayer != None:
                     if self.currentPlayer == self.battlefield.player1:
-                        self.battlefield.player2.increaseEyeDistance(0.1)
+                        self.battlefield.player2.decreaseEyeDistance(0.1)
                     else:
-                        self.battlefield.player1.increaseEyeDistance(0.1)
+                        self.battlefield.player1.decreaseEyeDistance(0.1)
 
         def explode(self):
             crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
