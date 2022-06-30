@@ -275,6 +275,8 @@ if __name__ == "__main__":
             player2.setEyeDistance(player2.eyeDistance - 0.001)
         if keys[pygame.K_v]:
             battlefield.areViewsSwitched = not battlefield.areViewsSwitched
+        if keys[pygame.K_n]:
+            service = True
 
 
         for event in pygame.event.get():
