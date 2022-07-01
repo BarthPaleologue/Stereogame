@@ -23,9 +23,12 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield, Projectile
 
-def drawEyeToFrameBuffer(eye, scene, testMat, testTexture, scoreTexture):
+def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreTexture, playerIndex):
     eye.frameBuffer.bind()
     glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
+
+    if playerIndex == 1:
+        timerRect.setScaling(-1, 1, 1)
 
     #testMat.texture = testTexture
     testMat.texture = scoreTexture
@@ -43,6 +46,8 @@ if __name__ == "__main__":
     scene = Scene()
 
     DOES_INTERLACE = False
+
+    GAME_DURATION = 90 # temps en secondes
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -97,6 +102,13 @@ if __name__ == "__main__":
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
+    timerRect = Rectangle("timer1", False, scene)
+    timerRect.setPosition(-3, 1.5, 0)
+    timerRect.setScaling(0.5, 0.5, 1)
+    #timerTexture = TextTexture(f"{GAME_DURATION}", (0,0,0), (255, 255, 255))
+    timerMat = TextureMaterial(Texture("./assets/black.jpg"))
+    timerRect.setMaterial(timerMat)
+
     blackTex = Texture("./assets/black.jpg")
     numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
     
@@ -128,6 +140,8 @@ if __name__ == "__main__":
     
     running = True
     service = True
+
+    timer = 0
     
     score1 = 0
     score2 = 0
@@ -135,6 +149,13 @@ if __name__ == "__main__":
         time = pygame.time.get_ticks() / 1000.0
         deltaTime = time - getTicksLastFrame
         getTicksLastFrame = time
+
+        timer += deltaTime
+
+        timerInt = int(timer)
+
+        timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
+        timerRect.material.texture = timerTexture
 
         ###### UPDATE ETAT DES BATTES
 
@@ -206,12 +227,12 @@ if __name__ == "__main__":
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         ### PLAYER 1
-        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, numTextures[1], score1Texture)
-        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, numTextures[2], score1Texture)
+        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect, score1Texture, 1)
+        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect, score1Texture, 1)
 
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, numTextures[5], score2Texture)
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, numTextures[6], score2Texture)
+        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
