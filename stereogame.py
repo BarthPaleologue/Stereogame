@@ -34,11 +34,10 @@ def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect, scor
     scoreRect.setScaling(-0.5, 0.5, 1)
     if playerIndex == 2:
         scoreRect.setRotationY(180)
-    if playerIndex == 1:
-        #timerRect.setRotationY(180)
-        scoreRect.setRotationY(180)
-        #scoreRect.setScaling(-0.5, 0.5, 1)
         timerRect.setRotationY(180)
+    if playerIndex == 1:
+        scoreRect.setRotationY(0)
+        timerRect.setRotationY(0)
 
     testMat.texture = scoreTexture
 
@@ -157,12 +156,8 @@ if __name__ == "__main__":
     timerRect1.setPosition(-8, 5, 0)
     timerRect1.setScaling(0.5, 0.5, 1)
     #timerTexture = TextTexture(f"{GAME_DURATION}", (0,0,0), (255, 255, 255))
-    timerRect2 = Rectangle("timer1", True, scene)
-    timerRect2.setPosition(-8, 5, 0)
-    timerRect2.setScaling(0.5, 0.5, 1)
     timerMat = TextureMaterial(Texture("./assets/black.jpg"))
     timerRect1.setMaterial(timerMat)
-    timerRect2.setMaterial(timerMat)
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
@@ -215,7 +210,6 @@ if __name__ == "__main__":
         else :
             timerTexture = TextTexture(f"{0}", (0,0,0), (255,255,255))
         timerRect1.material.texture = timerTexture
-        timerRect2.material.texture = timerTexture
 
         ###### UPDATE ETAT DES BATTES
 
@@ -281,7 +275,7 @@ if __name__ == "__main__":
         drawEyesToFrameBuffer(player1, scene, rectMat, timerRect1, rect, score1Texture, 1)
         
         ### PLAYER 2
-        drawEyesToFrameBuffer(player2, scene, rectMat, timerRect2, rect, score2Texture, 2)
+        drawEyesToFrameBuffer(player2, scene, rectMat, timerRect1, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
