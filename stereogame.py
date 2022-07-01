@@ -32,6 +32,13 @@ def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect, scor
 
     timerRect.setScaling(-0.5, 0.5, 1)
     scoreRect.setScaling(-0.5, 0.5, 1)
+    if playerIndex == 2:
+        scoreRect.setRotationY(180)
+    if playerIndex == 1:
+        #timerRect.setRotationY(180)
+        scoreRect.setRotationY(180)
+        #scoreRect.setScaling(-0.5, 0.5, 1)
+        timerRect.setRotationY(180)
 
     testMat.texture = scoreTexture
 
@@ -46,10 +53,6 @@ def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect, scor
 
     rightEye.frameBuffer.bind()
     glViewport(0, 0, rightEye.frameBuffer.width, rightEye.frameBuffer.height)
-
-    if playerIndex == 1:
-        timerRect1.setRotationY(180)
-        scoreRect.setRotationY(180)
 
     testMat.texture = scoreTexture
 
@@ -87,8 +90,8 @@ if __name__ == "__main__":
     baseballArena1.setScaling(sc+1.7,sc,1)
     ###### image de back
 
-    baseballArena2 = Rectangle("arena",True,scene)
-    baseballArena2.setPosition(0,0,22)
+    baseballArena2 = Rectangle("arena", True, scene)
+    baseballArena2.setPosition(0, 0, 22)
     baseballArena2.setMaterial(baseballMat)
     baseballArena2.setScaling(sc+1.7,sc,1)
 
@@ -270,8 +273,7 @@ if __name__ == "__main__":
         drawEyesToFrameBuffer(player1, scene, rectMat, timerRect1, rect, score1Texture, 1)
         
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect2, rect, score2Texture, 2)
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect2, rect, score2Texture, 2)
+        drawEyesToFrameBuffer(player2, scene, rectMat, timerRect2, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
