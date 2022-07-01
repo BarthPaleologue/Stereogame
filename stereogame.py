@@ -81,6 +81,8 @@ if __name__ == "__main__":
 
     GAME_DURATION = 90 # temps en secondes
 
+    FREEZE = False
+
     ####### BALL MANAGER
     ballManager = BallManager([])
 
@@ -239,7 +241,7 @@ if __name__ == "__main__":
                 sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
                 sphereMat = TextureMaterial(sphereTex)
                 sphere.setMaterial(sphereMat)
-                if random() < 0.1:
+                if random() < 2:
                     sphere.hasInvertedPerspective = True
 
                 player1.batte.isSuperBat = False
@@ -250,7 +252,8 @@ if __name__ == "__main__":
                 service = False
 
             for i,sphere in enumerate(ballManager.balls):
-                sphere.update(deltaTime)
+                if not FREEZE:
+                    sphere.update(deltaTime)
                 #if i == 0:
                 #    sphere.hasInvertedPerspective = True
                 #else:
@@ -350,6 +353,8 @@ if __name__ == "__main__":
         if keys[pygame.K_w]: # Ztargetting
             player1.Ztargetting = True
             player2.Ztargetting = True
+        if keys[pygame.K_SPACE]: # FREEEZE
+            FREEZE = not FREEZE
 
 
 

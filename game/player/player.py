@@ -17,7 +17,7 @@ class Player(Transform):
         Transform.__init__(self)
         self.batte = Bat("./assets/baseball/batB.obj", scene)
 
-        self.defaultEyeDistance = 0.06
+        self.defaultEyeDistance = 0.09
         self.eyeDistance = self.defaultEyeDistance
         self.Ztargetting=Ztargetting 
 
