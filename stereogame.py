@@ -164,13 +164,12 @@ if __name__ == "__main__":
             if len(ballManager.balls) == 0:
                 service = True
 
-            #sphere.update(deltaTime)
-            """if sphere.position.z <= player1.position.z - 7:
+            if sphere.position.z <= player1.position.z - 7:
                 score2 += 1
                 service = True
             if sphere.position.z >= player2.position.z + 7:
                 score1 += 1
-                service = True"""
+                service = True
 
             if service == True:
                 # faut pouvoir en relancer une ici, donc faudrait créer un service

@@ -134,8 +134,8 @@ class Projectile(Sphere):
             
             if self.collision == 'bomb': 
                 if sphereToCylinder(self, player1.batte):
-                        self.explode()
-                        player2.score+=1
+                    self.explode()
+                    player2.score+=1
                 if sphereToCylinder(self,player2.batte):
                     self.explode()
                     player2.score+=1
