@@ -52,6 +52,20 @@ if __name__ == "__main__":
     ####### BALL MANAGER
     ballManager = BallManager([])
 
+    ###### image de front
+    sc = 4
+    baseballArena1 = Rectangle("arena",True,scene)
+    baseballMat = TextureMaterial(Texture("./assets/baseballBackground.jpeg"))
+    baseballArena1.setPosition(0,0,-22)
+    baseballArena1.setMaterial(baseballMat)
+    baseballArena1.setScaling(sc+1.7,sc,1)
+    ###### image de back
+
+    baseballArena2 = Rectangle("arena",True,scene)
+    baseballArena2.setPosition(0,0,22)
+    baseballArena2.setMaterial(baseballMat)
+    baseballArena2.setScaling(sc+1.7,sc,1)
+
     ######### DECLARATION DES JOUEURS
 
     keyboard = Keyboard()
@@ -171,13 +185,13 @@ if __name__ == "__main__":
         if player1.score == 4:
             print("Player 1 wins")
             score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))
-            score2Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))
+            score2Texture = TextTexture("You Lose", (0, 0, 0), (255, 255, 255))
             #score1, score2 = 0, 0
         
         score2Texture = TextTexture(f"{score2}", (0, 0, 0), (255, 255, 255))
         if player2.score == 4:
             print("Player 2 wins")
-            score1Texture = TextTexture("You loose", (0, 0, 0), (255, 255, 255))
+            score1Texture = TextTexture("You lose", (0, 0, 0), (255, 255, 255))
             score2Texture = TextTexture("You win", (0, 0, 0), (255, 255, 255))
             #score1, score2 = 0, 0
 
