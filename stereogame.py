@@ -23,12 +23,13 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield, Projectile
 
-def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreTexture, playerIndex):
+def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreRect, scoreTexture, playerIndex):
     eye.frameBuffer.bind()
     glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
     if playerIndex == 1:
         timerRect.setScaling(-0.5, 0.5, 1)
+        scoreRect.setScaling(-0.5, 0.5, 1)
 
     #testMat.texture = testTexture
     testMat.texture = scoreTexture
@@ -97,7 +98,7 @@ if __name__ == "__main__":
     sphere.setMaterial(sphereMat)
     
     rect = Rectangle('rect', False, scene)
-    rect.setPosition(-8, 5, -3).setScaling(0.5, 0.5, 0)
+    rect.setPosition(8, 5, -3).setScaling(0.5, 0.5, 0)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
@@ -216,12 +217,12 @@ if __name__ == "__main__":
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         ### PLAYER 1
-        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect, score1Texture, 1)
-        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect, score1Texture, 1)
+        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect, rect, score1Texture, 1)
+        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect, rect, score1Texture, 1)
 
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect, score2Texture, 2)
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect, rect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
