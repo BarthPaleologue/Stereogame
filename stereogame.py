@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     GAME_DURATION = 90 # temps en secondes
 
