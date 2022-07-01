@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     ####### BALL MANAGER
     ballManager = BallManager([])
