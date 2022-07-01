@@ -209,6 +209,7 @@ if __name__ == "__main__":
             timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
         else :
             timerTexture = TextTexture(f"{0}", (0,0,0), (255,255,255))
+
         timerRect1.material.texture = timerTexture
 
         ###### UPDATE ETAT DES BATTES
@@ -264,6 +265,13 @@ if __name__ == "__main__":
         else:
             for ball in ballManager.balls:
                 ballManager.removeBall(ball)
+            
+            if player1.score > player2.score :
+                score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))        
+                score2Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))
+            else :
+                score1Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))        
+                score2Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))
 
             #### wait until you want to restart the game
 
