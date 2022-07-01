@@ -235,6 +235,8 @@ if __name__ == "__main__":
                 sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
                 sphereMat = TextureMaterial(sphereTex)
                 sphere.setMaterial(sphereMat)
+                if random() < 0.1:
+                    sphere.hasInvertedPerspective = True
 
                 player1.batte.isSuperBat = False
                 player2.batte.isSuperBat = False
