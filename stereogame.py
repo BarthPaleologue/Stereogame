@@ -77,9 +77,9 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
 
-    GAME_DURATION = 10 # temps en secondes
+    GAME_DURATION = 5 # temps en secondes
 
     FREEZE = False
 
@@ -266,20 +266,32 @@ if __name__ == "__main__":
                         mysteryBox.onHit(sphere)
 
         else:
+            ps = 16
+            sca = 2
             for ball in ballManager.balls:
                 ballManager.removeBall(ball)
+            winrect1 = Rectangle("WIN",True,scene)
             
+            winrect1.setScaling(sca,sca,1)
+            winrect1.setPosition(0,0,-ps)
+            winrect1.setRotationY(180)
+            winrect2 = Rectangle("WIN",True,scene)
+            winrect2.setScaling(sca,sca,1)
+            winrect2.setPosition(0,0,ps) 
+            winrect2.setRotationY(180) 
             if player1.score > player2.score :
-                winrect = Rectangle("WIN",False,scene)
-                wintexture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))  
-                winrect.setMaterial(wintexture)   
-
+                
+                wintexture = TextureMaterial(Texture("./assets/Player-One-Wins.jpeg"))
+                winrect1.setMaterial(wintexture)
+                winrect2.setMaterial(wintexture)
+                
                 """score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))        
                 score2Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))"""
             else :
-                winrect = Rectangle("WIN",False,scene)
-                wintexture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))  
-                winrect.setMaterial(wintexture) 
+        
+                wintexture = TextureMaterial(Texture("./assets/player2_wins.jpeg"))
+                winrect1.setMaterial(wintexture)
+                winrect2.setMaterial(wintexture)
 
             #### wait until you want to restart the game
 
