@@ -23,13 +23,14 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield, Projectile
 
-def drawEyeToFrameBuffer(eye, scene, testMat, timerRect1, scoreRect, scoreTexture, playerIndex):
+def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreRect, scoreTexture, playerIndex):
     eye.frameBuffer.bind()
     glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
-    if playerIndex == 1:
-        timerRect1.setRotationY(180)
-        scoreRect.setRotationY(180)
+    timerRect.setScaling(-0.5, 0.5, 1)
+    scoreRect.setScaling(-0.5, 0.5, 1)
+    
+    
 
     #testMat.texture = testTexture
     testMat.texture = scoreTexture
@@ -150,17 +151,26 @@ if __name__ == "__main__":
     sphereMat = TextureMaterial(sphereTex)
     sphere.setMaterial(sphereMat)
     
+    #### scores
+
     rect = Rectangle('rect', False, scene)
     rect.setPosition(8, 5, -3).setScaling(0.5, 0.5, 0)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
+    ### timer 
+
     timerRect1 = Rectangle("timer1", False, scene)
-    timerRect1.setPosition(-8, 5, -1)
+    timerRect1.setPosition(-8, 5, 0)
     timerRect1.setScaling(0.5, 0.5, 1)
-    timerMat1 = TextureMaterial(Texture("./assets/black.jpg"))
-    timerRect1.setMaterial(timerMat1)
+    #timerTexture = TextTexture(f"{GAME_DURATION}", (0,0,0), (255, 255, 255))
+    timerRect2 = Rectangle("timer1", True, scene)
+    timerRect2.setPosition(-8, 5, 0)
+    timerRect2.setScaling(0.5, 0.5, 1)
+    timerMat = TextureMaterial(Texture("./assets/black.jpg"))
+    timerRect1.setMaterial(timerMat)
+    timerRect2.setMaterial(timerMat)
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
@@ -209,6 +219,7 @@ if __name__ == "__main__":
 
         timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
         timerRect1.material.texture = timerTexture
+        timerRect2.material.texture = timerTexture
 
         ###### UPDATE ETAT DES BATTES
 
@@ -274,7 +285,8 @@ if __name__ == "__main__":
         drawEyesToFrameBuffer(player1, scene, rectMat, timerRect1, rect, score1Texture, 1)
         
         ### PLAYER 2
-        drawEyesToFrameBuffer(player2, scene, rectMat, timerRect1, rect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect2, rect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect2, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
