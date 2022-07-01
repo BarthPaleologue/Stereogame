@@ -147,15 +147,13 @@ if __name__ == "__main__":
         ###### SCORE UPDATE
 
         score1Texture = TextTexture(f"{score1}", (0, 0, 0), (255, 255, 255))
-        if player1.score == 4:
-            print("Player 1 wins")
+        if player1.score == 10:
             score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))
             score2Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))
             #score1, score2 = 0, 0
         
         score2Texture = TextTexture(f"{score2}", (0, 0, 0), (255, 255, 255))
-        if player2.score == 4:
-            print("Player 2 wins")
+        if player2.score == 10:
             score1Texture = TextTexture("You loose", (0, 0, 0), (255, 255, 255))
             score2Texture = TextTexture("You win", (0, 0, 0), (255, 255, 255))
             #score1, score2 = 0, 0
@@ -308,6 +306,10 @@ if __name__ == "__main__":
             # pour tester si le programme detecte les appuie sur les boutons
         for i in range (nb_joystick) :
             gamepad[i].update()
+            if gamepad[i].startButton() :
+                service = True
+                time = 0
+                score1, score2 = 0, 0
             if gamepad[i].isBattePressed():
                 if i == 0 :
                     player1.batte.strike()
