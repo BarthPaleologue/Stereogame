@@ -23,30 +23,15 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield, Projectile
 
-def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreRect, scoreTexture, playerIndex):
-    eye.frameBuffer.bind()
-    glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
-    timerRect.setScaling(-0.5, 0.5, 1)
-    scoreRect.setScaling(-0.5, 0.5, 1)
-    
-    
-
-    #testMat.texture = testTexture
-    testMat.texture = scoreTexture
-
-    scene.render(eye.getProjectionMatrix(), model_matrix, eye.computeViewMatrix())
-
-
-def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect1, scoreRect, scoreTexture, playerIndex):
+def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect, scoreRect, scoreTexture, playerIndex):
     leftEye, rightEye = player.leftEye, player.rightEye
 
     leftEye.frameBuffer.bind()
     glViewport(0, 0, leftEye.frameBuffer.width, leftEye.frameBuffer.height)
 
-    if playerIndex == 1:
-        timerRect1.setRotationY(180)
-        scoreRect.setRotationY(180)
+    timerRect.setScaling(-0.5, 0.5, 1)
+    scoreRect.setScaling(-0.5, 0.5, 1)
 
     testMat.texture = scoreTexture
 
