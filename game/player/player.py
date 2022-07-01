@@ -41,6 +41,8 @@ class Player(Transform):
         self.invincible = False
         self.state = 0
 
+        self.isZTargeting = False
+
         self.score = 0
 
         self.ballManager = ballManager
