@@ -69,6 +69,10 @@ if __name__ == "__main__":
     pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
     pygame.display.toggle_fullscreen()
 
+    ##### Musique de fond
+    background_music = pygame.mixer.Sound("assets/backgroundMusic.mp3")
+    pygame.mixer.Sound.play(background_music)
+
     scene = Scene()
 
     DOES_INTERLACE = True
