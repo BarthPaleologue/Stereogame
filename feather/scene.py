@@ -9,6 +9,11 @@ class Scene():
 
     def removeShape(self, shape):
         self.shapes.remove(shape)
+        shapes = []
+        for shapy in self.shapes:
+            if shapy != shape:
+                shapes.append(shapy)
+        self.shapes = shapes
         del shape
 
     def render(self, perspective_mx, model_matrix, view_matrix):
