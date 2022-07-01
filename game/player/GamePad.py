@@ -34,9 +34,12 @@ class GamePad(Input):
     def startButton(self) :
         return self.stateButtons[buttons['START']]
 
-    def getEffectButton(self, effect):
+    """def getEffectButton(self, effect):
         if effect == "batte":
             return self.stateButtons[buttons['SQUARE']] and (not self.stateBefore[buttons['SQUARE']])
         elif effect == "explosion":
-            return self.stateButtons[buttons['X']] and (not self.stateBefore[buttons['X']])
+            return self.stateButtons[buttons['X']] and (not self.stateBefore[buttons['X']])"""
+
+    def getZtargetting(self):
+        return self.stateButtons[buttons['X']]
 

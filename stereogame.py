@@ -113,12 +113,12 @@ if __name__ == "__main__":
             gamepad.append(GamePad(i))
         player1 = Player(False, gamepad[0], scene, ballManager)
         if nb_joystick == 2:
-            player2 = Player(True, gamepad[1], scene, ballManager)
+            player2 = Player(True,False, gamepad[1], scene, ballManager)
         else:
-            player2 = Player(False, None, scene, ballManager)
+            player2 = Player(False, False,  None, scene, ballManager)
     else:
-        player1 = Player(False, None, scene, ballManager)
-        player2 = Player(True, None, scene, ballManager)
+        player1 = Player(False, False, None, scene, ballManager)
+        player2 = Player(True,False, None, scene, ballManager)
 
     player1.setPosition(0, 0, -21.2)
     player2.setPosition(0, 0, 21.2)
@@ -347,6 +347,10 @@ if __name__ == "__main__":
             service = False
             timer = 0
             player1.score, player2.score = 0, 0
+        if keys[pygame.K_w]: # Ztargetting
+            player1.Ztargetting = True
+            player2.Ztargetting = True
+
 
 
         for event in pygame.event.get():
@@ -397,6 +401,12 @@ if __name__ == "__main__":
                     player1.batte.translate(-0.1, 0, 0)
                 if (i == 1) and (player2.batte.position.x > -5) :
                     player2.batte.translate(-0.1, 0, 0)
+            if gamepad[i].isZtargetting():
+                if i == 0 :
+                    player1.Ztargetting = True
+                if i == 1 :
+                    player2.Ztargetting = True
+
             if joystick[i].get_axis(0) != 0 :
                 if i == 0 :
                     player1.batte.addRotationZ(-joystick[0].get_axis(0) * 1.5)
