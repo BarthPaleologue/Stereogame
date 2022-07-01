@@ -1,4 +1,4 @@
-from random import random
+from random import random, randint
 from OpenGL.GL import *
 import numpy as np
 
@@ -32,6 +32,12 @@ def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect, scor
 
     timerRect.setScaling(-0.5, 0.5, 1)
     scoreRect.setScaling(-0.5, 0.5, 1)
+    if playerIndex == 2:
+        scoreRect.setRotationY(180)
+        timerRect.setRotationY(180)
+    if playerIndex == 1:
+        scoreRect.setRotationY(0)
+        timerRect.setRotationY(0)
 
     testMat.texture = scoreTexture
 
@@ -46,10 +52,6 @@ def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect, scor
 
     rightEye.frameBuffer.bind()
     glViewport(0, 0, rightEye.frameBuffer.width, rightEye.frameBuffer.height)
-
-    if playerIndex == 1:
-        timerRect1.setRotationY(180)
-        scoreRect.setRotationY(180)
 
     testMat.texture = scoreTexture
 
@@ -69,9 +71,13 @@ if __name__ == "__main__":
     pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
     pygame.display.toggle_fullscreen()
 
+    ##### Musique de fond
+    background_music = pygame.mixer.Sound("assets/backgroundMusic.mp3")
+    pygame.mixer.Sound.play(background_music)
+
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
 
     GAME_DURATION = 90 # temps en secondes
 
@@ -87,8 +93,8 @@ if __name__ == "__main__":
     baseballArena1.setScaling(sc+1.7,sc,1)
     ###### image de back
 
-    baseballArena2 = Rectangle("arena",True,scene)
-    baseballArena2.setPosition(0,0,22)
+    baseballArena2 = Rectangle("arena", True, scene)
+    baseballArena2.setPosition(0, 0, 22)
     baseballArena2.setMaterial(baseballMat)
     baseballArena2.setScaling(sc+1.7,sc,1)
 
@@ -150,12 +156,8 @@ if __name__ == "__main__":
     timerRect1.setPosition(-8, 5, 0)
     timerRect1.setScaling(0.5, 0.5, 1)
     #timerTexture = TextTexture(f"{GAME_DURATION}", (0,0,0), (255, 255, 255))
-    timerRect2 = Rectangle("timer1", True, scene)
-    timerRect2.setPosition(-8, 5, 0)
-    timerRect2.setScaling(0.5, 0.5, 1)
     timerMat = TextureMaterial(Texture("./assets/black.jpg"))
     timerRect1.setMaterial(timerMat)
-    timerRect2.setMaterial(timerMat)
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
@@ -202,9 +204,12 @@ if __name__ == "__main__":
 
         timerInt = int(timer)
 
-        timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
+
+        if GAME_DURATION - timerInt >= 0 :
+            timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
+        else :
+            timerTexture = TextTexture(f"{0}", (0,0,0), (255,255,255))
         timerRect1.material.texture = timerTexture
-        timerRect2.material.texture = timerTexture
 
         ###### UPDATE ETAT DES BATTES
 
@@ -270,8 +275,7 @@ if __name__ == "__main__":
         drawEyesToFrameBuffer(player1, scene, rectMat, timerRect1, rect, score1Texture, 1)
         
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect2, rect, score2Texture, 2)
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect2, rect, score2Texture, 2)
+        drawEyesToFrameBuffer(player2, scene, rectMat, timerRect1, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 

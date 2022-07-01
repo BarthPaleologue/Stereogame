@@ -42,6 +42,8 @@ class Player(Transform):
         self.invincible = False
         self.state = 0
 
+        self.isZTargeting = False
+
         self.score = 0
 
         self.ballManager = ballManager
@@ -188,7 +190,7 @@ class Player(Transform):
                 strike_sound = pygame.mixer.Sound("./assets/strike.mp3")
                 pygame.mixer.Sound.play(strike_sound)
 
-                zInfluence = 1.2
+                zInfluence = 1.5
 
                 velocity = np.array([-ball.velocity.x, -ball.velocity.y, -ball.velocity.z * zInfluence])
                 velocityNorm = math.sqrt(velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2)
@@ -197,8 +199,13 @@ class Player(Transform):
                 velocity *= 0.2
 
                 if self.flip:
-                    ball.setVelocity(-velocity[0] + (random() - 0.5) / 10, -velocity[1] + (random() - 0.5) / 10, -abs(velocity[2]) * zInfluence)
-                else:
-                    ball.setVelocity(-velocity[0] + (random() - 0.5) / 10, -velocity[1] + (random() - 0.5) / 10, abs(velocity[2]) * zInfluence)
-
+                    if not self.isZTargeting:
+                        ball.setVelocity(-velocity[0] + (random() - 0.5) / 10, -velocity[1] + (random() - 0.5) / 10, -abs(velocity[2]))
+                    else:
+                        ball.setVelocity(0, 0, -abs(velocity[2]))
+                else:   
+                    if not self.isZTargeting:
+                        ball.setVelocity(-velocity[0] + (random() - 0.5) / 10, -velocity[1] + (random() - 0.5) / 10, abs(velocity[2]))
+                    else:
+                        ball.setVelocity(0, 0, abs(velocity[2]))
                 ball.currentPlayer = self
