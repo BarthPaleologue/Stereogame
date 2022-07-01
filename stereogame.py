@@ -28,7 +28,7 @@ def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreTexture, playerInd
     glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
     if playerIndex == 1:
-        timerRect.setScaling(-1, 1, 1)
+        timerRect.setScaling(-0.5, 0.5, 1)
 
     #testMat.texture = testTexture
     testMat.texture = scoreTexture
@@ -97,13 +97,13 @@ if __name__ == "__main__":
     sphere.setMaterial(sphereMat)
     
     rect = Rectangle('rect', False, scene)
-    rect.setPosition(-4, 2, -3).setScaling(1, 1, 1)
+    rect.setPosition(-8, 5, -3).setScaling(0.5, 0.5, 0)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
     timerRect = Rectangle("timer1", False, scene)
-    timerRect.setPosition(-3, 1.5, 0)
+    timerRect.setPosition(-8, 5, 0)
     timerRect.setScaling(0.5, 0.5, 1)
     #timerTexture = TextTexture(f"{GAME_DURATION}", (0,0,0), (255, 255, 255))
     timerMat = TextureMaterial(Texture("./assets/black.jpg"))
