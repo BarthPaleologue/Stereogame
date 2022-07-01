@@ -23,18 +23,46 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield, Projectile
 
-def drawEyeToFrameBuffer(eye, scene, testMat, timerRect1, scoreRect, scoreTexture, playerIndex):
-    eye.frameBuffer.bind()
-    glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
-    if playerIndex == 1:
-        timerRect1.setRotationY(180)
+def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect, scoreRect, scoreTexture, playerIndex):
+    leftEye, rightEye = player.leftEye, player.rightEye
+
+    leftEye.frameBuffer.bind()
+    glViewport(0, 0, leftEye.frameBuffer.width, leftEye.frameBuffer.height)
+
+    timerRect.setScaling(-0.5, 0.5, 1)
+    scoreRect.setScaling(-0.5, 0.5, 1)
+    if playerIndex == 2:
         scoreRect.setRotationY(180)
+    if playerIndex == 1:
+        #timerRect.setRotationY(180)
+        scoreRect.setRotationY(180)
+        #scoreRect.setScaling(-0.5, 0.5, 1)
+        timerRect.setRotationY(180)
 
-    #testMat.texture = testTexture
     testMat.texture = scoreTexture
 
-    scene.render(eye.getProjectionMatrix(), model_matrix, eye.computeViewMatrix())
+    scene.renderAlioscopy(
+        leftEye.getProjectionMatrix(), 
+        rightEye.getProjectionMatrix(),
+        leftEye.computeViewMatrix(),
+        rightEye.computeViewMatrix(),
+        model_matrix
+    )
+
+
+    rightEye.frameBuffer.bind()
+    glViewport(0, 0, rightEye.frameBuffer.width, rightEye.frameBuffer.height)
+
+    testMat.texture = scoreTexture
+
+    scene.renderAlioscopy(
+        rightEye.getProjectionMatrix(), 
+        leftEye.getProjectionMatrix(),
+        rightEye.computeViewMatrix(),
+        leftEye.computeViewMatrix(),
+        model_matrix
+    )
 
 if __name__ == "__main__":
     pygame.init()
@@ -43,6 +71,10 @@ if __name__ == "__main__":
     #width, height = infoObject.current_w, infoObject.current_h
     pygame.display.set_mode((width, height), pygame.DOUBLEBUF|pygame.OPENGL|pygame.HWSURFACE, 0)
     pygame.display.toggle_fullscreen()
+
+    ##### Musique de fond
+    background_music = pygame.mixer.Sound("assets/backgroundMusic.mp3")
+    pygame.mixer.Sound.play(background_music)
 
     scene = Scene()
 
@@ -55,15 +87,15 @@ if __name__ == "__main__":
 
     ###### image de front
     sc = 4
-    baseballArena1 = Rectangle("arena",True,scene)
+    baseballArena1 = Rectangle("arena", True, scene)
     baseballMat = TextureMaterial(Texture("./assets/baseballBackground.jpeg"))
     baseballArena1.setPosition(0,0,-22)
     baseballArena1.setMaterial(baseballMat)
     baseballArena1.setScaling(sc+1.7,sc,1)
     ###### image de back
 
-    baseballArena2 = Rectangle("arena",True,scene)
-    baseballArena2.setPosition(0,0,22)
+    baseballArena2 = Rectangle("arena", True, scene)
+    baseballArena2.setPosition(0, 0, 22)
     baseballArena2.setMaterial(baseballMat)
     baseballArena2.setScaling(sc+1.7,sc,1)
 
@@ -111,17 +143,26 @@ if __name__ == "__main__":
     sphereMat = TextureMaterial(sphereTex)
     sphere.setMaterial(sphereMat)
     
+    #### scores
+
     rect = Rectangle('rect', False, scene)
     rect.setPosition(8, 5, -3).setScaling(0.5, 0.5, 0)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
+    ### timer 
+
     timerRect1 = Rectangle("timer1", False, scene)
-    timerRect1.setPosition(-8, 5, -1)
+    timerRect1.setPosition(-8, 5, 0)
     timerRect1.setScaling(0.5, 0.5, 1)
-    timerMat1 = TextureMaterial(Texture("./assets/black.jpg"))
-    timerRect1.setMaterial(timerMat1)
+    #timerTexture = TextTexture(f"{GAME_DURATION}", (0,0,0), (255, 255, 255))
+    timerRect2 = Rectangle("timer1", True, scene)
+    timerRect2.setPosition(-8, 5, 0)
+    timerRect2.setScaling(0.5, 0.5, 1)
+    timerMat = TextureMaterial(Texture("./assets/black.jpg"))
+    timerRect1.setMaterial(timerMat)
+    timerRect2.setMaterial(timerMat)
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
@@ -170,14 +211,12 @@ if __name__ == "__main__":
 
         timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
         timerRect1.material.texture = timerTexture
+        timerRect2.material.texture = timerTexture
 
         ###### UPDATE ETAT DES BATTES
 
         player1.update(deltaTime)
         player2.update(deltaTime)
-
-        #end1.setPosition(player2.batte.end1[0], player2.batte.end1[1], player2.batte.end1[2])
-
 
         ###### SCORE UPDATE
 
@@ -210,8 +249,13 @@ if __name__ == "__main__":
 
                 service = False
 
-            for sphere in ballManager.balls:
+            for i,sphere in enumerate(ballManager.balls):
                 sphere.update(deltaTime)
+                #if i == 0:
+                #    sphere.hasInvertedPerspective = True
+                #else:
+                #    sphere.hasInvertedPerspective = False
+
                 sphere.setRotationY(time * 50.0)
                 sphere.setRotationX(time * 60.0)
                 sphere.setRotationZ(time * 40.0)
@@ -230,12 +274,10 @@ if __name__ == "__main__":
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         ### PLAYER 1
-        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect1, rect, score1Texture, 1)
-        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect1, rect, score1Texture, 1)
-
+        drawEyesToFrameBuffer(player1, scene, rectMat, timerRect1, rect, score1Texture, 1)
+        
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect1, rect, score2Texture, 2)
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect1, rect, score2Texture, 2)
+        drawEyesToFrameBuffer(player2, scene, rectMat, timerRect2, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
@@ -259,15 +301,15 @@ if __name__ == "__main__":
                 interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 1)
                 interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 2)
 
-                interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 5)
-                interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 6)
+                interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 6)
+                interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 5)
 
             else:
                 interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 1)
                 interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 2)
 
-                interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 5)
-                interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 6)
+                interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 6)
+                interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 5)
 
             interlacer.setTextureFromImage(blackTex, 3)
             interlacer.setTextureFromImage(blackTex, 4)
