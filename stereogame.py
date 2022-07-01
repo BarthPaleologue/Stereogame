@@ -36,6 +36,45 @@ def drawEyeToFrameBuffer(eye, scene, testMat, timerRect1, scoreRect, scoreTextur
 
     scene.render(eye.getProjectionMatrix(), model_matrix, eye.computeViewMatrix())
 
+
+def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect1, scoreRect, scoreTexture, playerIndex):
+    leftEye, rightEye = player.leftEye, player.rightEye
+
+    leftEye.frameBuffer.bind()
+    glViewport(0, 0, leftEye.frameBuffer.width, leftEye.frameBuffer.height)
+
+    if playerIndex == 1:
+        timerRect1.setRotationY(180)
+        scoreRect.setRotationY(180)
+
+    testMat.texture = scoreTexture
+
+    scene.renderAlioscopy(
+        leftEye.getProjectionMatrix(), 
+        rightEye.getProjectionMatrix(),
+        leftEye.computeViewMatrix(),
+        rightEye.computeViewMatrix(),
+        model_matrix
+    )
+
+
+    rightEye.frameBuffer.bind()
+    glViewport(0, 0, rightEye.frameBuffer.width, rightEye.frameBuffer.height)
+
+    if playerIndex == 1:
+        timerRect1.setRotationY(180)
+        scoreRect.setRotationY(180)
+
+    testMat.texture = scoreTexture
+
+    scene.renderAlioscopy(
+        rightEye.getProjectionMatrix(), 
+        leftEye.getProjectionMatrix(),
+        rightEye.computeViewMatrix(),
+        leftEye.computeViewMatrix(),
+        model_matrix
+    )
+
 if __name__ == "__main__":
     pygame.init()
     width, height = 1920, 1080
@@ -55,7 +94,7 @@ if __name__ == "__main__":
 
     ###### image de front
     sc = 4
-    baseballArena1 = Rectangle("arena",True,scene)
+    baseballArena1 = Rectangle("arena", True, scene)
     baseballMat = TextureMaterial(Texture("./assets/baseballBackground.jpeg"))
     baseballArena1.setPosition(0,0,-22)
     baseballArena1.setMaterial(baseballMat)
@@ -176,9 +215,6 @@ if __name__ == "__main__":
         player1.update(deltaTime)
         player2.update(deltaTime)
 
-        #end1.setPosition(player2.batte.end1[0], player2.batte.end1[1], player2.batte.end1[2])
-
-
         ###### SCORE UPDATE
 
         score1Texture = TextTexture(f"{player1.score}", (0, 0, 0), (255, 255, 255))        
@@ -210,8 +246,13 @@ if __name__ == "__main__":
 
                 service = False
 
-            for sphere in ballManager.balls:
+            for i,sphere in enumerate(ballManager.balls):
                 sphere.update(deltaTime)
+                #if i == 0:
+                #    sphere.hasInvertedPerspective = True
+                #else:
+                #    sphere.hasInvertedPerspective = False
+
                 sphere.setRotationY(time * 50.0)
                 sphere.setRotationX(time * 60.0)
                 sphere.setRotationZ(time * 40.0)
@@ -230,12 +271,10 @@ if __name__ == "__main__":
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         ### PLAYER 1
-        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect1, rect, score1Texture, 1)
-        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect1, rect, score1Texture, 1)
-
+        drawEyesToFrameBuffer(player1, scene, rectMat, timerRect1, rect, score1Texture, 1)
+        
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect1, rect, score2Texture, 2)
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect1, rect, score2Texture, 2)
+        drawEyesToFrameBuffer(player2, scene, rectMat, timerRect1, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
