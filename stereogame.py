@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     DOES_INTERLACE = False
 
-    GAME_DURATION = 5 # temps en secondes
+    GAME_DURATION = 90 # temps en secondes
 
     FREEZE = False
 
