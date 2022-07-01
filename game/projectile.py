@@ -278,6 +278,6 @@ class Projectile(Sphere):
                 self.battlefield.areViewsSwitched = True
 
         def explode(self):
-            crash_sound = pygame.mixer.Sound("./assets/explosion1.wav")
+            crash_sound = pygame.mixer.Sound("./assets/boomSound.mp3")
             pygame.mixer.Sound.play(crash_sound)
             self.ballmanager.removeBall(self)
