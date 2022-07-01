@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
 
     GAME_DURATION = 90 # temps en secondes
 
@@ -111,7 +111,7 @@ if __name__ == "__main__":
             #gamepad += [GamePad(i)]
             joystick.append(pygame.joystick.Joystick(i))
             gamepad.append(GamePad(i))
-        player1 = Player(False, gamepad[0], scene, ballManager)
+        player1 = Player(False, False, gamepad[0], scene, ballManager)
         if nb_joystick == 2:
             player2 = Player(True,False, gamepad[1], scene, ballManager)
         else:
@@ -409,7 +409,7 @@ if __name__ == "__main__":
                     player1.batte.translate(-0.1, 0, 0)
                 if (i == 1) and (player2.batte.position.x > -5) :
                     player2.batte.translate(-0.1, 0, 0)
-            if gamepad[i].isZtargetting():
+            if gamepad[i].getZtargetting():
                 if i == 0 :
                     player1.Ztargetting = True
                 if i == 1 :
