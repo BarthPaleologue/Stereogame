@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     DOES_INTERLACE = False
 
-    GAME_DURATION = 90 # temps en secondes
+    GAME_DURATION = 10 # temps en secondes
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -162,10 +162,6 @@ if __name__ == "__main__":
     blackTex = Texture("./assets/black.jpg")
     numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
 
-    ###### losing and winning:
-    lossrect = Rectangle("losing",False,None)
-    #losstexture = TextTexture(f"{"next time"}", (0, 0, 0), (255, 255, 255))        
-    
     ######### DECLARATION DE L'ECRAN
 
     screen = Screen('screen')
@@ -273,11 +269,16 @@ if __name__ == "__main__":
                 ballManager.removeBall(ball)
             
             if player1.score > player2.score :
-                score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))        
-                score2Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))
+                winrect = Rectangle("WIN",False,scene)
+                wintexture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))  
+                winrect.setMaterial(wintexture)   
+
+                """score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))        
+                score2Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))"""
             else :
-                score1Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))        
-                score2Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))
+                winrect = Rectangle("WIN",False,scene)
+                wintexture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))  
+                winrect.setMaterial(wintexture) 
 
             #### wait until you want to restart the game
 
