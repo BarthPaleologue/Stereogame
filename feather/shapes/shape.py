@@ -27,6 +27,9 @@ class Shape(Transform):
 
         self.scene = scene
 
+        ###FIXME: shoud not be here
+        self.hasInvertedPerspective = False
+
         if self.scene is not None:
             self.scene.addShape(self)
 

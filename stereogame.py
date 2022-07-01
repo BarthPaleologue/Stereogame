@@ -23,13 +23,13 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield, Projectile
 
-def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreRect, scoreTexture, playerIndex):
+def drawEyeToFrameBuffer(eye, scene, testMat, timerRect1, scoreRect, scoreTexture, playerIndex):
     eye.frameBuffer.bind()
     glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
     if playerIndex == 1:
-        timerRect.setScaling(-0.5, 0.5, 1)
-        scoreRect.setScaling(-0.5, 0.5, 1)
+        timerRect1.setRotationY(180)
+        scoreRect.setRotationY(180)
 
     #testMat.texture = testTexture
     testMat.texture = scoreTexture
@@ -46,12 +46,26 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     GAME_DURATION = 90 # temps en secondes
 
     ####### BALL MANAGER
     ballManager = BallManager([])
+
+    ###### image de front
+    sc = 4
+    baseballArena1 = Rectangle("arena",True,scene)
+    baseballMat = TextureMaterial(Texture("./assets/baseballBackground.jpeg"))
+    baseballArena1.setPosition(0,0,-22)
+    baseballArena1.setMaterial(baseballMat)
+    baseballArena1.setScaling(sc+1.7,sc,1)
+    ###### image de back
+
+    baseballArena2 = Rectangle("arena",True,scene)
+    baseballArena2.setPosition(0,0,22)
+    baseballArena2.setMaterial(baseballMat)
+    baseballArena2.setScaling(sc+1.7,sc,1)
 
     ######### DECLARATION DES JOUEURS
 
@@ -103,12 +117,11 @@ if __name__ == "__main__":
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
-    timerRect = Rectangle("timer1", False, scene)
-    timerRect.setPosition(-8, 5, 0)
-    timerRect.setScaling(0.5, 0.5, 1)
-    #timerTexture = TextTexture(f"{GAME_DURATION}", (0,0,0), (255, 255, 255))
-    timerMat = TextureMaterial(Texture("./assets/black.jpg"))
-    timerRect.setMaterial(timerMat)
+    timerRect1 = Rectangle("timer1", False, scene)
+    timerRect1.setPosition(-8, 5, -1)
+    timerRect1.setScaling(0.5, 0.5, 1)
+    timerMat1 = TextureMaterial(Texture("./assets/black.jpg"))
+    timerRect1.setMaterial(timerMat1)
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
@@ -156,7 +169,7 @@ if __name__ == "__main__":
         timerInt = int(timer)
 
         timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
-        timerRect.material.texture = timerTexture
+        timerRect1.material.texture = timerTexture
 
         ###### UPDATE ETAT DES BATTES
 
@@ -217,12 +230,12 @@ if __name__ == "__main__":
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         ### PLAYER 1
-        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect, rect, score1Texture, 1)
-        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect, rect, score1Texture, 1)
+        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect1, rect, score1Texture, 1)
+        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect1, rect, score1Texture, 1)
 
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect, rect, score2Texture, 2)
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect, rect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect1, rect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect1, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
