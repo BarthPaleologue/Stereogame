@@ -298,15 +298,15 @@ if __name__ == "__main__":
                 interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 1)
                 interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 2)
 
-                interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 5)
-                interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 6)
+                interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 6)
+                interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 5)
 
             else:
                 interlacer.setTextureFromFBO(player2.rightEye.frameBuffer, 1)
                 interlacer.setTextureFromFBO(player2.leftEye.frameBuffer, 2)
 
-                interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 5)
-                interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 6)
+                interlacer.setTextureFromFBO(player1.rightEye.frameBuffer, 6)
+                interlacer.setTextureFromFBO(player1.leftEye.frameBuffer, 5)
 
             interlacer.setTextureFromImage(blackTex, 3)
             interlacer.setTextureFromImage(blackTex, 4)
