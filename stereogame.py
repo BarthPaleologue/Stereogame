@@ -77,9 +77,11 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     GAME_DURATION = 10 # temps en secondes
+
+    FREEZE = False
 
     ####### BALL MANAGER
     ballManager = BallManager([])
@@ -145,7 +147,7 @@ if __name__ == "__main__":
     #### scores
 
     rect = Rectangle('rect', False, scene)
-    rect.setPosition(8, 5, -3).setScaling(0.5, 0.5, 0)
+    rect.setPosition(8, 5, 0).setScaling(0.5, 0.5, 0)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
@@ -200,15 +202,13 @@ if __name__ == "__main__":
         deltaTime = time - getTicksLastFrame
         getTicksLastFrame = time
 
-        timer += deltaTime
+        if timer <= GAME_DURATION and not FREEZE:
+            timer += deltaTime
 
         timerInt = int(timer)
 
 
-        if GAME_DURATION - timerInt >= 0 :
-            timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
-        else :
-            timerTexture = TextTexture(f"{0}", (0,0,0), (255,255,255))
+        timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
 
         timerRect1.material.texture = timerTexture
 
@@ -240,7 +240,7 @@ if __name__ == "__main__":
                 sphere.setVelocity((random() - 0.5) / 2, (random() - 0.5) / 2, (random() - 0.5))
                 sphereMat = TextureMaterial(sphereTex)
                 sphere.setMaterial(sphereMat)
-                if random() < 0.1:
+                if random() < 2:
                     sphere.hasInvertedPerspective = True
 
                 player1.batte.isSuperBat = False
@@ -251,7 +251,8 @@ if __name__ == "__main__":
                 service = False
 
             for i,sphere in enumerate(ballManager.balls):
-                sphere.update(deltaTime)
+                if not FREEZE:
+                    sphere.update(deltaTime)
                 #if i == 0:
                 #    sphere.hasInvertedPerspective = True
                 #else:
@@ -363,6 +364,8 @@ if __name__ == "__main__":
         if keys[pygame.K_w]: # Ztargetting
             player1.Ztargetting = True
             player2.Ztargetting = True
+        if keys[pygame.K_SPACE]: # FREEEZE
+            FREEZE = not FREEZE
 
 
 
