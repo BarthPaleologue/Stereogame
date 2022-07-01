@@ -57,7 +57,7 @@ if __name__ == "__main__":
     keyboard = Keyboard()
     nb_joystick = pygame.joystick.get_count()
     pygame.joystick.init()
-    if nb_joystick > 0 :
+    if nb_joystick > 0:
         joystick = []
         gamepad = []
         for i in range (nb_joystick) :
@@ -167,29 +167,18 @@ if __name__ == "__main__":
 
         ###### SCORE UPDATE
 
-        score1Texture = TextTexture(f"{score1}", (0, 0, 0), (255, 255, 255))
-        if player1.score == 4:
-            print("Player 1 wins")
-            score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))
-            score2Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))
-            #score1, score2 = 0, 0
-        
-        score2Texture = TextTexture(f"{score2}", (0, 0, 0), (255, 255, 255))
-        if player2.score == 4:
-            print("Player 2 wins")
-            score1Texture = TextTexture("You loose", (0, 0, 0), (255, 255, 255))
-            score2Texture = TextTexture("You win", (0, 0, 0), (255, 255, 255))
-            #score1, score2 = 0, 0
+        score1Texture = TextTexture(f"{player1.score}", (0, 0, 0), (255, 255, 255))        
+        score2Texture = TextTexture(f"{player2.score}", (0, 0, 0), (255, 255, 255))
 
-        if player1.score < 10 and player2.score < 10:
+        if timer < GAME_DURATION:
             if len(ballManager.balls) == 0:
                 service = True
 
             if sphere.position.z <= player1.position.z - 7:
-                score2 += 1
+                player2.score += 1
                 service = True
             if sphere.position.z >= player2.position.z + 7:
-                score1 += 1
+                player1.score += 1
                 service = True
 
             if service == True:
