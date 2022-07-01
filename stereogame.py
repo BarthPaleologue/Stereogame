@@ -38,9 +38,6 @@ def drawEyesToFrameBuffer(player: Player, scene: Scene, testMat, timerRect, scor
     if playerIndex == 1:
         scoreRect.setRotationY(0)
         timerRect.setRotationY(0)
-        #scoreRect.setRotationY(180)
-        #scoreRect.setScaling(-0.5, 0.5, 1)
-        #timerRect.setRotationY(180)
 
     testMat.texture = scoreTexture
 
