@@ -107,4 +107,5 @@ class Transform():
                 rotate(self.rotation.z, 0.0, 0.0, 1.0))
 
     def getMatrix(self):
+        ### FIXME: le scaling doit être fait avant le positionnement
         return self.getRotationMatrix().dot(self.getPositionMatrix()).dot(self.getScalingMatrix())
