@@ -13,12 +13,13 @@ import pygame
 
 
 class Player(Transform):
-    def __init__(self, flip, gamepad, scene, ballManager):
+    def __init__(self, flip, Ztargetting, gamepad, scene, ballManager):
         Transform.__init__(self)
         self.batte = Bat("./assets/baseball/batB.obj", scene)
 
         self.defaultEyeDistance = 0.06
         self.eyeDistance = self.defaultEyeDistance
+        self.Ztargetting=Ztargetting 
 
         self.leftEye = Eye()  ### Initialiser l'oeil gauche ici
         self.leftEye.setPosition(-self.eyeDistance / 2, 0, 0)
