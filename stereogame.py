@@ -1,4 +1,4 @@
-from random import random
+from random import random, randint
 from OpenGL.GL import *
 import numpy as np
 
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = True
+    DOES_INTERLACE = False
 
     GAME_DURATION = 90 # temps en secondes
 
@@ -204,7 +204,11 @@ if __name__ == "__main__":
 
         timerInt = int(timer)
 
-        timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
+
+        if GAME_DURATION - timerInt >= 0 :
+            timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
+        else :
+            timerTexture = TextTexture(f"{0}", (0,0,0), (255,255,255))
         timerRect1.material.texture = timerTexture
 
         ###### UPDATE ETAT DES BATTES
