@@ -53,6 +53,20 @@ if __name__ == "__main__":
     ####### BALL MANAGER
     ballManager = BallManager([])
 
+    ###### image de front
+    sc = 4
+    baseballArena1 = Rectangle("arena",True,scene)
+    baseballMat = TextureMaterial(Texture("./assets/baseballBackground.jpeg"))
+    baseballArena1.setPosition(0,0,-22)
+    baseballArena1.setMaterial(baseballMat)
+    baseballArena1.setScaling(sc+1.7,sc,1)
+    ###### image de back
+
+    baseballArena2 = Rectangle("arena",True,scene)
+    baseballArena2.setPosition(0,0,22)
+    baseballArena2.setMaterial(baseballMat)
+    baseballArena2.setScaling(sc+1.7,sc,1)
+
     ######### DECLARATION DES JOUEURS
 
     keyboard = Keyboard()
@@ -318,6 +332,11 @@ if __name__ == "__main__":
             # pour tester si le programme detecte les appuie sur les boutons
         for i in range (nb_joystick) :
             gamepad[i].update()
+            if gamepad[i].startButton() :
+                service = True
+                service = False
+                timer = 0
+                player1.score, player2.score = 0, 0
             if gamepad[i].isBattePressed():
                 if i == 0 :
                     player1.batte.strike()
