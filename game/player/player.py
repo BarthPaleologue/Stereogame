@@ -9,6 +9,7 @@ from pygame.math import Vector3
 from game.bat import Bat
 import numpy as np
 from random import random
+import pygame
 
 
 class Player(Transform):
@@ -183,6 +184,9 @@ class Player(Transform):
 
         for ball in self.ballManager.balls:
             if sphereToCylinder(ball, self.batte):
+                strike_sound = pygame.mixer.Sound("./assets/strike.mp3")
+                pygame.mixer.Sound.play(strike_sound)
+
                 zInfluence = 1.2
 
                 velocity = np.array([-ball.velocity.x, -ball.velocity.y, -ball.velocity.z * zInfluence])

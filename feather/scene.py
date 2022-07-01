@@ -8,7 +8,6 @@ class Scene():
         self.shapes.append(shape)
 
     def removeShape(self, shape):
-        self.shapes.remove(shape)
         shapes = []
         for shapy in self.shapes:
             if shapy != shape:

@@ -23,12 +23,13 @@ from interlacer import Interlacer
 from feather.loaders.RowOBJ import RowOBJ
 from game import Player, Battlefield, Projectile
 
-def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreTexture, playerIndex):
+def drawEyeToFrameBuffer(eye, scene, testMat, timerRect, scoreRect, scoreTexture, playerIndex):
     eye.frameBuffer.bind()
     glViewport(0, 0, eye.frameBuffer.width, eye.frameBuffer.height)
 
     if playerIndex == 1:
-        timerRect.setScaling(-1, 1, 1)
+        timerRect.setScaling(-0.5, 0.5, 1)
+        scoreRect.setScaling(-0.5, 0.5, 1)
 
     #testMat.texture = testTexture
     testMat.texture = scoreTexture
@@ -71,7 +72,7 @@ if __name__ == "__main__":
     keyboard = Keyboard()
     nb_joystick = pygame.joystick.get_count()
     pygame.joystick.init()
-    if nb_joystick > 0 :
+    if nb_joystick > 0:
         joystick = []
         gamepad = []
         for i in range (nb_joystick) :
@@ -111,13 +112,13 @@ if __name__ == "__main__":
     sphere.setMaterial(sphereMat)
     
     rect = Rectangle('rect', False, scene)
-    rect.setPosition(-4, 2, -3).setScaling(1, 1, 1)
+    rect.setPosition(8, 5, -3).setScaling(0.5, 0.5, 0)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
 
     timerRect = Rectangle("timer1", False, scene)
-    timerRect.setPosition(-3, 1.5, 0)
+    timerRect.setPosition(-8, 5, 0)
     timerRect.setScaling(0.5, 0.5, 1)
     #timerTexture = TextTexture(f"{GAME_DURATION}", (0,0,0), (255, 255, 255))
     timerMat = TextureMaterial(Texture("./assets/black.jpg"))
@@ -181,29 +182,18 @@ if __name__ == "__main__":
 
         ###### SCORE UPDATE
 
-        score1Texture = TextTexture(f"{score1}", (0, 0, 0), (255, 255, 255))
-        if player1.score == 4:
-            print("Player 1 wins")
-            score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))
-            score2Texture = TextTexture("You Lose", (0, 0, 0), (255, 255, 255))
-            #score1, score2 = 0, 0
-        
-        score2Texture = TextTexture(f"{score2}", (0, 0, 0), (255, 255, 255))
-        if player2.score == 4:
-            print("Player 2 wins")
-            score1Texture = TextTexture("You lose", (0, 0, 0), (255, 255, 255))
-            score2Texture = TextTexture("You win", (0, 0, 0), (255, 255, 255))
-            #score1, score2 = 0, 0
+        score1Texture = TextTexture(f"{player1.score}", (0, 0, 0), (255, 255, 255))        
+        score2Texture = TextTexture(f"{player2.score}", (0, 0, 0), (255, 255, 255))
 
-        if player1.score < 10 and player2.score < 10:
+        if timer < GAME_DURATION:
             if len(ballManager.balls) == 0:
                 service = True
 
             if sphere.position.z <= player1.position.z - 7:
-                score2 += 1
+                player2.score += 1
                 service = True
             if sphere.position.z >= player2.position.z + 7:
-                score1 += 1
+                player1.score += 1
                 service = True
 
             if service == True:
@@ -241,12 +231,12 @@ if __name__ == "__main__":
         ###### DESSIN DES SHAPES SUR FRAMEBUFFER
 
         ### PLAYER 1
-        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect, score1Texture, 1)
-        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect, score1Texture, 1)
+        drawEyeToFrameBuffer(player1.rightEye, scene, rectMat, timerRect, rect, score1Texture, 1)
+        drawEyeToFrameBuffer(player1.leftEye, scene, rectMat, timerRect, rect, score1Texture, 1)
 
         ### PLAYER 2
-        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect, score2Texture, 2)
-        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.rightEye, scene, rectMat, timerRect, rect, score2Texture, 2)
+        drawEyeToFrameBuffer(player2.leftEye, scene, rectMat, timerRect, rect, score2Texture, 2)
 
         ###### DESSIN DES FRAMEBUFFER SUR L'ECRAN
 
