@@ -209,7 +209,11 @@ if __name__ == "__main__":
 
         timerInt = int(timer)
 
-        timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
+
+        if GAME_DURATION - timerInt >= 0 :
+            timerTexture = TextTexture(f"{GAME_DURATION - timerInt}", (0,0,0), (255,255,255))
+        else :
+            timerTexture = TextTexture(f"{0}", (0,0,0), (255,255,255))
         timerRect1.material.texture = timerTexture
         timerRect2.material.texture = timerTexture
 
