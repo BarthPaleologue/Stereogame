@@ -7,7 +7,7 @@ from game.projectile import Projectile
 
 from game.BallManager import BallManager
 from game.MysteryBox import MysteryBox
-from game.Bomb import Bomb
+#from game.Bomb import Bomb
 from game.player.GamePad import GamePad
 from game.player.Keyboard import Keyboard
 import pygame
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     scene = Scene()
 
-    DOES_INTERLACE = False
+    DOES_INTERLACE = True
 
     GAME_DURATION = 90 # temps en secondes
 
