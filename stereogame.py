@@ -161,6 +161,10 @@ if __name__ == "__main__":
 
     blackTex = Texture("./assets/black.jpg")
     numTextures = [TextTexture(f"{i}", (0, 0, 0), (255, 255, 255)) for i in range(8)]
+
+    ###### losing and winning:
+    lossrect = Rectangle("losing",False,None)
+    #losstexture = TextTexture(f"{"next time"}", (0, 0, 0), (255, 255, 255))        
     
     ######### DECLARATION DE L'ECRAN
 
