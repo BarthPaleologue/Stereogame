@@ -341,6 +341,9 @@ if __name__ == "__main__":
             battlefield.areViewsSwitched = not battlefield.areViewsSwitched
         if keys[pygame.K_n]:
             service = True
+            service = False
+            timer = 0
+            player1.score, player2.score = 0, 0
 
 
         for event in pygame.event.get():
