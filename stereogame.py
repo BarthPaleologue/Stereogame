@@ -97,7 +97,7 @@ if __name__ == "__main__":
     sphere.setMaterial(sphereMat)
     
     rect = Rectangle('rect', False, scene)
-    rect.setPosition(-8, 2, -3).setScaling(0.5, 1, 1)
+    rect.setPosition(-4, 2, -3).setScaling(1, 1, 1)
 
     rectMat = TextureMaterial(Texture("./assets/black.jpg"))
     rect.setMaterial(rectMat)
@@ -168,17 +168,17 @@ if __name__ == "__main__":
         ###### SCORE UPDATE
 
         score1Texture = TextTexture(f"{score1}", (0, 0, 0), (255, 255, 255))
-        if player1.score == 10:
+        if player1.score == 4:
             print("Player 1 wins")
-            score1Texture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))
-            score2Texture = TextTexture("Player 1 wins", (0, 0, 0), (255, 255, 255))
+            score1Texture = TextTexture("You Win", (0, 0, 0), (255, 255, 255))
+            score2Texture = TextTexture("You Loose", (0, 0, 0), (255, 255, 255))
             #score1, score2 = 0, 0
         
         score2Texture = TextTexture(f"{score2}", (0, 0, 0), (255, 255, 255))
-        if player2.score == 10:
+        if player2.score == 4:
             print("Player 2 wins")
-            score1Texture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))
-            score2Texture = TextTexture("Player 2 wins", (0, 0, 0), (255, 255, 255))
+            score1Texture = TextTexture("You loose", (0, 0, 0), (255, 255, 255))
+            score2Texture = TextTexture("You win", (0, 0, 0), (255, 255, 255))
             #score1, score2 = 0, 0
 
         if player1.score < 10 and player2.score < 10:
